@@ -24,13 +24,29 @@ let localLon = 100.624471  //98.3983 //100.624471 //
 var GCMRegistrationID = "lLt6FW-cC-M:APA91bG7JeP6OSPWIo9TjYFEPN0ShlHUKibcpoAKVTwbHhAvWjYFccAFQqhlPu9sfGL2rhANl_Dd3i1wMHic-ZoN2GuhZ65FSWU3P3Ta_DsiDYYxc5Xs_Mebm-7RnLu46OyRRk1yi1Tr"
 let registrationKey = "onRegistrationCompleted"
 let messageKey = "onMessageReceived"
-
+let areaIdMax = 18
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate,  GCMReceiverDelegate{
 
     var window: UIWindow?
 
+    struct placeDetail {
+        var Type : Int = 0
+        var locationName : String = String()
+        var areaName : String = String()
+        var locationAddress : String = String()
+        var location : CLLocation = CLLocation()
+        var AreaId : Int = 0
+        var CategoryId : Int = 0
+    }
+    
+    var allPlaces = [placeDetail]()
+   
+    var CategoryId = [Int: String]()
+    var placeCount : Int = 0
+    
+    
     var connectedToGCM = false
     var subscribedToTopic = false
     var gcmSenderID: String?
@@ -70,18 +86,71 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate,  G
         
         do {
         let opt = try HTTP.PUT(mainhost + "/api/landmark", parameters: params)
-        opt.start { response in
-        //do things...
-        if let obj: AnyObject =  response.data {
+            opt.start { response in
+                //do things...
+                if let obj: AnyObject =  response.data {
         
-        let json = JSON(data: obj as! NSData)
+                    let json = JSON(data: obj as! NSData)
         
-        print(json)
-        }
+                    for (i, x) in json["LandmarkCats"] {
+                        
+                        self.CategoryId[x["CategoryId"].int!] = x["Name"].string!
+                        for var aId = 1;aId < areaIdMax;aId++ {
+                            let params2: Dictionary<String,AnyObject> = ["Action" : "3", "CategoryId" : String(x["CategoryId"].int!) ,"AreaId" : String(aId)]
+                        
+                        
+                            do {
+                                let opt = try HTTP.PUT(mainhost + "/api/landmark", parameters: params2)
+                                opt.start { response in
+                                    //do things...
+                                    //print("=================== By category ====================")
+                                    if let obj: AnyObject =  response.data {
+                                    
+                                        let json = JSON(data: obj as! NSData)
+                                        
+                                        for (i, x) in json["Landmarks"] {
+                                            var a: placeDetail = placeDetail()
+                                            a.AreaId = x["AreaId"].int!
+                                            a.location = CLLocation(latitude: x["Lat"].double!, longitude: x["Lng"].double!)
+                                            a.areaName = x["AreaName"].string!
+                                            a.locationName = x["AreaName"].string!
+                                            a.CategoryId = x["CategoryId"].int!
+                                            a.locationAddress = x["LocationAddress"].string!
+                                            a.Type = x["Type"].int!
+                                            
+                                            self.allPlaces.append(a)
+                                            
+                                        }
+                                        
+                                       
+                                        
+                                        if self.placeCount == 203 {
+                                            print("Done")
+                                            for xx in self.allPlaces {
+                                                print(xx)
+                                            }
+                                        }
+                                        
+                                    }
+                                    
+                                 print(self.placeCount)
+                                 self.placeCount++;
+                                }
+                            } catch let error {
+                                print("got an error creating the request: \(error)")
+                            }
+                        }
+                        
+                        
+                        //print(x)
+                    }
+                    
+                   
+                }
         
-        }
+            }
         } catch let error {
-        print("got an error creating the request: \(error)")
+            print("got an error creating the request: \(error)")
         }
 
        
