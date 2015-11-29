@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Tsq-bo-buz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
@@ -111,6 +111,10 @@
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DTh-45-C15">
                                                 <rect key="frame" x="97" y="49" width="46" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="35" id="LNY-Gd-zWO"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <connections>
                                                     <action selector="toButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hA4-fT-z7z"/>
                                                 </connections>
@@ -263,8 +267,9 @@
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OoO-gF-2cK" userLabel="placeSelection">
                                 <rect key="frame" x="180" y="236" width="240" height="128"/>
                                 <subviews>
-                                    <searchBar contentMode="redraw" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="paN-pH-nKV">
-                                        <rect key="frame" x="0.0" y="42" width="240" height="44"/>
+                                    <searchBar contentMode="redraw" ambiguous="YES" misplaced="YES" searchBarStyle="minimal" placeholder="Enter place name" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="paN-pH-nKV">
+                                        <rect key="frame" x="0.0" y="42" width="240" height="60"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <textInputTraits key="textInputTraits"/>
                                         <connections>
                                             <outlet property="delegate" destination="BYZ-38-t0r" id="FjM-eL-HPP"/>
@@ -304,14 +309,29 @@
                                             <outlet property="delegate" destination="BYZ-38-t0r" id="wu6-TQ-aqN"/>
                                         </connections>
                                     </tableView>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y9C-yu-FS4">
+                                        <rect key="frame" x="0.0" y="49" width="232" height="30"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="JFk-vX-Swp"/>
+                                        </constraints>
+                                        <state key="normal" title="Add current location to bookmark">
+                                            <color key="titleColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="bookMarkAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xu4-RC-Bs6"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="1gf-96-1dk" firstAttribute="width" secondItem="paN-pH-nKV" secondAttribute="width" id="Dk9-oT-fyE"/>
+                                    <constraint firstAttribute="bottom" secondItem="1gf-96-1dk" secondAttribute="bottom" constant="50" id="Pw5-uL-xZg"/>
+                                    <constraint firstItem="1gf-96-1dk" firstAttribute="width" secondItem="OoO-gF-2cK" secondAttribute="width" id="VUe-lv-Hj1"/>
                                     <constraint firstItem="1gf-96-1dk" firstAttribute="centerX" secondItem="paN-pH-nKV" secondAttribute="centerX" id="aKQ-5d-c1P"/>
+                                    <constraint firstItem="Y9C-yu-FS4" firstAttribute="width" secondItem="OoO-gF-2cK" secondAttribute="width" id="llM-pl-FeG"/>
+                                    <constraint firstAttribute="bottom" secondItem="Y9C-yu-FS4" secondAttribute="bottom" id="nqy-9D-3cL"/>
                                     <constraint firstItem="paN-pH-nKV" firstAttribute="top" secondItem="OoO-gF-2cK" secondAttribute="top" id="pjy-1q-pgq"/>
-                                    <constraint firstItem="paN-pH-nKV" firstAttribute="width" secondItem="OoO-gF-2cK" secondAttribute="width" id="wzc-xj-NdZ"/>
                                     <constraint firstItem="1gf-96-1dk" firstAttribute="top" secondItem="paN-pH-nKV" secondAttribute="bottom" constant="5" id="x6b-sa-GUN"/>
+                                    <constraint firstItem="Y9C-yu-FS4" firstAttribute="centerX" secondItem="OoO-gF-2cK" secondAttribute="centerX" id="ynU-tf-PnW"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -323,22 +343,25 @@
                             <constraint firstItem="G3h-CK-OXY" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="AVX-Rq-JDz"/>
                             <constraint firstItem="coi-HO-pC7" firstAttribute="top" secondItem="CSb-WD-2up" secondAttribute="bottom" id="Bdx-eK-aMA"/>
                             <constraint firstItem="cxb-D5-ecZ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Cee-GR-93B"/>
-                            <constraint firstItem="OoO-gF-2cK" firstAttribute="top" secondItem="CSb-WD-2up" secondAttribute="bottom" constant="5" id="EuR-8r-i5m"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="0gX-zP-ygX" secondAttribute="bottom" id="H5n-3x-6Wg"/>
                             <constraint firstItem="0gX-zP-ygX" firstAttribute="top" secondItem="G3h-CK-OXY" secondAttribute="bottom" id="ShB-at-78G"/>
+                            <constraint firstItem="paN-pH-nKV" firstAttribute="height" secondItem="CSb-WD-2up" secondAttribute="height" id="Sm0-LN-mvw"/>
                             <constraint firstItem="CSb-WD-2up" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="TeE-6q-YaZ"/>
-                            <constraint firstItem="OoO-gF-2cK" firstAttribute="centerX" secondItem="CSb-WD-2up" secondAttribute="centerX" id="Ti9-Sa-3WI"/>
+                            <constraint firstItem="OoO-gF-2cK" firstAttribute="top" secondItem="cxb-D5-ecZ" secondAttribute="bottom" id="aAt-TB-bA0"/>
                             <constraint firstItem="0gX-zP-ygX" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="bsh-ny-O3I"/>
-                            <constraint firstItem="G3h-CK-OXY" firstAttribute="top" secondItem="OoO-gF-2cK" secondAttribute="bottom" constant="5" id="l1x-wi-qDI"/>
+                            <constraint firstItem="OoO-gF-2cK" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-5" id="dkp-UB-iz1"/>
+                            <constraint firstItem="G3h-CK-OXY" firstAttribute="top" secondItem="OoO-gF-2cK" secondAttribute="bottom" constant="50" id="l1x-wi-qDI"/>
                             <constraint firstItem="CSb-WD-2up" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="lMB-T7-nm8"/>
+                            <constraint firstItem="paN-pH-nKV" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="mGw-bC-1jV"/>
                             <constraint firstItem="0gX-zP-ygX" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="rLn-0W-Txv"/>
                             <constraint firstItem="cxb-D5-ecZ" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="s1u-Py-6da"/>
-                            <constraint firstItem="OoO-gF-2cK" firstAttribute="width" secondItem="CSb-WD-2up" secondAttribute="width" id="tYR-r0-SoX"/>
                             <constraint firstItem="cxb-D5-ecZ" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="yWh-CP-bi1"/>
                             <constraint firstItem="coi-HO-pC7" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="yu1-6h-h4k"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="OoO-gF-2cK" secondAttribute="trailing" constant="-5" id="zw3-UG-2UG"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bookmarkButton" destination="Y9C-yu-FS4" id="BL9-pr-URq"/>
                         <outlet property="callTaxiButton" destination="feJ-iB-Tpd" id="Yac-WG-rVw"/>
                         <outlet property="carSelectionView" destination="0gX-zP-ygX" id="jZ9-MT-bz3"/>
                         <outlet property="centerLabel" destination="ItD-M1-rjw" id="ybd-Qq-LpW"/>
@@ -352,7 +375,8 @@
                         <outlet property="mapHeight" destination="HmW-es-Jab" id="1wa-DF-Zbf"/>
                         <outlet property="pickupImages" destination="qsn-6v-fJF" id="YVq-Xe-sbw"/>
                         <outlet property="placeSelectionView" destination="OoO-gF-2cK" id="Drn-mx-YkV"/>
-                        <outlet property="searchList" destination="1gf-96-1dk" id="nbt-FR-kWO"/>
+                        <outlet property="searchBar" destination="paN-pH-nKV" id="uBT-DE-3nn"/>
+                        <outlet property="searchList" destination="1gf-96-1dk" id="8bQ-Se-cOl"/>
                         <outlet property="toAddress" destination="S3u-oW-seV" id="24D-iz-Gq7"/>
                         <outlet property="toImage" destination="2Qk-7Z-QON" id="Yye-M6-Swd"/>
                         <outlet property="toPlaceLabel" destination="fQN-jw-2QU" id="3Pb-C1-2ZI"/>
@@ -400,7 +424,7 @@
         <!--Login View Controller-->
         <scene sceneID="SzC-6s-0u7">
             <objects>
-                <viewController id="Tsq-bo-buz" customClass="loginViewController" customModule="DDP" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="loginViewController" id="Tsq-bo-buz" customClass="loginViewController" customModule="DDP" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="uj1-Ug-l3r"/>
                         <viewControllerLayoutGuide type="bottom" id="7q2-36-aYs"/>
@@ -410,6 +434,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="toMainView" id="0Rw-vg-Mct"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="He0-hG-GCH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

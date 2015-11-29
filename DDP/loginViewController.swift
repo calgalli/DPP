@@ -17,7 +17,11 @@ class loginViewController: UIViewController, UITextFieldDelegate {
     
     var firstName : String = ""
     var lastName : String = ""
-    
+    var email : String = ""
+    var password : String = ""
+    var mobile : String = ""
+    //var GCMRegistrationID : String = ""
+    var textViews = [UITextField]()
     
     override func viewDidLoad() {
          super.viewDidLoad()
@@ -37,7 +41,7 @@ class loginViewController: UIViewController, UITextFieldDelegate {
         // Do any additional setup after loading the view.
         let hight : CGFloat = 30
         let gap : CGFloat = 8
-        var textViews = [UITextField]()
+        
         let offset : CGFloat = 90
         let labels = ["FirstName","LastName","e-mail","Password","Mobile"]
         
@@ -52,6 +56,25 @@ class loginViewController: UIViewController, UITextFieldDelegate {
             textViews[i].layer.cornerRadius = 5
             textViews[i].delegate = self
             textViews[i].tag = i
+            
+            if(i == 2){
+                textViews[i].keyboardType = UIKeyboardType.EmailAddress
+            } else if(i == 4){
+                textViews[i].keyboardType = UIKeyboardType.NumberPad
+                let doneToolbar: UIToolbar = UIToolbar(frame: CGRectMake(0, 0, 320, 50))
+                doneToolbar.barStyle = UIBarStyle.BlackTranslucent
+                
+                let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: Selector("doneButtonAction"))
+                var items = [UIBarButtonItem]()
+                items.append(done)
+                
+                doneToolbar.items = items
+                doneToolbar.sizeToFit()
+                
+                textViews[i].inputAccessoryView = doneToolbar
+                
+
+            }
         }
         
         for var i = 0;i < 5;i++ {
@@ -85,8 +108,13 @@ class loginViewController: UIViewController, UITextFieldDelegate {
     func buttonAction(sender:UIButton!)
     {
         print("Button tapped")
-        /*let params: Dictionary<String,AnyObject> = ["FirstName":"fllay","LastName":"asler12","Email" : "asler12@gmail.com","Password" : "1234","Mobile" : "1112222","GCMRegistrationID" : GCMRegistrationID]
         
+        //prefs.setObject(GCMRegistrationID, forKey: "GCMRegistrationID")
+        
+        print(GCMRegistrationID)
+        
+        let params: Dictionary<String,AnyObject> = ["FirstName":firstName,"LastName":lastName,"Email" : email,"Password" : password,"Mobile" : mobile,"GCMRegistrationID" : GCMRegistrationID]
+        print(params)
         
         do {
             let opt = try HTTP.POST(mainhost + "/api/member", parameters: params)
@@ -95,14 +123,57 @@ class loginViewController: UIViewController, UITextFieldDelegate {
                 if let obj: AnyObject =  response.data {
                     
                     let json = JSON(data: obj as! NSData)
-                    
                     print(json)
+                    if json["Status"].string ==  "SUCCESS" {
+                        print("************************* SUCCESS *****************************")
+                        prefs.setObject("yes", forKey: "haveLogin")
+                        
+                        
+                        let alertController = UIAlertController(title: "Registration complete", message: "Contratulation", preferredStyle: .Alert)
+                        
+                        let commentAction = UIAlertAction(title: "OK", style: .Default) { (_) in
+                            self.performSegueWithIdentifier("toMainView", sender: nil)
+                        }
+                        
+                        
+                        alertController.addAction(commentAction)
+                        
+                        self.presentViewController(alertController, animated: true) {
+                            // ...
+                        }
+
+                        
+                        
+                        
+                       
+                    } else {
+                        
+                        
+                        let alertController = UIAlertController(title: "Registration Fail", message: "Incomplete data. Please check you data and try again", preferredStyle: .Alert)
+                        
+                        let commentAction = UIAlertAction(title: "OK", style: .Default) { (_) in
+                           
+                        }
+                        
+                        
+                        alertController.addAction(commentAction)
+                        
+                        self.presentViewController(alertController, animated: true) {
+                            // ...
+                        }
+
+                    }
+
+                    
+                    
+                    
+                    
                 }
                 
             }
         } catch let error {
             print("got an error creating the request: \(error)")
-        }*/
+        }
     }
     
     
@@ -126,14 +197,28 @@ class loginViewController: UIViewController, UITextFieldDelegate {
     func textFieldDidEndEditing(textField: UITextField) {
         switch (textField.tag){
             case 0:
+                firstName = textField.text!
+                prefs.setObject(firstName, forKey: "firstName")
                 print(textField.text)
             case 1:
+                lastName = textField.text!
+                prefs.setObject(lastName, forKey: "lastName")
+
                 print(textField.text)
             case 2:
+                email = textField.text!
+                prefs.setObject(email, forKey: "email")
+
                 print(textField.text)
             case 3:
+                password = textField.text!
+                prefs.setObject(password, forKey: "password")
+
                 print(textField.text)
             case 4:
+                mobile = textField.text!
+                prefs.setObject(mobile, forKey: "mobile")
+
                 print(textField.text)
             
             default: break
@@ -167,6 +252,21 @@ class loginViewController: UIViewController, UITextFieldDelegate {
         return true;
     }
     // MARK: Textfield Delegates <---
+    // MARK: Done button
+    
+    func addDoneButtonOnKeyboard()
+    {
+        
+    }
+    
+    func doneButtonAction()
+    {
+        
+        for x in textViews {
+            x.resignFirstResponder()
+        }
+      
+    }
 
     /*
     // MARK: - Navigation

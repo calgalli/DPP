@@ -16,6 +16,7 @@
 		281D3C4C1C0AA56B00451A8D /* suvActive.png in Resources */ = {isa = PBXBuildFile; fileRef = 281D3C471C0AA56B00451A8D /* suvActive.png */; };
 		281D3C4D1C0AA56B00451A8D /* tuktukActive.png in Resources */ = {isa = PBXBuildFile; fileRef = 281D3C481C0AA56B00451A8D /* tuktukActive.png */; };
 		281D3C4E1C0AA56B00451A8D /* vanActive.png in Resources */ = {isa = PBXBuildFile; fileRef = 281D3C491C0AA56B00451A8D /* vanActive.png */; };
+		281D3C501C0AD38000451A8D /* addBookmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 281D3C4F1C0AD38000451A8D /* addBookmark.png */; };
 		284F83FA1BD290D500AEC237 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284F83F91BD290D500AEC237 /* SwiftyJSON.swift */; };
 		2880F0031C04133C00FBA65B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2880F0021C04133C00FBA65B /* GoogleService-Info.plist */; };
 		28A73B211BD28E6800E1A8A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A73B201BD28E6800E1A8A5 /* AppDelegate.swift */; };
@@ -66,6 +67,7 @@
 		281D3C471C0AA56B00451A8D /* suvActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = suvActive.png; sourceTree = "<group>"; };
 		281D3C481C0AA56B00451A8D /* tuktukActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tuktukActive.png; sourceTree = "<group>"; };
 		281D3C491C0AA56B00451A8D /* vanActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vanActive.png; sourceTree = "<group>"; };
+		281D3C4F1C0AD38000451A8D /* addBookmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addBookmark.png; sourceTree = "<group>"; };
 		284F83F91BD290D500AEC237 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		2880F0021C04133C00FBA65B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		28A73B1D1BD28E6800E1A8A5 /* DDP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DDP.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -186,6 +188,7 @@
 		28DF88551C05F9100036B2AD /* images */ = {
 			isa = PBXGroup;
 			children = (
+				281D3C4F1C0AD38000451A8D /* addBookmark.png */,
 				281D3C451C0AA56B00451A8D /* luxSedanActive.png */,
 				281D3C461C0AA56B00451A8D /* sedanActive.png */,
 				281D3C471C0AA56B00451A8D /* suvActive.png */,
@@ -343,6 +346,7 @@
 				2880F0031C04133C00FBA65B /* GoogleService-Info.plist in Resources */,
 				281D3C421C0AA2CC00451A8D /* suv.png in Resources */,
 				28A73B2B1BD28E6800E1A8A5 /* Assets.xcassets in Resources */,
+				281D3C501C0AD38000451A8D /* addBookmark.png in Resources */,
 				281D3C4D1C0AA56B00451A8D /* tuktukActive.png in Resources */,
 				28A73B261BD28E6800E1A8A5 /* Main.storyboard in Resources */,
 				281D3C4E1C0AA56B00451A8D /* vanActive.png in Resources */,

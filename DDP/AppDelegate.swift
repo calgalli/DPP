@@ -26,6 +26,9 @@ let registrationKey = "onRegistrationCompleted"
 let messageKey = "onMessageReceived"
 let areaIdMax = 18
 
+let prefs = NSUserDefaults.standardUserDefaults()
+
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate,  GCMReceiverDelegate{
 
@@ -82,6 +85,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate,  G
         
         
         //getPlace()
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        if((prefs.objectForKey("haveLogin")) != nil){
+            
+            if(prefs.objectForKey("haveLogin") as! String == "yes"){
+              //  let email = prefs.objectForKey("username") as! String
+              //  let password1 = prefs.objectForKey("password") as! String
+               
+            } else {
+                let vc = storyboard.instantiateViewControllerWithIdentifier("loginViewController")
+                
+                self.window?.rootViewController = vc
+                self.window?.makeKeyAndVisible()
+                
+            }
+            
+        } else {
+            let vc = storyboard.instantiateViewControllerWithIdentifier("loginViewController")
+            
+            self.window?.rootViewController = vc
+            self.window?.makeKeyAndVisible()
+            
+            print("run leaw")
+        }
+
         
         var configureError:NSError?
         

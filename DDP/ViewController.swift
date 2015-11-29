@@ -16,6 +16,9 @@ import TZStackView
 class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
  
+    @IBOutlet weak var searchList: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var bookmarkButton: UIButton!
     @IBOutlet weak var toImage: UIImageView!
     @IBOutlet weak var pickupImages: UIImageView!
     @IBOutlet weak var mainPrice: UILabel!
@@ -75,7 +78,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     @IBOutlet weak var toViewButton: UIView!
     
     @IBOutlet weak var map: GMSMapView!
-    @IBOutlet weak var searchList: UITableView!
+
     @IBOutlet weak var searchMapView: GMSMapView!
     var placePicker: GMSPlacePicker?
     var placesClient: GMSPlacesClient?
@@ -107,16 +110,30 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     var checkGeocode : Bool = true
     
     var tPrice = ""
-    let indicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
     var destinationType : Int = 1
+    let pending = UIAlertController(title: "Initailizing", message: nil, preferredStyle: .Alert)
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        indicator.center = view.center
-        view.addSubview(indicator)
-        indicator.startAnimating()
         
+        
+        dispatch_async(dispatch_get_main_queue()){
+            
+            //create an activity indicator
+            let indicator = UIActivityIndicatorView(frame: self.pending.view.bounds)
+            indicator.autoresizingMask = [.FlexibleWidth , .FlexibleHeight]
+            indicator.color = UIColor.lightGrayColor()
+        
+            //add the activity indicator as a subview of the alert controller's view
+            self.pending.view.addSubview(indicator)
+            indicator.userInteractionEnabled = false // required otherwise if there buttons in the UIAlertController you will not be able to press them
+            indicator.startAnimating()
+        
+            self.presentViewController(self.pending, animated: true, completion: nil)
+        }
+     
         
         
         loginTimer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "login", userInfo: nil, repeats: true)
@@ -222,6 +239,29 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
       
             self.pickupImages.image = UIImage(named: "pickupActive.png")
             self.toImage.image = UIImage(named: "destination")
+            
+            self.searchBar.layer.cornerRadius = 5
+            self.searchBar.layer.borderColor = UIColor.whiteColor().CGColor
+            self.searchList.layer.cornerRadius = 5
+            self.bookmarkButton.layer.cornerRadius = 5
+            
+            self.searchBar.backgroundColor = UIColor.whiteColor()
+            self.searchBar.tintColor = UIColor.whiteColor()
+            
+            
+            let spacing : CGFloat = 10; // the amount of spacing to appear between image and title
+            self.bookmarkButton.imageEdgeInsets = UIEdgeInsetsMake(0, 5, 0, spacing);
+            self.bookmarkButton.titleEdgeInsets = UIEdgeInsetsMake(0, spacing, 0, 0);
+           
+            self.bookmarkButton.setImage(UIImage(named: "addBookmark.png"), forState: .Normal)
+            
+            self.bookmarkButton.imageView!.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin ,
+                UIViewAutoresizing.FlexibleWidth ,
+                UIViewAutoresizing.FlexibleRightMargin ,
+                UIViewAutoresizing.FlexibleTopMargin ,
+                UIViewAutoresizing.FlexibleHeight ,
+                UIViewAutoresizing.FlexibleBottomMargin]
+            
         }
         
       
@@ -230,7 +270,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
 
     
     func login(){
-        let params: Dictionary<String,AnyObject> = ["Email" : "asler12@gmail.com","GCMRegistrationID" : GCMRegistrationID]
+        print(prefs.objectForKey("email")!)
+        
+        
+        let params: Dictionary<String,AnyObject> = ["Email" : prefs.objectForKey("email")!,"GCMRegistrationID" : GCMRegistrationID]
         
         do {
             let opt = try HTTP.PUT(mainhost + "/api/startup", parameters: params)
@@ -245,7 +288,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                         //print(self.userJson)
                         dispatch_async(dispatch_get_main_queue()){
                             
-                            self.indicator.stopAnimating()
+                            self.pending.dismissViewControllerAnimated(true, completion: nil)
                         }
                         
                         self.loginTimer.invalidate()
@@ -765,6 +808,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     
      //MARK: Button actions
     
+    @IBAction func bookMarkAction(sender: AnyObject) {
+        print("Adding bookmark !!")
+    }
+    
     @IBAction func callTaxiAction(sender: AnyObject) {
         
         //timer1 = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "checkTaxi", userInfo: nil, repeats: true)
@@ -921,6 +968,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     
     
     @IBAction func fromButtonAction(sender: AnyObject) {
+        locAll.removeAll(keepCapacity: false)
+        searchActive = false
+        self.searchList.reloadData()
         placeSelectionView.hidden = false
         placeSelectionView.userInteractionEnabled = true
         //fromViewButton.backgroundColor = UIColor.whiteColor()
@@ -929,6 +979,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     }
     
     @IBAction func toButtonAction(sender: AnyObject) {
+        locAll.removeAll(keepCapacity: false)
+        searchActive = false
+        self.searchList.reloadData()
         placeSelectionView.hidden = false
         placeSelectionView.userInteractionEnabled = true
         //fromViewButton.backgroundColor = UIColor.grayColor()
@@ -985,8 +1038,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         //self.resultSearchController.active
         if (searchActive) {
             return self.locAll.count
-        }
-        else {
+        } else {
             return self.filteredTableData.count
         }
         
@@ -1004,6 +1056,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                 if locAll.count > 0 {
                     cell!.detailTextLabel!.text = locAll[indexPath.row].name
                     cell!.textLabel?.text = locAll[indexPath.row].address
+                } else {
+                    cell!.textLabel!.text = "Searching"
+                    cell!.detailTextLabel!.text = ""
                 }
                 return cell!
             } else {
@@ -1012,8 +1067,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                     
                     
                     //Retrieve data for the cell from the server
-                    cell!.detailTextLabel!.text = locAll[indexPath.row].name
-                    cell!.textLabel?.text = locAll[indexPath.row].address
+                    cell!.textLabel!.text = self.filteredTableData[indexPath.row]
+                    cell!.detailTextLabel!.text = ""
                 }
                 
                 return cell!
@@ -1035,6 +1090,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         
         let indexP = indexPath.row
         
+        if locAll.count > 0 {
         
         self.placesClient!.lookUpPlaceID(locAll[indexP].placeID, callback: { (place, error) -> Void in
             if error != nil {
@@ -1058,7 +1114,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                         self.fromPlaceLabel.text = self.extractWords(p.name, count: 2)
                         self.fromAddress.text = self.extractWords(p.formattedAddress,count: 4)
                         
-                        
+                         self.searchActive = false
                     } else {
                         
                         print("To ......................")
@@ -1071,7 +1127,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                         self.toAddress.text = self.extractWords(p.formattedAddress,count: 4)
                         self.calPrice()
                     
-
+                         self.searchActive = false
                         
                         dispatch_async(dispatch_get_main_queue()){
                             
@@ -1093,7 +1149,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                     
                     self.placeSelectionView.hidden = true
                     self.placeSelectionView.userInteractionEnabled = false
-                
+                   
                     
                 } else {
                     print("No place details for \(self.locAll[indexP].placeID)")
@@ -1103,7 +1159,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         })
         
         
-        
+        }
         
     }
     
@@ -1111,6 +1167,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     
     //MARK: Search bar delegate
     
+    func searchBarBookmarkButtonClicked(searchBar: UISearchBar) {
+        
+    }
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         searchActive = true;
@@ -1187,7 +1246,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     
     @available(iOS 8.0, *)
     func presentSearchController(searchController: UISearchController){
-        searchController.searchBar.showsCancelButton = false
+        searchController.searchBar.showsCancelButton = true
         
     }
     
