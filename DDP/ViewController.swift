@@ -16,6 +16,8 @@ import TZStackView
 class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
  
+    @IBOutlet weak var toImage: UIImageView!
+    @IBOutlet weak var pickupImages: UIImageView!
     @IBOutlet weak var mainPrice: UILabel!
     @IBOutlet weak var callTaxiButton: UIButton!
     @IBOutlet weak var topTitleView: UIView!
@@ -79,12 +81,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     var placesClient: GMSPlacesClient?
     
     @IBOutlet weak var placeSelectionView: UIView!
-    @IBOutlet weak var centerLabel: UILabel!
+    @IBOutlet weak var centerLabel: UIImageView!
     @IBOutlet weak var fromButton: UIButton!
     var locationManager: CLLocationManager?
     
-    var carType : [String] =  ["Sedan","Lux Sedan","Van"]
-    var carImage : [String] = ["sedan.png","luxSedan.png","van.png"]
+    var carType : [String] =  ["Sedan", "SUV", "Lux car","Van", "Tuk Tuk"]
+    var carImage : [String] = ["sedan.png","suv.png" ,"luxSedan.png","van.png", "tuktuk.png"]
+    var carImageActive : [String] = ["sedanActive.png","suvActive.png" ,"luxSedanActive.png","vanActive.png", "tuktukActive.png"]
     
     var myLocation = CLLocationCoordinate2D(
         latitude: 0,
@@ -132,13 +135,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         centerLabel.layer.masksToBounds = true
         centerLabel.layer.cornerRadius = 8.0
         centerLabel.layer.cornerRadius = 8.0
-        centerLabel.text = "\u{203A}"
-        centerLabel.adjustsFontSizeToFitWidth = true
-        //centerLabel.textAlignment = .Center
-        centerLabel.baselineAdjustment = .AlignCenters
+        centerLabel.layer.borderWidth = 1
+        centerLabel.layer.borderColor = UIColor.lightGrayColor().CGColor
         
-        centerLabel.font = centerLabel.font.fontWithSize(16)
         
+        let border = CALayer()
+        
+        border.frame = CGRectMake(0, 5, 1, 50)
+        
+        
+        border.backgroundColor = UIColor.lightGrayColor().CGColor;
+        
+        toViewButton.layer.addSublayer(border)
+
+        
+        //toViewButton.layer.addBorder(.Left, color: UIColor.lightGrayColor(), thickness: 1)
+    
+        centerLabel.sizeToFit()
+        centerLabel.image = UIImage(named: "arrow.png")
+           
         
         
         locationManager = CLLocationManager()
@@ -187,7 +202,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         
         //==================================
         fromViewButton.backgroundColor = UIColor.whiteColor()
-        toViewButton.backgroundColor = UIColor.grayColor()
+        toViewButton.backgroundColor = UIColor.whiteColor()
         
         dispatch_async(dispatch_get_main_queue()){
             
@@ -205,8 +220,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             self.callTaxiButton.backgroundColor = UIColor.lightGrayColor()
             
       
-            
-
+            self.pickupImages.image = UIImage(named: "pickupActive.png")
+            self.toImage.image = UIImage(named: "destination")
         }
         
       
@@ -908,17 +923,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     @IBAction func fromButtonAction(sender: AnyObject) {
         placeSelectionView.hidden = false
         placeSelectionView.userInteractionEnabled = true
-        fromViewButton.backgroundColor = UIColor.whiteColor()
-        toViewButton.backgroundColor = UIColor.grayColor()
+        //fromViewButton.backgroundColor = UIColor.whiteColor()
+        //toViewButton.backgroundColor = UIColor.grayColor()
         fromOrTo = true;
     }
     
     @IBAction func toButtonAction(sender: AnyObject) {
         placeSelectionView.hidden = false
         placeSelectionView.userInteractionEnabled = true
-        fromViewButton.backgroundColor = UIColor.grayColor()
-        toViewButton.backgroundColor = UIColor.whiteColor()
+        //fromViewButton.backgroundColor = UIColor.grayColor()
+        //toViewButton.backgroundColor = UIColor.whiteColor()
+        
         fromOrTo = false
+        
+        dispatch_async(dispatch_get_main_queue()){
+            self.toImage.image = UIImage(named: "destinationActive.png")
+        }
     }
     
     
@@ -1112,6 +1132,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         
         
+        
+        
         let location = CLLocationCoordinate2D(
             latitude: localLat,
             longitude: localLon
@@ -1158,6 +1180,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         } else {
             self.searchList.userInteractionEnabled = false
         }
+        
+        
     }
     
     
@@ -1203,20 +1227,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         //let allCells = collectionView.dequeueReusableCellWithReuseIdentifier("carType",forIndexPath:indexPath) as! carTypeViewCell
         
         let allCells = collectionView.indexPathsForVisibleItems()
-        
+        var ii = 0
         for x in allCells {
             let ecell = collectionView.cellForItemAtIndexPath(x) as! carTypeViewCell
             ecell.carType.textColor = UIColor.whiteColor()
-            ecell.carType.backgroundColor = UIColor.init(hexString: "4C4C4C")
-            ecell.backgroundColor = UIColor.init(hexString: "4C4C4C")
+            //ecell.carType.backgroundColor = UIColor.init(hexString: "191919")
+            //ecell.backgroundColor = UIColor.init(hexString: "191919")
+            ecell.carImage.image = UIImage(named: carImage[ii])
+            ii++
         }
         
         let cell = collectionView.cellForItemAtIndexPath(indexPath) as! carTypeViewCell
         
         cell.carType.text = carType[indexPath.row]
         cell.carType.textColor = UIColor.lightGrayColor()
-        cell.carType.backgroundColor = UIColor.init(hexString: "5F5F5F")
-        cell.backgroundColor = UIColor.init(hexString: "5F5F5F")
+        //cell.carType.backgroundColor = UIColor.init(hexString: "5F5F5F")
+        //cell.backgroundColor = UIColor.init(hexString: "5F5F5F")
+        cell.carImage.image = UIImage(named: carImageActive[indexPath.row])
         
         print("selected + \(indexPath.row) \(carType[indexPath.row])")
 
@@ -1446,3 +1473,4 @@ extension UIColor {
         return NSString(format:"#%06x", rgb) as String
     }
 }
+

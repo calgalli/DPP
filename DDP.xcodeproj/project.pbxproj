@@ -9,6 +9,13 @@
 /* Begin PBXBuildFile section */
 		2815325D1BE4F079001E8283 /* carTypeViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2815325C1BE4F079001E8283 /* carTypeViewCell.swift */; };
 		2815325F1BE5ED36001E8283 /* placeSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2815325E1BE5ED36001E8283 /* placeSearchViewController.swift */; };
+		281D3C421C0AA2CC00451A8D /* suv.png in Resources */ = {isa = PBXBuildFile; fileRef = 281D3C411C0AA2CC00451A8D /* suv.png */; };
+		281D3C441C0AA2D700451A8D /* tuktuk.png in Resources */ = {isa = PBXBuildFile; fileRef = 281D3C431C0AA2D700451A8D /* tuktuk.png */; };
+		281D3C4A1C0AA56B00451A8D /* luxSedanActive.png in Resources */ = {isa = PBXBuildFile; fileRef = 281D3C451C0AA56B00451A8D /* luxSedanActive.png */; };
+		281D3C4B1C0AA56B00451A8D /* sedanActive.png in Resources */ = {isa = PBXBuildFile; fileRef = 281D3C461C0AA56B00451A8D /* sedanActive.png */; };
+		281D3C4C1C0AA56B00451A8D /* suvActive.png in Resources */ = {isa = PBXBuildFile; fileRef = 281D3C471C0AA56B00451A8D /* suvActive.png */; };
+		281D3C4D1C0AA56B00451A8D /* tuktukActive.png in Resources */ = {isa = PBXBuildFile; fileRef = 281D3C481C0AA56B00451A8D /* tuktukActive.png */; };
+		281D3C4E1C0AA56B00451A8D /* vanActive.png in Resources */ = {isa = PBXBuildFile; fileRef = 281D3C491C0AA56B00451A8D /* vanActive.png */; };
 		284F83FA1BD290D500AEC237 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284F83F91BD290D500AEC237 /* SwiftyJSON.swift */; };
 		2880F0031C04133C00FBA65B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2880F0021C04133C00FBA65B /* GoogleService-Info.plist */; };
 		28A73B211BD28E6800E1A8A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A73B201BD28E6800E1A8A5 /* AppDelegate.swift */; };
@@ -19,6 +26,11 @@
 		28A73B2E1BD28E6800E1A8A5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28A73B2C1BD28E6800E1A8A5 /* LaunchScreen.storyboard */; };
 		28A73B391BD28E6800E1A8A5 /* DDPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A73B381BD28E6800E1A8A5 /* DDPTests.swift */; };
 		28A73B441BD28E6800E1A8A5 /* DDPUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A73B431BD28E6800E1A8A5 /* DDPUITests.swift */; };
+		28B861621C083ADF004A5B37 /* destination.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B8615E1C083ADF004A5B37 /* destination.png */; };
+		28B861631C083ADF004A5B37 /* destinationActive.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B8615F1C083ADF004A5B37 /* destinationActive.png */; };
+		28B861641C083ADF004A5B37 /* pickup.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B861601C083ADF004A5B37 /* pickup.png */; };
+		28B861651C083ADF004A5B37 /* pickupActive.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B861611C083ADF004A5B37 /* pickupActive.png */; };
+		28B861671C0846F9004A5B37 /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B861661C0846F9004A5B37 /* arrow.png */; };
 		28BDA2671C06A127005A91E6 /* loginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BDA2661C06A127005A91E6 /* loginViewController.swift */; };
 		28DF88571C05F9200036B2AD /* sedan.png in Resources */ = {isa = PBXBuildFile; fileRef = 28DF88561C05F9200036B2AD /* sedan.png */; };
 		28DF885A1C05FB3A0036B2AD /* luxSedan.png in Resources */ = {isa = PBXBuildFile; fileRef = 28DF88581C05FB3A0036B2AD /* luxSedan.png */; };
@@ -47,6 +59,13 @@
 		28094CD11BF2EE0E003E027F /* DDP-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DDP-Bridging-Header.h"; sourceTree = "<group>"; };
 		2815325C1BE4F079001E8283 /* carTypeViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = carTypeViewCell.swift; sourceTree = "<group>"; };
 		2815325E1BE5ED36001E8283 /* placeSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = placeSearchViewController.swift; sourceTree = "<group>"; };
+		281D3C411C0AA2CC00451A8D /* suv.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = suv.png; sourceTree = "<group>"; };
+		281D3C431C0AA2D700451A8D /* tuktuk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tuktuk.png; sourceTree = "<group>"; };
+		281D3C451C0AA56B00451A8D /* luxSedanActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = luxSedanActive.png; sourceTree = "<group>"; };
+		281D3C461C0AA56B00451A8D /* sedanActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sedanActive.png; sourceTree = "<group>"; };
+		281D3C471C0AA56B00451A8D /* suvActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = suvActive.png; sourceTree = "<group>"; };
+		281D3C481C0AA56B00451A8D /* tuktukActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tuktukActive.png; sourceTree = "<group>"; };
+		281D3C491C0AA56B00451A8D /* vanActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vanActive.png; sourceTree = "<group>"; };
 		284F83F91BD290D500AEC237 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		2880F0021C04133C00FBA65B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		28A73B1D1BD28E6800E1A8A5 /* DDP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DDP.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -63,6 +82,11 @@
 		28A73B3F1BD28E6800E1A8A5 /* DDPUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DDPUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		28A73B431BD28E6800E1A8A5 /* DDPUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDPUITests.swift; sourceTree = "<group>"; };
 		28A73B451BD28E6800E1A8A5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		28B8615E1C083ADF004A5B37 /* destination.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destination.png; sourceTree = "<group>"; };
+		28B8615F1C083ADF004A5B37 /* destinationActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destinationActive.png; sourceTree = "<group>"; };
+		28B861601C083ADF004A5B37 /* pickup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pickup.png; sourceTree = "<group>"; };
+		28B861611C083ADF004A5B37 /* pickupActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pickupActive.png; sourceTree = "<group>"; };
+		28B861661C0846F9004A5B37 /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
 		28BDA2661C06A127005A91E6 /* loginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = loginViewController.swift; sourceTree = "<group>"; };
 		28DF88561C05F9200036B2AD /* sedan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sedan.png; sourceTree = "<group>"; };
 		28DF88581C05FB3A0036B2AD /* luxSedan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = luxSedan.png; sourceTree = "<group>"; };
@@ -162,6 +186,18 @@
 		28DF88551C05F9100036B2AD /* images */ = {
 			isa = PBXGroup;
 			children = (
+				281D3C451C0AA56B00451A8D /* luxSedanActive.png */,
+				281D3C461C0AA56B00451A8D /* sedanActive.png */,
+				281D3C471C0AA56B00451A8D /* suvActive.png */,
+				281D3C481C0AA56B00451A8D /* tuktukActive.png */,
+				281D3C491C0AA56B00451A8D /* vanActive.png */,
+				281D3C431C0AA2D700451A8D /* tuktuk.png */,
+				281D3C411C0AA2CC00451A8D /* suv.png */,
+				28B861661C0846F9004A5B37 /* arrow.png */,
+				28B8615E1C083ADF004A5B37 /* destination.png */,
+				28B8615F1C083ADF004A5B37 /* destinationActive.png */,
+				28B861601C083ADF004A5B37 /* pickup.png */,
+				28B861611C083ADF004A5B37 /* pickupActive.png */,
 				28DF88581C05FB3A0036B2AD /* luxSedan.png */,
 				28DF88591C05FB3A0036B2AD /* van.png */,
 				28DF88561C05F9200036B2AD /* sedan.png */,
@@ -302,12 +338,24 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				281D3C4C1C0AA56B00451A8D /* suvActive.png in Resources */,
 				28A73B2E1BD28E6800E1A8A5 /* LaunchScreen.storyboard in Resources */,
 				2880F0031C04133C00FBA65B /* GoogleService-Info.plist in Resources */,
+				281D3C421C0AA2CC00451A8D /* suv.png in Resources */,
 				28A73B2B1BD28E6800E1A8A5 /* Assets.xcassets in Resources */,
+				281D3C4D1C0AA56B00451A8D /* tuktukActive.png in Resources */,
 				28A73B261BD28E6800E1A8A5 /* Main.storyboard in Resources */,
+				281D3C4E1C0AA56B00451A8D /* vanActive.png in Resources */,
+				281D3C4A1C0AA56B00451A8D /* luxSedanActive.png in Resources */,
+				28B861621C083ADF004A5B37 /* destination.png in Resources */,
+				28B861641C083ADF004A5B37 /* pickup.png in Resources */,
 				28DF88571C05F9200036B2AD /* sedan.png in Resources */,
+				281D3C4B1C0AA56B00451A8D /* sedanActive.png in Resources */,
+				28B861671C0846F9004A5B37 /* arrow.png in Resources */,
+				281D3C441C0AA2D700451A8D /* tuktuk.png in Resources */,
+				28B861651C083ADF004A5B37 /* pickupActive.png in Resources */,
 				28DF885B1C05FB3A0036B2AD /* van.png in Resources */,
+				28B861631C083ADF004A5B37 /* destinationActive.png in Resources */,
 				28DF885A1C05FB3A0036B2AD /* luxSedan.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

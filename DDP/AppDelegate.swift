@@ -42,6 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate,  G
     }
     
     var allPlaces = [placeDetail]()
+    var cat3Count: Int = 0
    
     var CategoryId = [Int: String]()
     var placeCount : Int = 0
@@ -80,80 +81,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate,  G
         }*/
         
         
+        //getPlace()
         
-        let params: Dictionary<String,AnyObject> = ["Action" : "1"]
-        
-        
-        do {
-        let opt = try HTTP.PUT(mainhost + "/api/landmark", parameters: params)
-            opt.start { response in
-                //do things...
-                if let obj: AnyObject =  response.data {
-        
-                    let json = JSON(data: obj as! NSData)
-        
-                    for (i, x) in json["LandmarkCats"] {
-                        
-                        self.CategoryId[x["CategoryId"].int!] = x["Name"].string!
-                        for var aId = 1;aId < areaIdMax;aId++ {
-                            let params2: Dictionary<String,AnyObject> = ["Action" : "3", "CategoryId" : String(x["CategoryId"].int!) ,"AreaId" : String(aId)]
-                        
-                        
-                            do {
-                                let opt = try HTTP.PUT(mainhost + "/api/landmark", parameters: params2)
-                                opt.start { response in
-                                    //do things...
-                                    //print("=================== By category ====================")
-                                    if let obj: AnyObject =  response.data {
-                                    
-                                        let json = JSON(data: obj as! NSData)
-                                        
-                                        for (i, x) in json["Landmarks"] {
-                                            var a: placeDetail = placeDetail()
-                                            a.AreaId = x["AreaId"].int!
-                                            a.location = CLLocation(latitude: x["Lat"].double!, longitude: x["Lng"].double!)
-                                            a.areaName = x["AreaName"].string!
-                                            a.locationName = x["AreaName"].string!
-                                            a.CategoryId = x["CategoryId"].int!
-                                            a.locationAddress = x["LocationAddress"].string!
-                                            a.Type = x["Type"].int!
-                                            
-                                            self.allPlaces.append(a)
-                                            
-                                        }
-                                        
-                                       
-                                        
-                                        if self.placeCount == 203 {
-                                            print("Done")
-                                            for xx in self.allPlaces {
-                                                print(xx)
-                                            }
-                                        }
-                                        
-                                    }
-                                    
-                                 print(self.placeCount)
-                                 self.placeCount++;
-                                }
-                            } catch let error {
-                                print("got an error creating the request: \(error)")
-                            }
-                        }
-                        
-                        
-                        //print(x)
-                    }
-                    
-                   
-                }
-        
-            }
-        } catch let error {
-            print("got an error creating the request: \(error)")
-        }
-
-       
         var configureError:NSError?
         
         GGLContext.sharedInstance().configureWithError(&configureError)
@@ -182,6 +111,167 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate,  G
         return true
     }
 
+    //MARK: Getplace
+    
+    func getPlace(){
+        
+        var allPlaces1 = [placeDetail]()
+        var allPlaces2 = [placeDetail]()
+        
+        
+        let params: Dictionary<String,AnyObject> = ["Action" : "1"]
+        
+        
+        do {
+            let opt = try HTTP.PUT(mainhost + "/api/landmark", parameters: params)
+            opt.start { response in
+                //do things...
+                if let obj: AnyObject =  response.data {
+                    
+                    let json = JSON(data: obj as! NSData)
+                  
+                    print(json["LandmarkCats"])
+                    for (i, x) in json["LandmarkCats"] {
+                        print("CatID = \(x["CategoryId"].int!)")
+                        
+                        self.CategoryId[x["CategoryId"].int!] = x["Name"].string!
+
+                        for var aId = 1;aId < areaIdMax;aId++ {
+                            let params2: Dictionary<String,AnyObject> = ["Action" : "3", "CategoryId" : "3" ,"AreaId" : String(aId)]
+                            
+                            
+                            
+                            do {
+                                let opt = try HTTP.PUT(mainhost + "/api/landmark", parameters: params2)
+                                opt.start { response in
+                                    //do things...
+                                    //print("=================== By category ====================")
+                                    if let obj: AnyObject =  response.data {
+                                        
+                                        let json = JSON(data: obj as! NSData)
+                                        
+                                        for (i, x) in json["Landmarks"] {
+                                            var a: placeDetail = placeDetail()
+                                            a.AreaId = x["AreaId"].int!
+                                            a.location = CLLocation(latitude: x["Lat"].double!, longitude: x["Lng"].double!)
+                                            a.areaName = x["AreaName"].string!
+                                            a.locationName = x["LocationName"].string!
+                                            a.CategoryId = x["CategoryId"].int!
+                                            a.locationAddress = x["LocationAddress"].string!
+                                            a.Type = x["Type"].int!
+                                            
+                                            allPlaces1.append(a)
+                                            
+                                        }
+                                        
+                                        
+                                        
+                                        if self.placeCount == 303 {
+                                            print("Done ======================================= ")
+                                            for xx in self.allPlaces {
+                                                let cc = xx  as! placeDetail
+                                                
+                                                print("Name: \(cc.locationName) Cat : \(cc.CategoryId) Area ID : \(cc.AreaId)")
+                                            }
+                                        }
+                                        
+                                    }
+                                    
+                                    // print(self.placeCount)
+                                    self.placeCount++;
+                                }
+                                
+                                
+                                self.cat3Count++
+                                 print("Cat3 = \(self.cat3Count)")
+                                
+                                if self.cat3Count == areaIdMax - 2 {
+                                    print("Done ======================================= ")
+                                
+                                    for xx in allPlaces1 {
+                                        let cc = xx  as! placeDetail
+                                    
+                                        print("Name: \(cc.locationName) Cat : \(cc.CategoryId) Area ID : \(cc.AreaId)")
+                                    }
+                                }
+                                
+                            } catch let error {
+                                print("got an error creating the request: \(error)")
+                            }
+                            
+                            let params3: Dictionary<String,AnyObject> = ["Action" : "3", "CategoryId" : "4" ,"AreaId" : String(aId)]
+                            
+                            
+                            do {
+                                let opt = try HTTP.PUT(mainhost + "/api/landmark", parameters: params3)
+                                opt.start { response in
+                                    //do things...
+                                    //print("=================== By category ====================")
+                                    if let obj: AnyObject =  response.data {
+                                        
+                                        let json = JSON(data: obj as! NSData)
+                                        
+                                        for (i, x) in json["Landmarks"] {
+                                            var a: placeDetail = placeDetail()
+                                            a.AreaId = x["AreaId"].int!
+                                            a.location = CLLocation(latitude: x["Lat"].double!, longitude: x["Lng"].double!)
+                                            a.areaName = x["AreaName"].string!
+                                            a.locationName = x["LocationName"].string!
+                                            a.CategoryId = x["CategoryId"].int!
+                                            a.locationAddress = x["LocationAddress"].string!
+                                            a.Type = x["Type"].int!
+                                            
+                                            allPlaces2.append(a)
+                                            
+                                        }
+                                        
+                                        
+                                        
+                                        if self.placeCount > 220 {
+                                           // print("Done ***************")
+                                            for xx in self.allPlaces {
+                                                let cc = xx  as! placeDetail
+                                                if cc.CategoryId == 4 {
+                                                    print("Name: \(cc.locationName) Cat : \(cc.CategoryId) Area ID : \(cc.AreaId)")
+                                                }
+                                            }
+                                        }
+                                        
+                                    }
+                                    
+                                    // print(self.placeCount)
+                                    
+                                    self.placeCount++;
+                                }
+                                
+                                print("Done ******************************** ")
+                                
+                                for xx in allPlaces2 {
+                                    let cc = xx  as! placeDetail
+                                    
+                                    print("Name: \(cc.locationName) Cat : \(cc.CategoryId) Area ID : \(cc.AreaId)")
+                                }
+                                
+                            } catch let error {
+                                print("got an error creating the request: \(error)")
+                            }
+                        }
+                        
+                       
+                        //print(x)
+                    }
+                    
+                    
+                }
+                
+            }
+        } catch let error {
+            print("got an error creating the request: \(error)")
+        }
+        
+
+    }
+    
     func subscribeToTopic() {
         // If the app has a registration token and is connected to GCM, proceed to subscribe to the
         // topic
