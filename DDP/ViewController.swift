@@ -112,7 +112,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     var tPrice = ""
     var destinationType : Int = 1
     let pending = UIAlertController(title: "Initailizing", message: nil, preferredStyle: .Alert)
-    
+    var isPickedUp: Bool = false
+    var mapManager = MapManager()
+    var firstUpdateTaxiLocation : Bool = true
+    var firstUpdateDestinationLocation : Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -319,7 +322,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         
         if(userInfo["MessageType"] == "2"){
             print("Confirm")
+            isPickedUp = false
             destinationType = 1
+            firstUpdateTaxiLocation = true
             locationTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "checkTaxiLocation", userInfo: nil, repeats: true)
             
             
@@ -485,7 +490,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             
         } else if(userInfo["MessageType"] == "3"){
             print("Pickup")
+            firstUpdateDestinationLocation = true
             destinationType = 2
+            isPickedUp = true
             
             arriveView.removeFromSuperview()
             noteView.removeFromSuperview()
@@ -515,6 +522,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             
         } else if(userInfo["MessageType"] == "4"){
             print("Drop off")
+            isPickedUp = false
             locationTimer.invalidate()
             
             let mapH = self.view.frame.height - self.topTitleView.frame.height - self.fromToSelection.frame.height - self.utilView.frame.height - self.carSelectionView.frame.height - self.statusBarHeight()
@@ -683,25 +691,79 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                     dispatch_async(dispatch_get_main_queue()){
                         var position1 : CLLocationCoordinate2D?
                         if self.destinationType == 1 {
-                            self.animateBoundsNorth(self.fromPlace.location.coordinate.latitude, southWestLon: self.fromPlace.location.coordinate.longitude, northEastLat: taxiLatF, northEastLon: taxiLonF)
+                            
+                            if self.firstUpdateTaxiLocation == true {
+                                self.animateBoundsNorth(self.fromPlace.location.coordinate.latitude, southWestLon: self.fromPlace.location.coordinate.longitude, northEastLat: taxiLatF, northEastLon: taxiLonF)
+                                self.firstUpdateTaxiLocation = false
+                            }
                         
                        
                         
                             position1 = CLLocationCoordinate2DMake(self.fromPlace.location.coordinate.latitude, self.fromPlace.location.coordinate.longitude)
                         } else {
-                            self.animateBoundsNorth(self.toPlace.location.coordinate.latitude, southWestLon: self.toPlace.location.coordinate.longitude, northEastLat: taxiLatF, northEastLon: taxiLonF)
                             
+                            if self.firstUpdateDestinationLocation == true {
+                            self.animateBoundsNorth(self.toPlace.location.coordinate.latitude, southWestLon: self.toPlace.location.coordinate.longitude, northEastLat: taxiLatF, northEastLon: taxiLonF)
+                                self.firstUpdateDestinationLocation = false
+                            }
                             
                             
                             position1 = CLLocationCoordinate2DMake(self.toPlace.location.coordinate.latitude, self.toPlace.location.coordinate.longitude)
                         }
                         self.map.clear()
-                        let marker = GMSMarker(position: position1!)
-                        marker.map = self.map
+                        if self.isPickedUp == false {
                         
-                        let  position2 = CLLocationCoordinate2DMake(taxiLatF, taxiLonF)
-                        let marker2 = GMSMarker(position: position2)
-                        marker2.map = self.map
+                            let marker = GMSMarker(position: position1!)
+                            marker.map = self.map
+                            marker.icon = UIImage(named: "customerPin.png")
+                            //marker.icon =
+                        
+                            let  position2 = CLLocationCoordinate2DMake(taxiLatF, taxiLonF)
+                            let marker2 = GMSMarker(position: position2)
+                            marker2.map = self.map
+                            marker2.icon = UIImage(named: "driverPin.png")
+  
+                            self.mapManager.directionsUsingGoogle(from: position2, to: position1!) { (route, directionInformation, error) -> () in
+                                
+                                if(error != nil){
+                                    
+                                    print(error!)
+                                }else{
+                                    
+                                    print(route!)
+                                    let tt : GMSPolyline = route!
+                                    tt.map = self.map
+                                    tt.strokeWidth = 5
+                                    tt.strokeColor = UIColor.redColor()
+                                }
+                            }
+                            
+                        } else {
+                            let marker = GMSMarker(position: position1!)
+                            marker.map = self.map
+                            marker.icon = UIImage(named: "destinationPin.png")
+                            //marker.icon =
+                            
+                            let  position2 = CLLocationCoordinate2DMake(taxiLatF, taxiLonF)
+                            let marker2 = GMSMarker(position: position2)
+                            marker2.map = self.map
+                            marker2.icon = UIImage(named: "ontaxiPin.png")
+                            
+                            self.mapManager.directionsUsingGoogle(from: position2, to: position1!) { (route, directionInformation, error) -> () in
+                                
+                                if(error != nil){
+                                    
+                                    print(error!)
+                                }else{
+                                    
+                                    print(route!)
+                                    let tt : GMSPolyline = route!
+                                    tt.map = self.map
+                                    tt.strokeWidth = 5
+                                    tt.strokeColor = UIColor.orangeColor()
+                                }
+                            }
+                        }
                         
                         
                         

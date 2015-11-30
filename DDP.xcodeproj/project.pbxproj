@@ -36,6 +36,11 @@
 		28DF88571C05F9200036B2AD /* sedan.png in Resources */ = {isa = PBXBuildFile; fileRef = 28DF88561C05F9200036B2AD /* sedan.png */; };
 		28DF885A1C05FB3A0036B2AD /* luxSedan.png in Resources */ = {isa = PBXBuildFile; fileRef = 28DF88581C05FB3A0036B2AD /* luxSedan.png */; };
 		28DF885B1C05FB3A0036B2AD /* van.png in Resources */ = {isa = PBXBuildFile; fileRef = 28DF88591C05FB3A0036B2AD /* van.png */; };
+		28FA9CF11C0C3FBF00CC9E65 /* customerPin.png in Resources */ = {isa = PBXBuildFile; fileRef = 28FA9CF01C0C3FBF00CC9E65 /* customerPin.png */; };
+		28FA9CF31C0C3FE600CC9E65 /* driverPin.png in Resources */ = {isa = PBXBuildFile; fileRef = 28FA9CF21C0C3FE600CC9E65 /* driverPin.png */; };
+		28FA9CF51C0C490200CC9E65 /* destinationPin.png in Resources */ = {isa = PBXBuildFile; fileRef = 28FA9CF41C0C490200CC9E65 /* destinationPin.png */; };
+		28FA9CF71C0C490D00CC9E65 /* ontaxiPin.png in Resources */ = {isa = PBXBuildFile; fileRef = 28FA9CF61C0C490D00CC9E65 /* ontaxiPin.png */; };
+		28FA9CF91C0C4C6800CC9E65 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FA9CF81C0C4C6800CC9E65 /* MapManager.swift */; };
 		FC6A80AF9A8A4D690AD596B8 /* Pods_DDP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CD5419470711B2575054E58 /* Pods_DDP.framework */; };
 /* End PBXBuildFile section */
 
@@ -93,6 +98,11 @@
 		28DF88561C05F9200036B2AD /* sedan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sedan.png; sourceTree = "<group>"; };
 		28DF88581C05FB3A0036B2AD /* luxSedan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = luxSedan.png; sourceTree = "<group>"; };
 		28DF88591C05FB3A0036B2AD /* van.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = van.png; sourceTree = "<group>"; };
+		28FA9CF01C0C3FBF00CC9E65 /* customerPin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = customerPin.png; sourceTree = "<group>"; };
+		28FA9CF21C0C3FE600CC9E65 /* driverPin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = driverPin.png; sourceTree = "<group>"; };
+		28FA9CF41C0C490200CC9E65 /* destinationPin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destinationPin.png; sourceTree = "<group>"; };
+		28FA9CF61C0C490D00CC9E65 /* ontaxiPin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ontaxiPin.png; sourceTree = "<group>"; };
+		28FA9CF81C0C4C6800CC9E65 /* MapManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
 		5CD5419470711B2575054E58 /* Pods_DDP.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DDP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B5B5CC3CBF45AB2ACFEDAD1 /* Pods-DDP.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DDP.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DDP/Pods-DDP.debug.xcconfig"; sourceTree = "<group>"; };
 		9C5F8C3E0516BDF643190010 /* Pods-DDP.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DDP.release.xcconfig"; path = "Pods/Target Support Files/Pods-DDP/Pods-DDP.release.xcconfig"; sourceTree = "<group>"; };
@@ -163,6 +173,7 @@
 				2815325C1BE4F079001E8283 /* carTypeViewCell.swift */,
 				2815325E1BE5ED36001E8283 /* placeSearchViewController.swift */,
 				28094CD11BF2EE0E003E027F /* DDP-Bridging-Header.h */,
+				28FA9CF81C0C4C6800CC9E65 /* MapManager.swift */,
 			);
 			path = DDP;
 			sourceTree = "<group>";
@@ -188,6 +199,10 @@
 		28DF88551C05F9100036B2AD /* images */ = {
 			isa = PBXGroup;
 			children = (
+				28FA9CF61C0C490D00CC9E65 /* ontaxiPin.png */,
+				28FA9CF41C0C490200CC9E65 /* destinationPin.png */,
+				28FA9CF21C0C3FE600CC9E65 /* driverPin.png */,
+				28FA9CF01C0C3FBF00CC9E65 /* customerPin.png */,
 				281D3C4F1C0AD38000451A8D /* addBookmark.png */,
 				281D3C451C0AA56B00451A8D /* luxSedanActive.png */,
 				281D3C461C0AA56B00451A8D /* sedanActive.png */,
@@ -342,6 +357,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				281D3C4C1C0AA56B00451A8D /* suvActive.png in Resources */,
+				28FA9CF51C0C490200CC9E65 /* destinationPin.png in Resources */,
+				28FA9CF31C0C3FE600CC9E65 /* driverPin.png in Resources */,
 				28A73B2E1BD28E6800E1A8A5 /* LaunchScreen.storyboard in Resources */,
 				2880F0031C04133C00FBA65B /* GoogleService-Info.plist in Resources */,
 				281D3C421C0AA2CC00451A8D /* suv.png in Resources */,
@@ -351,11 +368,13 @@
 				28A73B261BD28E6800E1A8A5 /* Main.storyboard in Resources */,
 				281D3C4E1C0AA56B00451A8D /* vanActive.png in Resources */,
 				281D3C4A1C0AA56B00451A8D /* luxSedanActive.png in Resources */,
+				28FA9CF11C0C3FBF00CC9E65 /* customerPin.png in Resources */,
 				28B861621C083ADF004A5B37 /* destination.png in Resources */,
 				28B861641C083ADF004A5B37 /* pickup.png in Resources */,
 				28DF88571C05F9200036B2AD /* sedan.png in Resources */,
 				281D3C4B1C0AA56B00451A8D /* sedanActive.png in Resources */,
 				28B861671C0846F9004A5B37 /* arrow.png in Resources */,
+				28FA9CF71C0C490D00CC9E65 /* ontaxiPin.png in Resources */,
 				281D3C441C0AA2D700451A8D /* tuktuk.png in Resources */,
 				28B861651C083ADF004A5B37 /* pickupActive.png in Resources */,
 				28DF885B1C05FB3A0036B2AD /* van.png in Resources */,
@@ -437,6 +456,7 @@
 				2815325D1BE4F079001E8283 /* carTypeViewCell.swift in Sources */,
 				28A73B291BD28E6800E1A8A5 /* DDP.xcdatamodeld in Sources */,
 				28A73B231BD28E6800E1A8A5 /* ViewController.swift in Sources */,
+				28FA9CF91C0C4C6800CC9E65 /* MapManager.swift in Sources */,
 				28A73B211BD28E6800E1A8A5 /* AppDelegate.swift in Sources */,
 				2815325F1BE5ED36001E8283 /* placeSearchViewController.swift in Sources */,
 				284F83FA1BD290D500AEC237 /* SwiftyJSON.swift in Sources */,

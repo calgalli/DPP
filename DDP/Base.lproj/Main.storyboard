@@ -267,7 +267,7 @@
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OoO-gF-2cK" userLabel="placeSelection">
                                 <rect key="frame" x="180" y="236" width="240" height="128"/>
                                 <subviews>
-                                    <searchBar contentMode="redraw" ambiguous="YES" misplaced="YES" searchBarStyle="minimal" placeholder="Enter place name" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="paN-pH-nKV">
+                                    <searchBar contentMode="redraw" ambiguous="YES" misplaced="YES" searchBarStyle="minimal" placeholder="Enter place name" showsBookmarkButton="YES" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="paN-pH-nKV">
                                         <rect key="frame" x="0.0" y="42" width="240" height="60"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <textInputTraits key="textInputTraits"/>
@@ -440,7 +440,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="He0-hG-GCH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="66" y="814"/>
+            <point key="canvasLocation" x="94" y="951"/>
         </scene>
     </scenes>
 </document>
