@@ -760,7 +760,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                                     let tt : GMSPolyline = route!
                                     tt.map = self.map
                                     tt.strokeWidth = 5
-                                    tt.strokeColor = UIColor.orangeColor()
+                                    tt.strokeColor = UIColor.init(hexString: "4B8C81")
                                 }
                             }
                         }

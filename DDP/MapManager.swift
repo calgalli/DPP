@@ -92,32 +92,33 @@ class MapManager: NSObject{
                 let jsonResult: NSDictionary = (try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers)) as! NSDictionary
                 let routes = jsonResult.objectForKey("routes") as! NSArray
                 let status = jsonResult.objectForKey("status") as! NSString
-                let route = routes.lastObject as! NSDictionary //first object?
-                if status.isEqualToString("OK") && route.allKeys.count > 0  {
-                    let legs = route.objectForKey("legs") as! NSArray
-                    let steps = legs.firstObject as! NSDictionary
-                    let directionInformation = self.parser(steps) as NSDictionary
-                    let overviewPolyline = route.objectForKey("overview_polyline") as! NSDictionary
-                    let points = overviewPolyline.objectForKey("points") as! NSString
-                    let locations = self.decodePolyLine(points) as Array
-                    let coordinates = locations.map({ (location: CLLocation) ->
-                        CLLocationCoordinate2D in
-                        return location.coordinate
-                    })
-                    let path = GMSMutablePath()
-                    for x in coordinates {
-                        path.addCoordinate(x)
+                if let route1 = routes.lastObject { //first object? {
+                    let route = route1 as! NSDictionary
+                    if status.isEqualToString("OK") && route.allKeys.count > 0  {
+                        let legs = route.objectForKey("legs") as! NSArray
+                        let steps = legs.firstObject as! NSDictionary
+                        let directionInformation = self.parser(steps) as NSDictionary
+                        let overviewPolyline = route.objectForKey("overview_polyline") as! NSDictionary
+                        let points = overviewPolyline.objectForKey("points") as! NSString
+                        let locations = self.decodePolyLine(points) as Array
+                        let coordinates = locations.map({ (location: CLLocation) ->
+                            CLLocationCoordinate2D in
+                            return location.coordinate
+                        })
+                        let path = GMSMutablePath()
+                        for x in coordinates {
+                            path.addCoordinate(x)
+                        }
+                        let polyline = GMSPolyline(path: path)
+                        //let polyline = MKPolyline(coordinates: &coordinates, count: locations.count)
+                        self.directionsCompletionHandler!(route: polyline,directionInformation:directionInformation, error: nil)
+                    } else{
+                        var errorMsg = self.errorDictionary[status as String]
+                        if errorMsg == nil {
+                            errorMsg = self.errorNoRoutesAvailable
+                        }
+                        self.directionsCompletionHandler!(route: nil,directionInformation:nil, error: errorMsg)
                     }
-                    var polyline = GMSPolyline(path: path)
-                    //let polyline = MKPolyline(coordinates: &coordinates, count: locations.count)
-                    self.directionsCompletionHandler!(route: polyline,directionInformation:directionInformation, error: nil)
-                }
-                else{
-                    var errorMsg = self.errorDictionary[status as String]
-                    if errorMsg == nil {
-                        errorMsg = self.errorNoRoutesAvailable
-                    }
-                    self.directionsCompletionHandler!(route: nil,directionInformation:nil, error: errorMsg)
                 }
             }
             }
