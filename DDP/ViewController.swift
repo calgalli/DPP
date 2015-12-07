@@ -285,10 +285,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                 if let obj: AnyObject =  response.data {
                     
                     self.userJson = JSON(data: obj as! NSData)
+                    print(self.userJson)
                     print("*************************************************************")
                     if self.userJson!["Status"].string ==  "SUCCESS" {
                         print("************************* SUCCESS *****************************")
-                        //print(self.userJson)
+                        
                         dispatch_async(dispatch_get_main_queue()){
                             
                             self.pending.dismissViewControllerAnimated(true, completion: nil)
@@ -872,6 +873,48 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     
     @IBAction func bookMarkAction(sender: AnyObject) {
         print("Adding bookmark !!")
+        
+        
+        var placeNameTextField: UITextField?
+        var phoneNumberTextField: UITextField?
+        
+        let alertController = UIAlertController(title: "Add Bookmark", message: nil, preferredStyle: .Alert)
+        
+        
+        alertController.addTextFieldWithConfigurationHandler { (textField) in
+            //dispatch_async(dispatch_get_main_queue()){
+                textField.placeholder = "Place name"
+                textField.layer.masksToBounds = true
+                textField.layer.cornerRadius = 5
+                textField.layer.borderColor = UIColor.whiteColor().CGColor
+            //}
+            placeNameTextField = textField
+                
+        }
+        
+
+        alertController.addTextFieldWithConfigurationHandler { (textField) in
+            textField.center = CGPointMake(textField.frame.origin.x, textField.frame.origin.y + 10)
+            textField.placeholder = "Phone number"
+            textField.layer.cornerRadius = 5
+            phoneNumberTextField = textField
+        }
+
+        
+        let doneAction = UIAlertAction(title: "Done", style: .Cancel) { (action) in
+            // ...
+            print(placeNameTextField!.text)
+            print(phoneNumberTextField!.text)
+        }
+        alertController.addAction(doneAction)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Default) { (action) in
+            // ...
+        }
+        alertController.addAction(cancelAction)
+        
+        self.presentViewController(alertController, animated: true) {
+        }
     }
     
     @IBAction func callTaxiAction(sender: AnyObject) {
