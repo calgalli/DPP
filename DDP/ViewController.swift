@@ -11,6 +11,7 @@ import GoogleMaps
 import CoreLocation
 import SwiftHTTP
 import TZStackView
+import CoreData
 
 
 class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
@@ -905,6 +906,56 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             // ...
             print(placeNameTextField!.text)
             print(phoneNumberTextField!.text)
+            
+            let appDelegate =
+            UIApplication.sharedApplication().delegate as! AppDelegate
+            
+            
+            let managedContext = appDelegate.managedObjectContext
+            
+            //2
+            let entity =  NSEntityDescription.entityForName("Places",
+                inManagedObjectContext:managedContext)
+            
+            let place = NSManagedObject(entity: entity!,
+                insertIntoManagedObjectContext: managedContext)
+            
+            //3
+            place.setValue(placeNameTextField!.text, forKey: "name")
+            place.setValue(phoneNumberTextField!.text, forKey: "phoneNumber")
+            place.setValue(self.myLocation.latitude, forKey: "lat")
+            place.setValue(self.myLocation.longitude, forKey: "lon")
+            
+            //4
+            do {
+                try managedContext.save()
+                //5
+              
+            } catch let error as NSError  {
+                print("Could not save \(error), \(error.userInfo)")
+            }
+            
+            //
+            
+            //let managedContext = appDelegate.managedObjectContext
+            
+            //2
+            let fetchRequest = NSFetchRequest(entityName: "Places")
+            
+            //3
+            do {
+                let results =
+                try managedContext.executeFetchRequest(fetchRequest)
+                let pp = results as! [NSManagedObject]
+                for x in pp {
+                    print(x.valueForKey("name") as? String)
+                }
+               // people = results as! [NSManagedObject]
+            } catch let error as NSError {
+                print("Could not fetch \(error), \(error.userInfo)")
+            }
+            
+            
         }
         alertController.addAction(doneAction)
         
@@ -1142,6 +1193,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //self.resultSearchController.active
         if (searchActive) {
+            print(self.locAll.count)
             return self.locAll.count
         } else {
             return self.filteredTableData.count
@@ -1154,13 +1206,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         
         
         let cell = searchList.dequeueReusableCellWithIdentifier("searchResults", forIndexPath: indexPath) as? UITableViewCell
-        
+        //print("****************** Do searching *********************")
         if cell != nil {
             
             if (searchActive) {
                 if locAll.count > 0 {
-                    cell!.detailTextLabel!.text = locAll[indexPath.row].name
-                    cell!.textLabel?.text = locAll[indexPath.row].address
+                    cell!.detailTextLabel!.text = locAll[indexPath.row].address
+                    cell!.textLabel?.text = locAll[indexPath.row].name
                 } else {
                     cell!.textLabel!.text = "Searching"
                     cell!.detailTextLabel!.text = ""
@@ -1197,6 +1249,48 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         
         if locAll.count > 0 {
         
+            var locA = locAll[indexP]
+            
+            if(self.fromOrTo == true) {
+                print("From ......................")
+                
+                self.fromPlace.name = locA.name
+                self.fromPlace.address = locA.address
+                self.fromPlace.distance = 0
+                self.fromPlace.location = locA.location
+                self.fromPlaceLabel.text = self.extractWords(locA.name, count: 2)
+                self.fromAddress.text = self.extractWords(locA.address,count: 4)
+                self.calPrice()
+                self.searchActive = false
+            } else {
+                
+                print("To ......................")
+                
+                self.toPlace.name = self.extractWords(locA.name, count: 2)
+                self.toPlace.address = self.extractWords(locA.address, count: 3)
+                self.toPlace.distance = 0
+                self.toPlace.location = locA.location
+                self.toPlaceLabel.text = self.extractWords(locA.name, count: 2)
+                self.toAddress.text = self.extractWords(locA.address,count: 4)
+                self.calPrice()
+                
+                self.searchActive = false
+                
+                dispatch_async(dispatch_get_main_queue()){
+                    
+                    self.callTaxiButton.userInteractionEnabled = true
+                    self.callTaxiButton.backgroundColor = UIColor.init(hexString: "FF3366")
+                }
+                
+                
+            }
+            
+            dispatch_async(dispatch_get_main_queue()){
+                self.placeSelectionView.hidden = true
+                self.placeSelectionView.userInteractionEnabled = false
+            }
+            
+           /*
         self.placesClient!.lookUpPlaceID(locAll[indexP].placeID, callback: { (place, error) -> Void in
             if error != nil {
                 print("lookup place id query error: \(error!.localizedDescription)")
@@ -1262,7 +1356,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                 
             }
         })
-        
+        */
         
         }
         
@@ -1295,15 +1389,75 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         
+        self.locItems.removeAll(keepCapacity: false)
+        self.locAll.removeAll(keepCapacity: false)
         
+      
+        var sLoc : locDetail = locDetail()
         
+        if searchBar.text!.characters.count > 0 {
+            dispatch_async(dispatch_get_main_queue()) {
+                self.searchList.userInteractionEnabled = true
+            }
+            var params: Dictionary<String,String> = ["Action" : "4"]
+            params["Keyword"] = searchBar.text
+            do {
+                let opt = try HTTP.PUT(mainhost + "/api/landmark", parameters: params)
+                opt.start { response in
+                    //do things...
+                    if let obj: AnyObject =  response.data {
+                    
+                        var palces = JSON(data: obj as! NSData)
+                        if let rStatus : String = palces["Status"].string {
+                            print("Status = \(rStatus)");
+                    
+                            if(rStatus == "SUCCESS"){
+                        
+                                for (index,subJson):(String, JSON) in palces["SearchResults"] {
+                                    //Do something you want
+                                
+                                    print(subJson)
+                                
+                                    sLoc.placeID = ""
+                                    sLoc.address = subJson["LocationAddress"].string!
+                                    sLoc.name = subJson["LocationName"].string!
+                                    sLoc.location = CLLocation(latitude: subJson["Lat"].double!, longitude: subJson["Lng"].double!)
+                                
+                                    self.locAll.append(sLoc)
+
+                                }
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    
+                                    self.searchList.reloadData()
+                                }
+                        
+                            } else if(rStatus == "FAIL") {
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    self.searchList.userInteractionEnabled = false
+                                }
+                        
+                            }
+                        }
+                    
+                        //print(palces)
+                    
+                    }
+                
+                
+                }
+            } catch let error {
+                print("got an error creating the request: \(error)")
+            }
+        }
+
+        /*
         
         let location = CLLocationCoordinate2D(
             latitude: localLat,
             longitude: localLon
         )
         
-        var sLoc : locDetail = locDetail()
+       // var sLoc : locDetail = locDetail()
         
         let sydney = CLLocationCoordinate2DMake(location.latitude, location.longitude)
         let northEast = CLLocationCoordinate2DMake(sydney.latitude + 1, sydney.longitude + 1)
@@ -1311,8 +1465,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         let bounds = GMSCoordinateBounds(coordinate: northEast, coordinate: southWest)
         let filter = GMSAutocompleteFilter()
         filter.type = GMSPlacesAutocompleteTypeFilter.NoFilter
-        self.locItems.removeAll(keepCapacity: false)
-        self.locAll.removeAll(keepCapacity: false)
         
         let sText = searchBar.text
         
@@ -1343,7 +1495,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             })
         } else {
             self.searchList.userInteractionEnabled = false
-        }
+        }*/
         
         
     }
