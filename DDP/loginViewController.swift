@@ -46,58 +46,60 @@ class loginViewController: UIViewController, UITextFieldDelegate {
         let labels = ["FirstName","LastName","e-mail","Password","Mobile"]
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "RegistarionComplete:", name: registrationKey, object: nil)
-
+        dispatch_async(dispatch_get_main_queue()){
         
-        for var i = 0;i < 5;i++ {
-            textViews.insert(UITextField(frame: CGRectMake(0, 0, self.view.frame.width/2 , hight)), atIndex: i)
-            //textViews[i].borderStyle = UITextBorderStyle.Line
-            textViews[i].layer.borderWidth = 1
-            textViews[i].layer.borderColor = UIColor.lightGrayColor().CGColor
-            textViews[i].layer.cornerRadius = 5
-            textViews[i].delegate = self
-            textViews[i].tag = i
-            
-            if(i == 2){
-                textViews[i].keyboardType = UIKeyboardType.EmailAddress
-            } else if(i == 4){
-                textViews[i].keyboardType = UIKeyboardType.NumberPad
-                let doneToolbar: UIToolbar = UIToolbar(frame: CGRectMake(0, 0, 320, 50))
-                doneToolbar.barStyle = UIBarStyle.BlackTranslucent
+            for var i = 0;i < 5;i++ {
+                self.textViews.insert(UITextField(frame: CGRectMake(0, 0, self.view.frame.width/2 , hight)), atIndex: i)
+                //textViews[i].borderStyle = UITextBorderStyle.Line
+                self.textViews[i].layer.borderWidth = 1
+                self.textViews[i].layer.borderColor = UIColor.lightGrayColor().CGColor
+                self.textViews[i].layer.cornerRadius = 5
+                self.textViews[i].delegate = self
+                self.textViews[i].tag = i
                 
-                let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: Selector("doneButtonAction"))
-                var items = [UIBarButtonItem]()
-                items.append(done)
-                
-                doneToolbar.items = items
-                doneToolbar.sizeToFit()
-                
-                textViews[i].inputAccessoryView = doneToolbar
-                
-
+                if(i == 2){
+                    self.textViews[i].keyboardType = UIKeyboardType.EmailAddress
+                } else if(i == 4){
+                    self.textViews[i].keyboardType = UIKeyboardType.NumberPad
+                    let doneToolbar: UIToolbar = UIToolbar(frame: CGRectMake(0, 0, 320, 50))
+                    doneToolbar.barStyle = UIBarStyle.BlackTranslucent
+                    
+                    let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: Selector("doneButtonAction"))
+                    var items = [UIBarButtonItem]()
+                    items.append(done)
+                    
+                    doneToolbar.items = items
+                    doneToolbar.sizeToFit()
+                    
+                    self.textViews[i].inputAccessoryView = doneToolbar
+                    
+                    
+                }
             }
-        }
-        
-        for var i = 0;i < 5;i++ {
-            textViews[i].center = CGPointMake(self.view.frame.width/2 +  self.view.frame.width/4 - 10, offset + CGFloat(i)*(hight + gap))
-            let label = UILabel(frame: CGRectMake(0, 0, self.view.frame.width/2 , hight))
-            label.center = CGPointMake(10 + self.view.frame.width/4 , offset + CGFloat(i)*(hight + gap))
-            label.text = labels[i]
-            self.view.addSubview(textViews[i])
-            self.view.addSubview(label)
             
+            for var i = 0;i < 5;i++ {
+                self.textViews[i].center = CGPointMake(self.view.frame.width/2 +  self.view.frame.width/4 - 10, offset + CGFloat(i)*(hight + gap))
+                let label = UILabel(frame: CGRectMake(0, 0, self.view.frame.width/2 , hight))
+                label.center = CGPointMake(10 + self.view.frame.width/4 , offset + CGFloat(i)*(hight + gap))
+                label.text = labels[i]
+                self.view.addSubview(self.textViews[i])
+                self.view.addSubview(label)
+                
+            }
+            
+            self.button.frame = CGRectMake(100, 100, 100, 50)
+            self.button.center = CGPointMake(self.view.frame.width/2 , self.view.frame.height - 100)
+            self.button.backgroundColor = UIColor.lightGrayColor()
+            self.button.setTitle("Register", forState: UIControlState.Normal)
+            self.button.setTitle("Waiting", forState: UIControlState.Disabled)
+            self.button.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+            self.button.userInteractionEnabled = false
+            
+            self.view.addSubview(self.button)
         }
-        
-        button.frame = CGRectMake(100, 100, 100, 50)
-        button.center = CGPointMake(self.view.frame.width/2 , self.view.frame.height - 100)
-        button.backgroundColor = UIColor.lightGrayColor()
-        button.setTitle("Register", forState: UIControlState.Normal)
-        button.setTitle("Waiting", forState: UIControlState.Disabled)
-        button.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-        button.userInteractionEnabled = false
-        
-        self.view.addSubview(button)
         
       //  firstNameTextView!.center = CGPointMake(, )
+        
         
 
         
@@ -128,38 +130,40 @@ class loginViewController: UIViewController, UITextFieldDelegate {
                         print("************************* SUCCESS *****************************")
                         prefs.setObject("yes", forKey: "haveLogin")
                         
+                        dispatch_async(dispatch_get_main_queue()){
                         
-                        let alertController = UIAlertController(title: "Registration complete", message: "Contratulation", preferredStyle: .Alert)
-                        
-                        let commentAction = UIAlertAction(title: "OK", style: .Default) { (_) in
-                            self.performSegueWithIdentifier("toMainView", sender: nil)
-                        }
-                        
-                        
-                        alertController.addAction(commentAction)
-                        
-                        self.presentViewController(alertController, animated: true) {
-                            // ...
-                        }
+                            let alertController = UIAlertController(title: "Registration complete", message: "Contratulation", preferredStyle: .Alert)
+                            
+                            let commentAction = UIAlertAction(title: "OK", style: .Default) { (_) in
+                                self.performSegueWithIdentifier("toMainView", sender: nil)
+                            }
+                            
+                            
+                            alertController.addAction(commentAction)
+                            
+                            self.presentViewController(alertController, animated: true) {
+                                // ...
+                            }
 
                         
-                        
+                        }
                         
                        
                     } else {
                         
-                        
-                        let alertController = UIAlertController(title: "Registration Fail", message: "Incomplete data. Please check you data and try again", preferredStyle: .Alert)
-                        
-                        let commentAction = UIAlertAction(title: "OK", style: .Default) { (_) in
-                           
-                        }
-                        
-                        
-                        alertController.addAction(commentAction)
-                        
-                        self.presentViewController(alertController, animated: true) {
-                            // ...
+                        dispatch_async(dispatch_get_main_queue()){
+                            let alertController = UIAlertController(title: "Registration Fail", message: "Incomplete data. Please check you data and try again", preferredStyle: .Alert)
+                            
+                            let commentAction = UIAlertAction(title: "OK", style: .Default) { (_) in
+                                
+                            }
+                            
+                            
+                            alertController.addAction(commentAction)
+                            
+                            self.presentViewController(alertController, animated: true) {
+                                // ...
+                            }
                         }
 
                     }
@@ -180,7 +184,9 @@ class loginViewController: UIViewController, UITextFieldDelegate {
     //MARK: Messagging callbacks
     
     func RegistarionComplete(notification:NSNotification){
-        button.userInteractionEnabled = true
+        dispatch_async(dispatch_get_main_queue()){
+            self.button.userInteractionEnabled = true
+        }
     }
 
     
@@ -248,7 +254,9 @@ class loginViewController: UIViewController, UITextFieldDelegate {
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         //print("TextField should return method called")
-        textField.resignFirstResponder();
+        dispatch_async(dispatch_get_main_queue()){
+            textField.resignFirstResponder();
+        }
         return true;
     }
     // MARK: Textfield Delegates <---
@@ -263,7 +271,9 @@ class loginViewController: UIViewController, UITextFieldDelegate {
     {
         
         for x in textViews {
-            x.resignFirstResponder()
+            dispatch_async(dispatch_get_main_queue()){
+                x.resignFirstResponder()
+            }
         }
       
     }

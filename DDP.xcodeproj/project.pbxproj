@@ -17,6 +17,16 @@
 		281D3C4D1C0AA56B00451A8D /* tuktukActive.png in Resources */ = {isa = PBXBuildFile; fileRef = 281D3C481C0AA56B00451A8D /* tuktukActive.png */; };
 		281D3C4E1C0AA56B00451A8D /* vanActive.png in Resources */ = {isa = PBXBuildFile; fileRef = 281D3C491C0AA56B00451A8D /* vanActive.png */; };
 		281D3C501C0AD38000451A8D /* addBookmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 281D3C4F1C0AD38000451A8D /* addBookmark.png */; };
+		281F3CB21C1727D4001DA0AF /* beach.png in Resources */ = {isa = PBXBuildFile; fileRef = 281F3CA81C1727D4001DA0AF /* beach.png */; };
+		281F3CB31C1727D4001DA0AF /* emergency.png in Resources */ = {isa = PBXBuildFile; fileRef = 281F3CA91C1727D4001DA0AF /* emergency.png */; };
+		281F3CB41C1727D4001DA0AF /* foodAndDrink.png in Resources */ = {isa = PBXBuildFile; fileRef = 281F3CAA1C1727D4001DA0AF /* foodAndDrink.png */; };
+		281F3CB51C1727D4001DA0AF /* hotel.png in Resources */ = {isa = PBXBuildFile; fileRef = 281F3CAB1C1727D4001DA0AF /* hotel.png */; };
+		281F3CB61C1727D4001DA0AF /* niteSpot.png in Resources */ = {isa = PBXBuildFile; fileRef = 281F3CAC1C1727D4001DA0AF /* niteSpot.png */; };
+		281F3CB71C1727D4001DA0AF /* places.png in Resources */ = {isa = PBXBuildFile; fileRef = 281F3CAD1C1727D4001DA0AF /* places.png */; };
+		281F3CB81C1727D4001DA0AF /* rentCarOrBike.png in Resources */ = {isa = PBXBuildFile; fileRef = 281F3CAE1C1727D4001DA0AF /* rentCarOrBike.png */; };
+		281F3CB91C1727D4001DA0AF /* resort.png in Resources */ = {isa = PBXBuildFile; fileRef = 281F3CAF1C1727D4001DA0AF /* resort.png */; };
+		281F3CBA1C1727D4001DA0AF /* shopping.png in Resources */ = {isa = PBXBuildFile; fileRef = 281F3CB01C1727D4001DA0AF /* shopping.png */; };
+		281F3CBB1C1727D4001DA0AF /* transportation.png in Resources */ = {isa = PBXBuildFile; fileRef = 281F3CB11C1727D4001DA0AF /* transportation.png */; };
 		284F83FA1BD290D500AEC237 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284F83F91BD290D500AEC237 /* SwiftyJSON.swift */; };
 		2880F0031C04133C00FBA65B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2880F0021C04133C00FBA65B /* GoogleService-Info.plist */; };
 		28A73B211BD28E6800E1A8A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A73B201BD28E6800E1A8A5 /* AppDelegate.swift */; };
@@ -73,6 +83,16 @@
 		281D3C481C0AA56B00451A8D /* tuktukActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tuktukActive.png; sourceTree = "<group>"; };
 		281D3C491C0AA56B00451A8D /* vanActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vanActive.png; sourceTree = "<group>"; };
 		281D3C4F1C0AD38000451A8D /* addBookmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addBookmark.png; sourceTree = "<group>"; };
+		281F3CA81C1727D4001DA0AF /* beach.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = beach.png; sourceTree = "<group>"; };
+		281F3CA91C1727D4001DA0AF /* emergency.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = emergency.png; sourceTree = "<group>"; };
+		281F3CAA1C1727D4001DA0AF /* foodAndDrink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = foodAndDrink.png; sourceTree = "<group>"; };
+		281F3CAB1C1727D4001DA0AF /* hotel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hotel.png; sourceTree = "<group>"; };
+		281F3CAC1C1727D4001DA0AF /* niteSpot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = niteSpot.png; sourceTree = "<group>"; };
+		281F3CAD1C1727D4001DA0AF /* places.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = places.png; sourceTree = "<group>"; };
+		281F3CAE1C1727D4001DA0AF /* rentCarOrBike.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rentCarOrBike.png; sourceTree = "<group>"; };
+		281F3CAF1C1727D4001DA0AF /* resort.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = resort.png; sourceTree = "<group>"; };
+		281F3CB01C1727D4001DA0AF /* shopping.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shopping.png; sourceTree = "<group>"; };
+		281F3CB11C1727D4001DA0AF /* transportation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = transportation.png; sourceTree = "<group>"; };
 		284F83F91BD290D500AEC237 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		2880F0021C04133C00FBA65B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		28A73B1D1BD28E6800E1A8A5 /* DDP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DDP.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,6 +154,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		281F3CA71C17278C001DA0AF /* places */ = {
+			isa = PBXGroup;
+			children = (
+				281F3CA81C1727D4001DA0AF /* beach.png */,
+				281F3CA91C1727D4001DA0AF /* emergency.png */,
+				281F3CAA1C1727D4001DA0AF /* foodAndDrink.png */,
+				281F3CAB1C1727D4001DA0AF /* hotel.png */,
+				281F3CAC1C1727D4001DA0AF /* niteSpot.png */,
+				281F3CAD1C1727D4001DA0AF /* places.png */,
+				281F3CAE1C1727D4001DA0AF /* rentCarOrBike.png */,
+				281F3CAF1C1727D4001DA0AF /* resort.png */,
+				281F3CB01C1727D4001DA0AF /* shopping.png */,
+				281F3CB11C1727D4001DA0AF /* transportation.png */,
+			);
+			name = places;
+			sourceTree = "<group>";
+		};
 		28A73B141BD28E6800E1A8A5 = {
 			isa = PBXGroup;
 			children = (
@@ -199,6 +236,7 @@
 		28DF88551C05F9100036B2AD /* images */ = {
 			isa = PBXGroup;
 			children = (
+				281F3CA71C17278C001DA0AF /* places */,
 				28FA9CF61C0C490D00CC9E65 /* ontaxiPin.png */,
 				28FA9CF41C0C490200CC9E65 /* destinationPin.png */,
 				28FA9CF21C0C3FE600CC9E65 /* driverPin.png */,
@@ -357,7 +395,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				281D3C4C1C0AA56B00451A8D /* suvActive.png in Resources */,
+				281F3CB71C1727D4001DA0AF /* places.png in Resources */,
+				281F3CB81C1727D4001DA0AF /* rentCarOrBike.png in Resources */,
+				281F3CB61C1727D4001DA0AF /* niteSpot.png in Resources */,
 				28FA9CF51C0C490200CC9E65 /* destinationPin.png in Resources */,
+				281F3CBA1C1727D4001DA0AF /* shopping.png in Resources */,
 				28FA9CF31C0C3FE600CC9E65 /* driverPin.png in Resources */,
 				28A73B2E1BD28E6800E1A8A5 /* LaunchScreen.storyboard in Resources */,
 				2880F0031C04133C00FBA65B /* GoogleService-Info.plist in Resources */,
@@ -369,15 +411,21 @@
 				281D3C4E1C0AA56B00451A8D /* vanActive.png in Resources */,
 				281D3C4A1C0AA56B00451A8D /* luxSedanActive.png in Resources */,
 				28FA9CF11C0C3FBF00CC9E65 /* customerPin.png in Resources */,
+				281F3CB41C1727D4001DA0AF /* foodAndDrink.png in Resources */,
 				28B861621C083ADF004A5B37 /* destination.png in Resources */,
 				28B861641C083ADF004A5B37 /* pickup.png in Resources */,
 				28DF88571C05F9200036B2AD /* sedan.png in Resources */,
 				281D3C4B1C0AA56B00451A8D /* sedanActive.png in Resources */,
 				28B861671C0846F9004A5B37 /* arrow.png in Resources */,
+				281F3CBB1C1727D4001DA0AF /* transportation.png in Resources */,
 				28FA9CF71C0C490D00CC9E65 /* ontaxiPin.png in Resources */,
 				281D3C441C0AA2D700451A8D /* tuktuk.png in Resources */,
 				28B861651C083ADF004A5B37 /* pickupActive.png in Resources */,
+				281F3CB21C1727D4001DA0AF /* beach.png in Resources */,
 				28DF885B1C05FB3A0036B2AD /* van.png in Resources */,
+				281F3CB51C1727D4001DA0AF /* hotel.png in Resources */,
+				281F3CB91C1727D4001DA0AF /* resort.png in Resources */,
+				281F3CB31C1727D4001DA0AF /* emergency.png in Resources */,
 				28B861631C083ADF004A5B37 /* destinationActive.png in Resources */,
 				28DF885A1C05FB3A0036B2AD /* luxSedan.png in Resources */,
 			);

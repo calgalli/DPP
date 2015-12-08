@@ -63,6 +63,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         var location : CLLocation = CLLocation()
         var distance : Double = 0
         var placeID : String = String()
+        var CategoryId : Int = 0
     }
     
     var locAll : [locDetail] = []
@@ -93,6 +94,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     var carImage : [String] = ["sedan.png","suv.png" ,"luxSedan.png","van.png", "tuktuk.png"]
     var carImageActive : [String] = ["sedanActive.png","suvActive.png" ,"luxSedanActive.png","vanActive.png", "tuktukActive.png"]
     
+    
+
+    // 7 (School) 8 (Other) 12 (Public) has no icon
+    
+    var placeImage : [String] = ["places.png", "beach.png", "hotel.png", "shopping.png", "foodAndDrink.png","transportation.png","emergency.png", "places.png","rentCarOrBike.png","niteSpot.png","emergency.png","places.png"]
+    
     var myLocation = CLLocationCoordinate2D(
         latitude: 0,
         longitude: 0
@@ -118,10 +125,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     var firstUpdateTaxiLocation : Bool = true
     var firstUpdateDestinationLocation : Bool = true
     
+    var waitingTaxiAlert : UIAlertController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
+  
         
         dispatch_async(dispatch_get_main_queue()){
             
@@ -324,6 +333,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         
         if(userInfo["MessageType"] == "2"){
             print("Confirm")
+            
+            self.dismissViewControllerAnimated(false, completion: nil)
+            
             isPickedUp = false
             destinationType = 1
             firstUpdateTaxiLocation = true
@@ -1031,10 +1043,35 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                         //let timedClock = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("Counting:"), userInfo: nil, repeats: true)
                         dispatch_async(dispatch_get_main_queue()) {
                             self.startTimer(lOrderID)
+                        
+                            self.waitingTaxiAlert = UIAlertController(title: "Waiting", message: "Please wait for taxi. \n\n", preferredStyle: UIAlertControllerStyle.Alert)
+                            self.presentViewController(self.waitingTaxiAlert!, animated: true, completion: nil)
+                            
+                            let indicator = UIActivityIndicatorView()
+                           // indicator.center = CGPointMake(self.waitingTaxiAlert!.view.frame.width/2, self.waitingTaxiAlert!.view.frame.height - 10)
+                            
+                            //let views = ["pending" : self.waitingTaxiAlert!.view, "indicator" : indicator]
+                            //var constraints = NSLayoutConstraint.constraintsWithVisualFormat("V:[indicator]-(-50)-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
+                           // NSLayoutConstraint.constraintsWithVisualFormat("V:[indicator]-(-50)-|", options: nil, metrics: nil, views: views)
+                            //constraints += NSLayoutConstraint.constraintsWithVisualFormat("H:|[indicator]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
+                            //self.waitingTaxiAlert!.view.addConstraints(constraints)
+                            
+                            
+                            indicator.userInteractionEnabled = false
+                            indicator.color = UIColor.blackColor()
+                            indicator.autoresizingMask = [.FlexibleWidth , .FlexibleHeight]
+
+                            self.waitingTaxiAlert!.view.addSubview(indicator)
+                            indicator.userInteractionEnabled = false // required otherwise if there buttons in the UIAlertController you will not be able to press them
+                            indicator.startAnimating()
+
+                        
                         }
                         
                         print("SUCESS with order ID")
                         print(self.orderID)
+                        
+                        
                         
                         
                     } else if(rStatus == "FAIL") {
@@ -1202,20 +1239,49 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         
     }
     
+    
+   
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         
-        let cell = searchList.dequeueReusableCellWithIdentifier("searchResults", forIndexPath: indexPath) as? UITableViewCell
+        var cell  = searchList.dequeueReusableCellWithIdentifier("searchResults", forIndexPath: indexPath) as? UITableViewCell
         //print("****************** Do searching *********************")
+      
         if cell != nil {
-            
+        
             if (searchActive) {
                 if locAll.count > 0 {
-                    cell!.detailTextLabel!.text = locAll[indexPath.row].address
-                    cell!.textLabel?.text = locAll[indexPath.row].name
+                    
+                    
+                    if let nameLabel = cell!.viewWithTag(2) as? UILabel { //3
+                        nameLabel.text = locAll[indexPath.row].name
+                    }
+                    if let gameLabel = cell!.viewWithTag(3) as? UILabel {
+                        gameLabel.text = locAll[indexPath.row].address
+                    }
+                    if let ratingImageView = cell!.viewWithTag(1) as? UIImageView {
+                        ratingImageView.image = UIImage(named: placeImage[locAll[indexPath.row].CategoryId-1])
+                        ratingImageView.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin ,
+                            UIViewAutoresizing.FlexibleWidth ,
+                            UIViewAutoresizing.FlexibleRightMargin ,
+                            UIViewAutoresizing.FlexibleTopMargin ,
+                            UIViewAutoresizing.FlexibleHeight ,
+                            UIViewAutoresizing.FlexibleBottomMargin]
+                        ratingImageView.contentMode = UIViewContentMode.ScaleAspectFit
+                    }
+                    
                 } else {
-                    cell!.textLabel!.text = "Searching"
-                    cell!.detailTextLabel!.text = ""
+                    
+                    
+                    if let nameLabel = cell!.viewWithTag(2) as? UILabel { //3
+                        nameLabel.text = "Searching"
+                    }
+                    if let gameLabel = cell!.viewWithTag(3) as? UILabel {
+                        gameLabel.text = ""
+                    }
+
+                    
                 }
                 return cell!
             } else {
@@ -1224,8 +1290,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                     
                     
                     //Retrieve data for the cell from the server
-                    cell!.textLabel!.text = self.filteredTableData[indexPath.row]
-                    cell!.detailTextLabel!.text = ""
+                    
+                    //cell.title.text = self.filteredTableData[indexPath.row]
+                    //cell.subtitle.text = ""
+                    
+                   // cell!.textLabel!.text = self.filteredTableData[indexPath.row]
+                   // cell!.detailTextLabel!.text = ""
+                    
+                    
+                    if let nameLabel = cell!.viewWithTag(2) as? UILabel { //3
+                        nameLabel.text = self.filteredTableData[indexPath.row]
+                    }
+                    if let gameLabel = cell!.viewWithTag(3) as? UILabel {
+                        gameLabel.text = ""
+                    }
                 }
                 
                 return cell!
@@ -1419,6 +1497,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                                     print(subJson)
                                 
                                     sLoc.placeID = ""
+                                    sLoc.CategoryId = Int(subJson["CategoryId"].string!)!
                                     sLoc.address = subJson["LocationAddress"].string!
                                     sLoc.name = subJson["LocationName"].string!
                                     sLoc.location = CLLocation(latitude: subJson["Lat"].double!, longitude: subJson["Lng"].double!)
