@@ -131,31 +131,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
   
-        
-        dispatch_async(dispatch_get_main_queue()){
-            
-            //create an activity indicator
-            let indicator = UIActivityIndicatorView(frame: self.pending.view.bounds)
-            indicator.autoresizingMask = [.FlexibleWidth , .FlexibleHeight]
-            indicator.color = UIColor.lightGrayColor()
-        
-            //add the activity indicator as a subview of the alert controller's view
-            self.pending.view.addSubview(indicator)
-            indicator.userInteractionEnabled = false // required otherwise if there buttons in the UIAlertController you will not be able to press them
-            indicator.startAnimating()
-        
-            self.presentViewController(self.pending, animated: true, completion: nil)
-        }
-     
-        
-        
-        loginTimer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "login", userInfo: nil, repeats: true)
-        
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "RegistarionComplete:", name: registrationKey, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onMessageReceived:", name: messageKey, object: nil)
-
-        
+        //==================================
+        fromViewButton.backgroundColor = UIColor.whiteColor()
+        toViewButton.backgroundColor = UIColor.whiteColor()
         
         
         placeSelectionView.hidden = true
@@ -177,14 +155,121 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         border.backgroundColor = UIColor.lightGrayColor().CGColor;
         
         toViewButton.layer.addSublayer(border)
-
+        
         
         //toViewButton.layer.addBorder(.Left, color: UIColor.lightGrayColor(), thickness: 1)
-    
+        
         centerLabel.sizeToFit()
         centerLabel.image = UIImage(named: "arrow.png")
-           
         
+        let topH : CGFloat = 40
+        let fromToSelectionH : CGFloat = 60
+        let utilViewH : CGFloat = 44
+        let carSelViewH : CGFloat = 70
+        let mapH = self.view.frame.height - topH - fromToSelectionH - utilViewH - carSelViewH - self.statusBarHeight()
+        
+        /*let mapH = self.view.frame.height - self.topTitleView.frame.height - self.fromToSelection.frame.height - self.utilView.frame.height - self.carSelectionView.frame.height - self.statusBarHeight()
+        print("Map height = \(mapH), total frame height = \(self.view.frame.height)")
+        print("Top hieght = \(self.topTitleView.bounds.height), from to selection \(self.fromToSelection.frame.height)")
+        print("Util hieght = \(self.utilView.frame.height), car selection height \(self.carSelectionView.frame.height),status bar height \(self.statusBarHeight())")*/
+        
+        dispatch_async(dispatch_get_main_queue()){
+            
+            self.mapHeight.constant = mapH
+            
+            
+            
+            //self.callTaxiButton.frame = CGRectMake(0, 0, 300, 30)
+            self.callTaxiButton.layer.cornerRadius = 15
+            self.callTaxiButton.layer.borderColor = UIColor.whiteColor().CGColor
+            self.callTaxiButton.layer.borderWidth = 2
+            self.callTaxiButton.layer.masksToBounds = true;
+            
+            self.callTaxiButton.userInteractionEnabled = false
+            self.callTaxiButton.backgroundColor = UIColor.lightGrayColor()
+            
+            
+            self.pickupImages.image = UIImage(named: "pickupActive.png")
+            self.toImage.image = UIImage(named: "destination")
+            
+            self.searchBar.layer.cornerRadius = 5
+            self.searchBar.layer.borderColor = UIColor.whiteColor().CGColor
+            self.searchList.layer.cornerRadius = 5
+            self.bookmarkButton.layer.cornerRadius = 5
+            
+            self.searchBar.backgroundColor = UIColor.whiteColor()
+            self.searchBar.tintColor = UIColor.whiteColor()
+            
+            
+            let spacing : CGFloat = 10; // the amount of spacing to appear between image and title
+            self.bookmarkButton.imageEdgeInsets = UIEdgeInsetsMake(0, 5, 0, spacing);
+            self.bookmarkButton.titleEdgeInsets = UIEdgeInsetsMake(0, spacing, 0, 0);
+            
+            self.bookmarkButton.setImage(UIImage(named: "addBookmark.png"), forState: .Normal)
+            
+            self.bookmarkButton.imageView!.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin ,
+                UIViewAutoresizing.FlexibleWidth ,
+                UIViewAutoresizing.FlexibleRightMargin ,
+                UIViewAutoresizing.FlexibleTopMargin ,
+                UIViewAutoresizing.FlexibleHeight ,
+                UIViewAutoresizing.FlexibleBottomMargin]
+            
+        }
+        
+        if((prefs.objectForKey("haveLogin")) != nil){
+            
+            if(prefs.objectForKey("haveLogin") as! String == "yes"){
+                //  let email = prefs.objectForKey("username") as! String
+                //  let password1 = prefs.objectForKey("password") as! String
+                
+                loginTimer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "login", userInfo: nil, repeats: true)
+                
+                
+            } else {
+                dispatch_async(dispatch_get_main_queue()){
+                    
+                    self.performSegueWithIdentifier("toLogin", sender: nil)
+                }
+            }
+            
+        } else {
+            dispatch_async(dispatch_get_main_queue()){
+                
+                self.performSegueWithIdentifier("toLogin", sender: nil)
+            }
+        }
+        
+        
+      
+        
+        dispatch_async(dispatch_get_main_queue()){
+            
+            //create an activity indicator
+            let indicator = UIActivityIndicatorView(frame: self.pending.view.bounds)
+            indicator.autoresizingMask = [.FlexibleWidth , .FlexibleHeight]
+            indicator.color = UIColor.lightGrayColor()
+        
+            //add the activity indicator as a subview of the alert controller's view
+            self.pending.view.addSubview(indicator)
+            indicator.userInteractionEnabled = false // required otherwise if there buttons in the UIAlertController you will not be able to press them
+            indicator.startAnimating()
+        
+            self.presentViewController(self.pending, animated: true, completion: nil)
+        }
+     
+        
+        
+  
+        
+        
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "RegistarionComplete:", name: registrationKey, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onMessageReceived:", name: messageKey, object: nil)
+
+        
+        
+        
+   
         
         locationManager = CLLocationManager()
         locationManager?.delegate  = self;
@@ -230,53 +315,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         locAll.append(locT)
         
         
-        //==================================
-        fromViewButton.backgroundColor = UIColor.whiteColor()
-        toViewButton.backgroundColor = UIColor.whiteColor()
-        
-        dispatch_async(dispatch_get_main_queue()){
-            
-            let mapH = self.view.frame.height - self.topTitleView.frame.height - self.fromToSelection.frame.height - self.utilView.frame.height - self.carSelectionView.frame.height - self.statusBarHeight() 
-            self.mapHeight.constant = mapH
-            
-            
-            //self.callTaxiButton.frame = CGRectMake(0, 0, 300, 30)
-            self.callTaxiButton.layer.cornerRadius = 15
-            self.callTaxiButton.layer.borderColor = UIColor.whiteColor().CGColor
-            self.callTaxiButton.layer.borderWidth = 2
-            self.callTaxiButton.layer.masksToBounds = true;
-            
-            self.callTaxiButton.userInteractionEnabled = false
-            self.callTaxiButton.backgroundColor = UIColor.lightGrayColor()
-            
-      
-            self.pickupImages.image = UIImage(named: "pickupActive.png")
-            self.toImage.image = UIImage(named: "destination")
-            
-            self.searchBar.layer.cornerRadius = 5
-            self.searchBar.layer.borderColor = UIColor.whiteColor().CGColor
-            self.searchList.layer.cornerRadius = 5
-            self.bookmarkButton.layer.cornerRadius = 5
-            
-            self.searchBar.backgroundColor = UIColor.whiteColor()
-            self.searchBar.tintColor = UIColor.whiteColor()
-            
-            
-            let spacing : CGFloat = 10; // the amount of spacing to appear between image and title
-            self.bookmarkButton.imageEdgeInsets = UIEdgeInsetsMake(0, 5, 0, spacing);
-            self.bookmarkButton.titleEdgeInsets = UIEdgeInsetsMake(0, spacing, 0, 0);
-           
-            self.bookmarkButton.setImage(UIImage(named: "addBookmark.png"), forState: .Normal)
-            
-            self.bookmarkButton.imageView!.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin ,
-                UIViewAutoresizing.FlexibleWidth ,
-                UIViewAutoresizing.FlexibleRightMargin ,
-                UIViewAutoresizing.FlexibleTopMargin ,
-                UIViewAutoresizing.FlexibleHeight ,
-                UIViewAutoresizing.FlexibleBottomMargin]
-            
-        }
-        
+     
+       
+   
       
         
     }
@@ -708,7 +749,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                             
                             if self.firstUpdateTaxiLocation == true {
                                 self.animateBoundsNorth(self.fromPlace.location.coordinate.latitude, southWestLon: self.fromPlace.location.coordinate.longitude, northEastLat: taxiLatF, northEastLon: taxiLonF)
-                                self.firstUpdateTaxiLocation = false
+                                if taxiLatF != 0 {
+                                    self.firstUpdateTaxiLocation = false
+                                }
                             }
                         
                        
@@ -718,7 +761,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                             
                             if self.firstUpdateDestinationLocation == true {
                             self.animateBoundsNorth(self.toPlace.location.coordinate.latitude, southWestLon: self.toPlace.location.coordinate.longitude, northEastLat: taxiLatF, northEastLon: taxiLonF)
-                                self.firstUpdateDestinationLocation = false
+                                if taxiLatF != 0 {
+                                    self.firstUpdateDestinationLocation = false
+                                }
                             }
                             
                             
@@ -1059,7 +1104,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                             
                             indicator.userInteractionEnabled = false
                             indicator.color = UIColor.blackColor()
-                            indicator.autoresizingMask = [.FlexibleWidth , .FlexibleHeight]
+                            indicator.center = CGPointMake(130.5, 85.5);
+                            
+                            //indicator.autoresizingMask = [.FlexibleWidth , .FlexibleHeight]
 
                             self.waitingTaxiAlert!.view.addSubview(indicator)
                             indicator.userInteractionEnabled = false // required otherwise if there buttons in the UIAlertController you will not be able to press them
@@ -1526,6 +1573,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                 }
             } catch let error {
                 print("got an error creating the request: \(error)")
+            }
+        } else if searchBar.text!.characters.count == 0{
+            dispatch_async(dispatch_get_main_queue()) {
+                self.locItems.removeAll(keepCapacity: false)
+                self.locAll.removeAll(keepCapacity: false)
+                
+                self.searchList.reloadData()
+                self.searchList.userInteractionEnabled = false
             }
         }
 

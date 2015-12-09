@@ -397,6 +397,7 @@
                         <outlet property="topTitleView" destination="cxb-D5-ecZ" id="XFG-az-mUu"/>
                         <outlet property="utilView" destination="G3h-CK-OXY" id="kQT-ow-NSL"/>
                         <segue destination="Ijt-Zq-7M3" kind="show" identifier="toPlaceSearch" id="CQt-pM-C7X"/>
+                        <segue destination="Tsq-bo-buz" kind="show" identifier="toLogin" id="cHS-oL-3v9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
