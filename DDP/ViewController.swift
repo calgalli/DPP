@@ -69,6 +69,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     var locAll : [locDetail] = []
     var locItems : [String] = [String]()
     
+    struct bookmarkLocDetail {
+        var name : String = String()
+        var phoneNUmber : String = String()
+        var location : CLLocation = CLLocation()
+    }
+    
+    var bookmarkLocAll : [bookmarkLocDetail] = []
+    
+    
     var searchActive : Bool = false
     var filteredTableData : [String] = ["Searching....."]
     
@@ -98,7 +107,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
 
     // 7 (School) 8 (Other) 12 (Public) has no icon
     
-    var placeImage : [String] = ["places.png", "beach.png", "hotel.png", "shopping.png", "foodAndDrink.png","transportation.png","emergency.png", "places.png","rentCarOrBike.png","niteSpot.png","emergency.png","places.png"]
+    var placeImage : [String] = ["places.png", "beach.png", "hotel.png", "shopping.png", "foodAndDrink.png","transportation.png","emergency.png", "places.png","rentCarOrBike.png","niteSpot.png","emergency.png","places.png","bookmarkIcon.png"]
     
     var myLocation = CLLocationCoordinate2D(
         latitude: 0,
@@ -131,6 +140,48 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
   
+        //==== Load bookmark from database
+        
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        
+        //1
+        let managedContext = appDelegate.managedObjectContext
+        
+        //2
+        let fetchRequest = NSFetchRequest(entityName: "Places")
+        
+        //3
+        do {
+            let results =
+            try managedContext.executeFetchRequest(fetchRequest)
+            let pp = results as! [NSManagedObject]
+            for x in pp {
+                
+                var eLoc : bookmarkLocDetail = bookmarkLocDetail()
+                eLoc.name = x.valueForKey("name") as! String
+                eLoc.phoneNUmber = x.valueForKey("phoneNumber") as! String
+                let llat = x.valueForKey("lat") as! Double
+                let llon = x.valueForKey("lon") as! Double
+                eLoc.location = CLLocation(latitude: llat, longitude: llon)
+                bookmarkLocAll.append(eLoc)
+                
+                
+                
+
+            
+            }
+            
+            print("#######################################")
+            print(bookmarkLocAll)
+
+            
+            // people = results as! [NSManagedObject]
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
+
+        
         //==================================
         fromViewButton.backgroundColor = UIColor.whiteColor()
         toViewButton.backgroundColor = UIColor.whiteColor()
@@ -282,12 +333,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO("8") == true){
                 
                 if (locationManager?.respondsToSelector("requestWhenInUseAuthorization") != nil) {
-                    if #available(iOS 8.1, *) {
-                        locationManager?.requestWhenInUseAuthorization()
-                    } else {
-                        // Fallback on earlier versions
-                    }
-                    //locationManager?.startUpdatingLocation()
+                    locationManager?.requestWhenInUseAuthorization()
+                                      //locationManager?.startUpdatingLocation()
                 }
                 //else {
                 //locationManager?.startUpdatingLocation()
@@ -610,7 +657,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             let alertController = UIAlertController(title: "Default Style", message: "Arrived!", preferredStyle: .Alert)
 
             let commentAction = UIAlertAction(title: "Finish", style: .Default) { (_) in
-                let commentField = alertController.textFields![0] as UITextField
+                //let commentField = alertController.textFields![0] as UITextField
                 self.utilView.hidden = false
                 self.utilView.userInteractionEnabled = true
                 self.carSelectionView.hidden = false
@@ -992,25 +1039,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                 print("Could not save \(error), \(error.userInfo)")
             }
             
-            //
             
-            //let managedContext = appDelegate.managedObjectContext
             
-            //2
-            let fetchRequest = NSFetchRequest(entityName: "Places")
+            var eLoc : bookmarkLocDetail = bookmarkLocDetail()
+            eLoc.name = placeNameTextField!.text!
+            eLoc.phoneNUmber = phoneNumberTextField!.text!
+          
+            eLoc.location = CLLocation(latitude: self.myLocation.latitude, longitude: self.myLocation.longitude)
+            self.bookmarkLocAll.append(eLoc)
             
-            //3
-            do {
-                let results =
-                try managedContext.executeFetchRequest(fetchRequest)
-                let pp = results as! [NSManagedObject]
-                for x in pp {
-                    print(x.valueForKey("name") as? String)
-                }
-               // people = results as! [NSManagedObject]
-            } catch let error as NSError {
-                print("Could not fetch \(error), \(error.userInfo)")
-            }
             
             
         }
@@ -1292,7 +1329,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         
-        var cell  = searchList.dequeueReusableCellWithIdentifier("searchResults", forIndexPath: indexPath) as? UITableViewCell
+        let cell  = searchList.dequeueReusableCellWithIdentifier("searchResults", forIndexPath: indexPath) as? UITableViewCell
         //print("****************** Do searching *********************")
       
         if cell != nil {
@@ -1374,7 +1411,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         
         if locAll.count > 0 {
         
-            var locA = locAll[indexP]
+            let locA = locAll[indexP]
             
             if(self.fromOrTo == true) {
                 print("From ......................")
@@ -1520,6 +1557,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
       
         var sLoc : locDetail = locDetail()
         
+        let founds = bookmarkLocAll.filter(){ $0.name.hasPrefix(searchText.lowercaseString) }
+        
+        print("************* local sdearch ************")
+        print(founds)
+        var ii: Int = 0
+        for x in founds {
+            sLoc.placeID = ""
+            sLoc.CategoryId = 13
+            sLoc.address = ""
+            sLoc.name = x.name
+            sLoc.location = x.location
+            
+            self.locAll.insert(sLoc, atIndex: ii)
+            ii++
+        }
+        
         if searchBar.text!.characters.count > 0 {
             dispatch_async(dispatch_get_main_queue()) {
                 self.searchList.userInteractionEnabled = true
@@ -1538,7 +1591,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                     
                             if(rStatus == "SUCCESS"){
                         
-                                for (index,subJson):(String, JSON) in palces["SearchResults"] {
+                                for (_,subJson):(String, JSON) in palces["SearchResults"] {
                                     //Do something you want
                                 
                                     print(subJson)

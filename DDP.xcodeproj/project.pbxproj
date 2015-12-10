@@ -43,6 +43,7 @@
 		28B861651C083ADF004A5B37 /* pickupActive.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B861611C083ADF004A5B37 /* pickupActive.png */; };
 		28B861671C0846F9004A5B37 /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B861661C0846F9004A5B37 /* arrow.png */; };
 		28BDA2671C06A127005A91E6 /* loginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BDA2661C06A127005A91E6 /* loginViewController.swift */; };
+		28BDC3C61C19B91A00E5CB33 /* bookmarkIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BDC3C51C19B91A00E5CB33 /* bookmarkIcon.png */; };
 		28DF88571C05F9200036B2AD /* sedan.png in Resources */ = {isa = PBXBuildFile; fileRef = 28DF88561C05F9200036B2AD /* sedan.png */; };
 		28DF885A1C05FB3A0036B2AD /* luxSedan.png in Resources */ = {isa = PBXBuildFile; fileRef = 28DF88581C05FB3A0036B2AD /* luxSedan.png */; };
 		28DF885B1C05FB3A0036B2AD /* van.png in Resources */ = {isa = PBXBuildFile; fileRef = 28DF88591C05FB3A0036B2AD /* van.png */; };
@@ -115,6 +116,7 @@
 		28B861611C083ADF004A5B37 /* pickupActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pickupActive.png; sourceTree = "<group>"; };
 		28B861661C0846F9004A5B37 /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
 		28BDA2661C06A127005A91E6 /* loginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = loginViewController.swift; sourceTree = "<group>"; };
+		28BDC3C51C19B91A00E5CB33 /* bookmarkIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookmarkIcon.png; sourceTree = "<group>"; };
 		28DF88561C05F9200036B2AD /* sedan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sedan.png; sourceTree = "<group>"; };
 		28DF88581C05FB3A0036B2AD /* luxSedan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = luxSedan.png; sourceTree = "<group>"; };
 		28DF88591C05FB3A0036B2AD /* van.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = van.png; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 		281F3CA71C17278C001DA0AF /* places */ = {
 			isa = PBXGroup;
 			children = (
+				28BDC3C51C19B91A00E5CB33 /* bookmarkIcon.png */,
 				281F3CA81C1727D4001DA0AF /* beach.png */,
 				281F3CA91C1727D4001DA0AF /* emergency.png */,
 				281F3CAA1C1727D4001DA0AF /* foodAndDrink.png */,
@@ -412,6 +415,7 @@
 				281D3C4A1C0AA56B00451A8D /* luxSedanActive.png in Resources */,
 				28FA9CF11C0C3FBF00CC9E65 /* customerPin.png in Resources */,
 				281F3CB41C1727D4001DA0AF /* foodAndDrink.png in Resources */,
+				28BDC3C61C19B91A00E5CB33 /* bookmarkIcon.png in Resources */,
 				28B861621C083ADF004A5B37 /* destination.png in Resources */,
 				28B861641C083ADF004A5B37 /* pickup.png in Resources */,
 				28DF88571C05F9200036B2AD /* sedan.png in Resources */,
