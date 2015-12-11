@@ -44,6 +44,7 @@
 		28B861671C0846F9004A5B37 /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B861661C0846F9004A5B37 /* arrow.png */; };
 		28BDA2671C06A127005A91E6 /* loginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BDA2661C06A127005A91E6 /* loginViewController.swift */; };
 		28BDC3C61C19B91A00E5CB33 /* bookmarkIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BDC3C51C19B91A00E5CB33 /* bookmarkIcon.png */; };
+		28BDC3C81C1B0DCF00E5CB33 /* FloatRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BDC3C71C1B0DCF00E5CB33 /* FloatRatingView.swift */; };
 		28DF88571C05F9200036B2AD /* sedan.png in Resources */ = {isa = PBXBuildFile; fileRef = 28DF88561C05F9200036B2AD /* sedan.png */; };
 		28DF885A1C05FB3A0036B2AD /* luxSedan.png in Resources */ = {isa = PBXBuildFile; fileRef = 28DF88581C05FB3A0036B2AD /* luxSedan.png */; };
 		28DF885B1C05FB3A0036B2AD /* van.png in Resources */ = {isa = PBXBuildFile; fileRef = 28DF88591C05FB3A0036B2AD /* van.png */; };
@@ -117,6 +118,7 @@
 		28B861661C0846F9004A5B37 /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
 		28BDA2661C06A127005A91E6 /* loginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = loginViewController.swift; sourceTree = "<group>"; };
 		28BDC3C51C19B91A00E5CB33 /* bookmarkIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookmarkIcon.png; sourceTree = "<group>"; };
+		28BDC3C71C1B0DCF00E5CB33 /* FloatRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatRatingView.swift; sourceTree = "<group>"; };
 		28DF88561C05F9200036B2AD /* sedan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sedan.png; sourceTree = "<group>"; };
 		28DF88581C05FB3A0036B2AD /* luxSedan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = luxSedan.png; sourceTree = "<group>"; };
 		28DF88591C05FB3A0036B2AD /* van.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = van.png; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 				2815325E1BE5ED36001E8283 /* placeSearchViewController.swift */,
 				28094CD11BF2EE0E003E027F /* DDP-Bridging-Header.h */,
 				28FA9CF81C0C4C6800CC9E65 /* MapManager.swift */,
+				28BDC3C71C1B0DCF00E5CB33 /* FloatRatingView.swift */,
 			);
 			path = DDP;
 			sourceTree = "<group>";
@@ -510,6 +513,7 @@
 				28A73B231BD28E6800E1A8A5 /* ViewController.swift in Sources */,
 				28FA9CF91C0C4C6800CC9E65 /* MapManager.swift in Sources */,
 				28A73B211BD28E6800E1A8A5 /* AppDelegate.swift in Sources */,
+				28BDC3C81C1B0DCF00E5CB33 /* FloatRatingView.swift in Sources */,
 				2815325F1BE5ED36001E8283 /* placeSearchViewController.swift in Sources */,
 				284F83FA1BD290D500AEC237 /* SwiftyJSON.swift in Sources */,
 			);

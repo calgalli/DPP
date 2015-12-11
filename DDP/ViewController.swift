@@ -14,7 +14,7 @@ import TZStackView
 import CoreData
 
 
-class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, FloatRatingViewDelegate {
     
  
     @IBOutlet weak var searchList: UITableView!
@@ -135,6 +135,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     var firstUpdateDestinationLocation : Bool = true
     
     var waitingTaxiAlert : UIAlertController?
+    
+    
+    var placeNameTextField: UITextField?
+    var phoneNumberTextField: UITextField?
+    var commentTextField: UITextField?
+    
+    var ratingScore : Float = 4.0
+    
+    let finishAlertView = UIView()
+    let ratingView = FloatRatingView()
+    let alertViewBookmark = UIView()
+    let greyOutView = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -653,8 +665,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             
             driverInfoView?.frame = CGRectMake(0, self.view.frame.height - 111, self.view.frame.width, 111)
             
+            showFinishAlertView()
             
-            let alertController = UIAlertController(title: "Default Style", message: "Arrived!", preferredStyle: .Alert)
+           /* let alertController = UIAlertController(title: "Default Style", message: "Arrived!", preferredStyle: .Alert)
 
             let commentAction = UIAlertAction(title: "Finish", style: .Default) { (_) in
                 //let commentField = alertController.textFields![0] as UITextField
@@ -683,8 +696,136 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             
             self.presentViewController(alertController, animated: true) {
                 // ...
-            }
+            }*/
         }
+    }
+    
+    
+    
+    func showFinishAlertView(){
+        
+        disableBackgroudView()
+        let gap : CGFloat = 20
+        
+        finishAlertView.frame = CGRectMake(gap, self.view.bounds.height*0.5 - 200 - 20 , self.view.bounds.width - gap*2, 220)
+        finishAlertView.layer.cornerRadius = 8
+        finishAlertView.backgroundColor = UIColor.whiteColor()
+        let label = UILabel()
+        
+        
+        ratingView.frame = CGRectMake(finishAlertView.frame.width/2 - 200/2, 40, 200, 30)
+       // ratingView.center = CGPointMake(finishAlertView.frame.width/2 - 200/2, 40)
+        ratingView.emptyImage = UIImage(named: "StarEmpty")
+        ratingView.fullImage = UIImage(named: "StarFull")
+        // Optional params
+        ratingView.delegate = self
+        //ratingView.
+        ratingView.contentMode = UIViewContentMode.ScaleAspectFit
+        ratingView.maxRating = 5
+        ratingView.minRating = 1
+        ratingView.rating = 4
+        ratingView.editable = true
+        ratingView.halfRatings = true
+        ratingView.floatRatings = false
+        
+        
+        let labelW:CGFloat = 100
+        label.frame = CGRectMake(finishAlertView.frame.width/2 - labelW/2, 10, labelW, 20)
+        label.text = "Arrived"
+        label.textAlignment = NSTextAlignment.Center
+        label.textColor = UIColor(hexString: "FF6699")
+        let placeName : UITextField = UITextField(frame: CGRectMake(gap,finishAlertView.frame.height-50-50,finishAlertView.frame.width - 2*gap,50))
+        placeName.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.5)
+        placeName.placeholder = " Comment"
+        placeName.layer.cornerRadius = 5
+        commentTextField = placeName
+        
+        
+        
+        let bHight : CGFloat = 30
+        let bWidth : CGFloat = 100
+        let doneButton: UIButton = UIButton(frame: CGRectMake(finishAlertView.frame.width/2 - bWidth/2,finishAlertView.frame.height  - bHight-10, bWidth ,bHight))
+        doneButton.setTitle("Finish", forState: UIControlState.Normal)
+        
+        doneButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        doneButton.layer.cornerRadius = bHight/2
+        doneButton.backgroundColor = UIColor(hexString: "339933")
+        doneButton.addTarget(self, action: "finishButtonAction:", forControlEvents: .TouchUpInside)
+        
+        dispatch_async(dispatch_get_main_queue()){
+            self.greyOutView.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height)
+            let bc = UIColor.blackColor()
+            let semi = bc.colorWithAlphaComponent(0.5)
+            self.greyOutView.backgroundColor = semi
+            self.view.addSubview(self.greyOutView)
+            self.finishAlertView.addSubview(self.ratingView)
+            self.finishAlertView.addSubview(doneButton)
+            self.finishAlertView.addSubview(placeName)
+            self.finishAlertView.addSubview(label)
+            self.view.addSubview(self.finishAlertView)
+            
+            
+        }
+        
+   
+    }
+    
+    
+    
+    func finishButtonAction(sender: UIButton!){
+        
+        print(commentTextField?.text)
+        //commentTextField?.resignFirstResponder()
+        
+        //self.utilView.userInteractionEnabled = true
+        
+        //self.carSelectionView.userInteractionEnabled = true
+        
+        
+        var params: Dictionary<String,AnyObject> = ["Action":"1"]
+        params["Order"] = self.orderID
+        params["RatingValue"] = String(ratingScore)
+        print(params)
+        
+        do {
+            let opt = try HTTP.PUT(mainhost + "/api/rating", parameters: params)
+            opt.start { response in
+                //do things...
+                if let obj: AnyObject =  response.data {
+                    
+                    let json = JSON(data: obj as! NSData)
+                    print(json)
+                        if json["Status"].string ==  "SUCCESS" {
+                        
+                            
+                        }
+ 
+                } else {
+                        
+                    
+                }
+            }
+        } catch let error {
+            print("got an error creating the request: \(error)")
+        }
+
+        
+        enableBackgroudView()
+       
+        dispatch_async(dispatch_get_main_queue()){
+            self.finishAlertView.removeFromSuperview()
+            self.carSelectionView.hidden = false
+            self.utilView.hidden = false
+            self.driverInfoView?.removeFromSuperview()
+            let mapH = self.view.frame.height - self.topTitleView.frame.height - self.fromToSelection.frame.height - self.utilView.frame.height - self.carSelectionView.frame.height - self.statusBarHeight()
+            self.mapHeight.constant = mapH
+            
+            self.view.endEditing(true)
+            self.map.clear()
+            self.checkGeocode = true
+            
+        }
+        
     }
     
     func cancelAction(sender:UIButton!)
@@ -912,6 +1053,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         }
     }
     
+    // MARK: FloatRatingViewDelegate
+    
+    func floatRatingView(ratingView: FloatRatingView, isUpdating rating:Float) {
+        ratingScore = self.ratingView.rating
+       // print("Rating = \(ratingScore)")
+        //self.liveLabel.text = NSString(format: "%.2f", self.floatRatingView.rating) as String
+    }
+    
+    func floatRatingView(ratingView: FloatRatingView, didUpdate rating: Float) {
+        ratingScore = self.ratingView.rating
+       // print("Rating = \(ratingScore)")
+        //self.updatedLabel.text = NSString(format: "%.2f", self.floatRatingView.rating) as String
+    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -976,89 +1131,172 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     
      //MARK: Button actions
     
+    
     @IBAction func bookMarkAction(sender: AnyObject) {
         print("Adding bookmark !!")
         
+        let gap : CGFloat = 20
+        alertViewBookmark.frame = CGRectMake(gap, self.view.bounds.height*0.5 - 200 - 20 , self.view.bounds.width - gap*2, 200)
+        alertViewBookmark.layer.cornerRadius = 8
+        alertViewBookmark.backgroundColor = UIColor.whiteColor() //clearColor()
         
-        var placeNameTextField: UITextField?
-        var phoneNumberTextField: UITextField?
+        let label = UILabel()
         
-        let alertController = UIAlertController(title: "Add Bookmark", message: nil, preferredStyle: .Alert)
+        let labelW:CGFloat = 200
+        label.frame = CGRectMake(alertViewBookmark.frame.width/2 - labelW/2, 10, labelW, 20)
+        label.text = "Add Bookmark"
+        label.textAlignment = NSTextAlignment.Center
+        label.textColor = UIColor(hexString: "FF6699")
+       
+        let placeName : UITextField = UITextField(frame: CGRectMake(gap,45,alertViewBookmark.frame.width - 2*gap,30))
+        placeName.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.3)
+        placeName.placeholder = "Enter place name"
+        placeName.layer.cornerRadius = 5
+        self.placeNameTextField  = placeName
+        
+        let phoneNumber : UITextField = UITextField(frame: CGRectMake(gap,90,alertViewBookmark.frame.width - 2*gap,30))
+        phoneNumber.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.3)
+        phoneNumber.placeholder = "Enter phonenumber"
+        phoneNumber.layer.cornerRadius = 5
+        self.phoneNumberTextField = phoneNumber
+        
+        let bHight : CGFloat = 40
+        let doneButton: UIButton = UIButton(frame: CGRectMake(0,alertViewBookmark.frame.height  - bHight, alertViewBookmark.frame.width/2,bHight))
+        doneButton.setTitle("Done", forState: UIControlState.Normal)
+        doneButton.setTitleColor(UIColor.darkGrayColor(), forState: UIControlState.Normal)
+        let Tborder = CALayer()
+        Tborder.frame = CGRectMake(0, 0, doneButton.frame.width, 1)
+        Tborder.backgroundColor = UIColor.lightGrayColor().CGColor
+        doneButton.layer.addSublayer(Tborder)
+        let Bborder = CALayer()
+        Bborder.frame = CGRectMake(doneButton.frame.width - 1, 0, 1, doneButton.frame.height)
+        
+        Bborder.backgroundColor = UIColor.lightGrayColor().CGColor
+        doneButton.layer.addSublayer(Bborder)
+        doneButton.addTarget(self, action: "doneButtonAction:", forControlEvents: .TouchUpInside)
+        
+        let cancelButton: UIButton = UIButton(frame: CGRectMake(alertViewBookmark.frame.width/2,alertViewBookmark.frame.height - bHight, alertViewBookmark.frame.width/2,bHight))
+        let Tborder2 = CALayer()
+        Tborder2.frame = CGRectMake(0, 0, doneButton.frame.width, 1)
+        Tborder2.backgroundColor = UIColor.lightGrayColor().CGColor
+        cancelButton.layer.addSublayer(Tborder2)
+        cancelButton.setTitle("Cancel", forState: UIControlState.Normal)
+        cancelButton.setTitleColor(UIColor.lightGrayColor(), forState: UIControlState.Normal)
+        cancelButton.addTarget(self, action: "cancelButtonAction:", forControlEvents: .TouchUpInside)
         
         
-        alertController.addTextFieldWithConfigurationHandler { (textField) in
-            //dispatch_async(dispatch_get_main_queue()){
-                textField.placeholder = "Place name"
-                textField.layer.masksToBounds = true
-                textField.layer.cornerRadius = 5
-                textField.layer.borderColor = UIColor.whiteColor().CGColor
-            //}
-            placeNameTextField = textField
-                
+        
+        
+        
+        dispatch_async(dispatch_get_main_queue()){
+            self.greyOutView.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height)
+            let bc = UIColor.blackColor()
+            let semi = bc.colorWithAlphaComponent(0.5)
+            self.greyOutView.backgroundColor = semi
+            self.view.addSubview(self.greyOutView)
+            
+            self.alertViewBookmark.addSubview(label)
+            self.alertViewBookmark.addSubview(cancelButton)
+            self.alertViewBookmark.addSubview(doneButton)
+            self.alertViewBookmark.addSubview(placeName)
+            self.alertViewBookmark.addSubview(phoneNumber)
+            self.disableBackgroudView()
+            self.view.addSubview(self.alertViewBookmark)
+            
+            
         }
+   
         
-
-        alertController.addTextFieldWithConfigurationHandler { (textField) in
-            textField.center = CGPointMake(textField.frame.origin.x, textField.frame.origin.y + 10)
-            textField.placeholder = "Phone number"
-            textField.layer.cornerRadius = 5
-            phoneNumberTextField = textField
-        }
-
+  
+    }
+    
+    
+    func doneButtonAction(sender: UIButton!){
+        print("Done")
         
-        let doneAction = UIAlertAction(title: "Done", style: .Cancel) { (action) in
-            // ...
-            print(placeNameTextField!.text)
-            print(phoneNumberTextField!.text)
+        print(self.placeNameTextField!.text)
+        print(self.phoneNumberTextField!.text)
+        if self.placeNameTextField!.text?.isEmpty == false {
             
-            let appDelegate =
-            UIApplication.sharedApplication().delegate as! AppDelegate
-            
-            
-            let managedContext = appDelegate.managedObjectContext
-            
-            //2
-            let entity =  NSEntityDescription.entityForName("Places",
-                inManagedObjectContext:managedContext)
-            
-            let place = NSManagedObject(entity: entity!,
-                insertIntoManagedObjectContext: managedContext)
-            
-            //3
-            place.setValue(placeNameTextField!.text, forKey: "name")
-            place.setValue(phoneNumberTextField!.text, forKey: "phoneNumber")
-            place.setValue(self.myLocation.latitude, forKey: "lat")
-            place.setValue(self.myLocation.longitude, forKey: "lon")
-            
-            //4
-            do {
+        let appDelegate =
+        UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        
+        let managedContext = appDelegate.managedObjectContext
+        
+        //2
+        let entity =  NSEntityDescription.entityForName("Places",
+            inManagedObjectContext:managedContext)
+        
+        let place = NSManagedObject(entity: entity!,
+            insertIntoManagedObjectContext: managedContext)
+        
+        //3
+        place.setValue(self.placeNameTextField!.text, forKey: "name")
+        place.setValue(self.phoneNumberTextField!.text, forKey: "phoneNumber")
+        place.setValue(self.myLocation.latitude, forKey: "lat")
+        place.setValue(self.myLocation.longitude, forKey: "lon")
+        
+        //4
+             do {
                 try managedContext.save()
+                print("Adding to database")
                 //5
-              
+                var eLoc : bookmarkLocDetail = bookmarkLocDetail()
+                eLoc.name = self.placeNameTextField!.text!
+                eLoc.phoneNUmber = self.phoneNumberTextField!.text!
+            
+                eLoc.location = CLLocation(latitude: self.myLocation.latitude, longitude: self.myLocation.longitude)
+                self.bookmarkLocAll.append(eLoc)
+            
+                dispatch_async(dispatch_get_main_queue()){
+                    self.enableBackgroudView()
+                    self.alertViewBookmark.removeFromSuperview()
+                }
+            
             } catch let error as NSError  {
                 print("Could not save \(error), \(error.userInfo)")
             }
-            
-            
-            
-            var eLoc : bookmarkLocDetail = bookmarkLocDetail()
-            eLoc.name = placeNameTextField!.text!
-            eLoc.phoneNUmber = phoneNumberTextField!.text!
-          
-            eLoc.location = CLLocation(latitude: self.myLocation.latitude, longitude: self.myLocation.longitude)
-            self.bookmarkLocAll.append(eLoc)
-            
-            
-            
-        }
-        alertController.addAction(doneAction)
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Default) { (action) in
-            // ...
-        }
-        alertController.addAction(cancelAction)
         
-        self.presentViewController(alertController, animated: true) {
+        }
+    
+        
+        
+   
+    }
+    
+    func cancelButtonAction(sender: UIButton!){
+        dispatch_async(dispatch_get_main_queue()){
+            self.enableBackgroudView()
+            self.alertViewBookmark.removeFromSuperview()
+        }
+    }
+
+    func disableBackgroudView(){
+        dispatch_async(dispatch_get_main_queue()){
+  
+           
+            self.carSelectionView.userInteractionEnabled = false
+            self.utilView.userInteractionEnabled = false
+            self.searchBar.userInteractionEnabled = false
+            self.fromToSelection.userInteractionEnabled = false
+            self.searchList.userInteractionEnabled = false
+            self.placeSelectionView.userInteractionEnabled = false
+            self.map.userInteractionEnabled = false
+        }
+    }
+    
+    func enableBackgroudView(){
+        dispatch_async(dispatch_get_main_queue()){
+            self.greyOutView.removeFromSuperview()
+            self.carSelectionView.userInteractionEnabled = true
+            self.utilView.userInteractionEnabled = true
+            self.searchBar.userInteractionEnabled = true
+            self.fromToSelection.userInteractionEnabled = true
+            self.searchList.userInteractionEnabled = true
+            self.placeSelectionView.userInteractionEnabled = true
+            self.map.userInteractionEnabled = true
         }
     }
     
@@ -1382,12 +1620,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                    // cell!.detailTextLabel!.text = ""
                     
                     
-                    if let nameLabel = cell!.viewWithTag(2) as? UILabel { //3
-                        nameLabel.text = self.filteredTableData[indexPath.row]
-                    }
-                    if let gameLabel = cell!.viewWithTag(3) as? UILabel {
-                        gameLabel.text = ""
-                    }
+                   // if let nameLabel = cell!.viewWithTag(2) as? UILabel { //3
+                     //   nameLabel.text = tt = self.filteredTableData[indexPath.row]                     }
+                    //if let gameLabel = cell!.viewWithTag(3) as? UILabel {
+                      //  gameLabel.text = ""
+                    //}
                 }
                 
                 return cell!
@@ -1557,20 +1794,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
       
         var sLoc : locDetail = locDetail()
         
-        let founds = bookmarkLocAll.filter(){ $0.name.hasPrefix(searchText.lowercaseString) }
         
         print("************* local sdearch ************")
-        print(founds)
         var ii: Int = 0
-        for x in founds {
-            sLoc.placeID = ""
-            sLoc.CategoryId = 13
-            sLoc.address = ""
-            sLoc.name = x.name
-            sLoc.location = x.location
-            
-            self.locAll.insert(sLoc, atIndex: ii)
-            ii++
+        for x in bookmarkLocAll {
+            let range : Range? = x.name.rangeOfString(searchText, options: [NSStringCompareOptions.CaseInsensitiveSearch, NSStringCompareOptions.AnchoredSearch],range: nil, locale: nil)
+            if let _ = range {
+                sLoc.placeID = ""
+                sLoc.CategoryId = 13
+                sLoc.address = ""
+                sLoc.name = x.name
+                sLoc.location = x.location
+                
+                self.locAll.insert(sLoc, atIndex: ii)
+                ii++
+
+            }
+            print(x.name)
         }
         
         if searchBar.text!.characters.count > 0 {
