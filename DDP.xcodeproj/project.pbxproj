@@ -27,8 +27,12 @@
 		281F3CB91C1727D4001DA0AF /* resort.png in Resources */ = {isa = PBXBuildFile; fileRef = 281F3CAF1C1727D4001DA0AF /* resort.png */; };
 		281F3CBA1C1727D4001DA0AF /* shopping.png in Resources */ = {isa = PBXBuildFile; fileRef = 281F3CB01C1727D4001DA0AF /* shopping.png */; };
 		281F3CBB1C1727D4001DA0AF /* transportation.png in Resources */ = {isa = PBXBuildFile; fileRef = 281F3CB11C1727D4001DA0AF /* transportation.png */; };
+		28360C311C1DA07B00A47477 /* person.png in Resources */ = {isa = PBXBuildFile; fileRef = 28360C301C1DA07B00A47477 /* person.png */; };
+		28360C331C1DB2B300A47477 /* accountCircle.png in Resources */ = {isa = PBXBuildFile; fileRef = 28360C321C1DB2B300A47477 /* accountCircle.png */; };
 		284F83FA1BD290D500AEC237 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284F83F91BD290D500AEC237 /* SwiftyJSON.swift */; };
+		287A5B311C1D384D00510695 /* grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 287A5B301C1D384D00510695 /* grey.png */; };
 		2880F0031C04133C00FBA65B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2880F0021C04133C00FBA65B /* GoogleService-Info.plist */; };
+		288975DF1C1C7B4B00F12898 /* historyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288975DE1C1C7B4B00F12898 /* historyViewController.swift */; };
 		28A73B211BD28E6800E1A8A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A73B201BD28E6800E1A8A5 /* AppDelegate.swift */; };
 		28A73B231BD28E6800E1A8A5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A73B221BD28E6800E1A8A5 /* ViewController.swift */; };
 		28A73B261BD28E6800E1A8A5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28A73B241BD28E6800E1A8A5 /* Main.storyboard */; };
@@ -95,8 +99,12 @@
 		281F3CAF1C1727D4001DA0AF /* resort.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = resort.png; sourceTree = "<group>"; };
 		281F3CB01C1727D4001DA0AF /* shopping.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shopping.png; sourceTree = "<group>"; };
 		281F3CB11C1727D4001DA0AF /* transportation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = transportation.png; sourceTree = "<group>"; };
+		28360C301C1DA07B00A47477 /* person.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = person.png; sourceTree = "<group>"; };
+		28360C321C1DB2B300A47477 /* accountCircle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = accountCircle.png; sourceTree = "<group>"; };
 		284F83F91BD290D500AEC237 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		287A5B301C1D384D00510695 /* grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grey.png; sourceTree = "<group>"; };
 		2880F0021C04133C00FBA65B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		288975DE1C1C7B4B00F12898 /* historyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = historyViewController.swift; sourceTree = "<group>"; };
 		28A73B1D1BD28E6800E1A8A5 /* DDP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DDP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28A73B201BD28E6800E1A8A5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		28A73B221BD28E6800E1A8A5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -205,6 +213,7 @@
 				28DF88551C05F9100036B2AD /* images */,
 				28A73B201BD28E6800E1A8A5 /* AppDelegate.swift */,
 				28A73B221BD28E6800E1A8A5 /* ViewController.swift */,
+				288975DE1C1C7B4B00F12898 /* historyViewController.swift */,
 				28BDA2661C06A127005A91E6 /* loginViewController.swift */,
 				28A73B241BD28E6800E1A8A5 /* Main.storyboard */,
 				28A73B2A1BD28E6800E1A8A5 /* Assets.xcassets */,
@@ -242,7 +251,10 @@
 		28DF88551C05F9100036B2AD /* images */ = {
 			isa = PBXGroup;
 			children = (
+				28360C321C1DB2B300A47477 /* accountCircle.png */,
 				281F3CA71C17278C001DA0AF /* places */,
+				28360C301C1DA07B00A47477 /* person.png */,
+				287A5B301C1D384D00510695 /* grey.png */,
 				28FA9CF61C0C490D00CC9E65 /* ontaxiPin.png */,
 				28FA9CF41C0C490200CC9E65 /* destinationPin.png */,
 				28FA9CF21C0C3FE600CC9E65 /* driverPin.png */,
@@ -402,6 +414,7 @@
 			files = (
 				281D3C4C1C0AA56B00451A8D /* suvActive.png in Resources */,
 				281F3CB71C1727D4001DA0AF /* places.png in Resources */,
+				287A5B311C1D384D00510695 /* grey.png in Resources */,
 				281F3CB81C1727D4001DA0AF /* rentCarOrBike.png in Resources */,
 				281F3CB61C1727D4001DA0AF /* niteSpot.png in Resources */,
 				28FA9CF51C0C490200CC9E65 /* destinationPin.png in Resources */,
@@ -410,6 +423,7 @@
 				28A73B2E1BD28E6800E1A8A5 /* LaunchScreen.storyboard in Resources */,
 				2880F0031C04133C00FBA65B /* GoogleService-Info.plist in Resources */,
 				281D3C421C0AA2CC00451A8D /* suv.png in Resources */,
+				28360C311C1DA07B00A47477 /* person.png in Resources */,
 				28A73B2B1BD28E6800E1A8A5 /* Assets.xcassets in Resources */,
 				281D3C501C0AD38000451A8D /* addBookmark.png in Resources */,
 				281D3C4D1C0AA56B00451A8D /* tuktukActive.png in Resources */,
@@ -428,6 +442,7 @@
 				28FA9CF71C0C490D00CC9E65 /* ontaxiPin.png in Resources */,
 				281D3C441C0AA2D700451A8D /* tuktuk.png in Resources */,
 				28B861651C083ADF004A5B37 /* pickupActive.png in Resources */,
+				28360C331C1DB2B300A47477 /* accountCircle.png in Resources */,
 				281F3CB21C1727D4001DA0AF /* beach.png in Resources */,
 				28DF885B1C05FB3A0036B2AD /* van.png in Resources */,
 				281F3CB51C1727D4001DA0AF /* hotel.png in Resources */,
@@ -516,6 +531,7 @@
 				28BDC3C81C1B0DCF00E5CB33 /* FloatRatingView.swift in Sources */,
 				2815325F1BE5ED36001E8283 /* placeSearchViewController.swift in Sources */,
 				284F83FA1BD290D500AEC237 /* SwiftyJSON.swift in Sources */,
+				288975DF1C1C7B4B00F12898 /* historyViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

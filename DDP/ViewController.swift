@@ -26,6 +26,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     @IBOutlet weak var callTaxiButton: UIButton!
     @IBOutlet weak var topTitleView: UIView!
     
+    @IBOutlet weak var utilMiddleButton: UIButton!
     @IBOutlet weak var mapHeight: NSLayoutConstraint!
     @IBOutlet weak var fromToSelection: UIView!
     
@@ -99,6 +100,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     @IBOutlet weak var fromButton: UIButton!
     var locationManager: CLLocationManager?
     
+    var selectedCarTypeCode : String = "1"
+    var carTypeCode : [String] = ["1","2","3","4","5"]
     var carType : [String] =  ["Sedan", "SUV", "Lux car","Van", "Tuk Tuk"]
     var carImage : [String] = ["sedan.png","suv.png" ,"luxSedan.png","van.png", "tuktuk.png"]
     var carImageActive : [String] = ["sedanActive.png","suvActive.png" ,"luxSedanActive.png","vanActive.png", "tuktukActive.png"]
@@ -114,7 +117,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         longitude: 0
     )
     
-    var userJson : JSON?
+    //var userJson : JSON?
     var callTaxiResponseJson : JSON?
     
     var locationTimer:NSTimer = NSTimer()
@@ -140,6 +143,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     var placeNameTextField: UITextField?
     var phoneNumberTextField: UITextField?
     var commentTextField: UITextField?
+    var commentTextView : UITextView?
     
     var ratingScore : Float = 4.0
     
@@ -148,6 +152,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     let alertViewBookmark = UIView()
     let greyOutView = UIView()
     
+    let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    
+    var pickUpDateTime = ""
+    var isSetPickupDateTime : Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -195,6 +203,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
 
         
         //==================================
+        
+        utilMiddleButton.setTitle("\u{1F558} SET TIME", forState: .Normal)
+        
         fromViewButton.backgroundColor = UIColor.whiteColor()
         toViewButton.backgroundColor = UIColor.whiteColor()
         
@@ -279,6 +290,28 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             
         }
         
+        
+        
+        if self.delegate.didLogin == false {
+            
+            dispatch_async(dispatch_get_main_queue()){
+                
+                //create an activity indicator
+                let indicator = UIActivityIndicatorView(frame: self.pending.view.bounds)
+                indicator.autoresizingMask = [.FlexibleWidth , .FlexibleHeight]
+                indicator.color = UIColor.lightGrayColor()
+                
+                //add the activity indicator as a subview of the alert controller's view
+                self.pending.view.addSubview(indicator)
+                indicator.userInteractionEnabled = false // required otherwise if there buttons in the UIAlertController you will not be able to press them
+                indicator.startAnimating()
+                
+                self.presentViewController(self.pending, animated: true, completion: nil)
+            }
+        }
+        
+        if self.delegate.didLogin == false {
+        
         if((prefs.objectForKey("haveLogin")) != nil){
             
             if(prefs.objectForKey("haveLogin") as! String == "yes"){
@@ -286,7 +319,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                 //  let password1 = prefs.objectForKey("password") as! String
                 
                 loginTimer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "login", userInfo: nil, repeats: true)
-                
+                self.delegate.didLogin = true
                 
             } else {
                 dispatch_async(dispatch_get_main_queue()){
@@ -301,25 +334,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                 self.performSegueWithIdentifier("toLogin", sender: nil)
             }
         }
-        
-        
-      
-        
-        dispatch_async(dispatch_get_main_queue()){
-            
-            //create an activity indicator
-            let indicator = UIActivityIndicatorView(frame: self.pending.view.bounds)
-            indicator.autoresizingMask = [.FlexibleWidth , .FlexibleHeight]
-            indicator.color = UIColor.lightGrayColor()
-        
-            //add the activity indicator as a subview of the alert controller's view
-            self.pending.view.addSubview(indicator)
-            indicator.userInteractionEnabled = false // required otherwise if there buttons in the UIAlertController you will not be able to press them
-            indicator.startAnimating()
-        
-            self.presentViewController(self.pending, animated: true, completion: nil)
         }
-     
+        
+        
+  
         
         
   
@@ -394,10 +412,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                 //do things...
                 if let obj: AnyObject =  response.data {
                     
-                    self.userJson = JSON(data: obj as! NSData)
-                    print(self.userJson)
+                    self.delegate.userJson = JSON(data: obj as! NSData)
+                    print(self.delegate.userJson)
                     print("*************************************************************")
-                    if self.userJson!["Status"].string ==  "SUCCESS" {
+                    if self.delegate.userJson!["Status"].string ==  "SUCCESS" {
                         print("************************* SUCCESS *****************************")
                         
                         dispatch_async(dispatch_get_main_queue()){
@@ -734,11 +752,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         label.text = "Arrived"
         label.textAlignment = NSTextAlignment.Center
         label.textColor = UIColor(hexString: "FF6699")
-        let placeName : UITextField = UITextField(frame: CGRectMake(gap,finishAlertView.frame.height-50-50,finishAlertView.frame.width - 2*gap,50))
+        
+        
+       /* let placeName : UITextField = UITextField(frame: CGRectMake(gap,finishAlertView.frame.height-50-50,finishAlertView.frame.width - 2*gap,50))
         placeName.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.5)
         placeName.placeholder = " Comment"
         placeName.layer.cornerRadius = 5
-        commentTextField = placeName
+        commentTextField = placeName*/
+        
+        
+        let commentView : UITextView = UITextView(frame: CGRectMake(gap,85,finishAlertView.frame.width - 2*gap,80))
+        commentView.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.5)
+        commentView.placeholder = " Comment"
+        commentView.layer.cornerRadius = 5
+        commentTextView = commentView
+
         
         
         
@@ -760,7 +788,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             self.view.addSubview(self.greyOutView)
             self.finishAlertView.addSubview(self.ratingView)
             self.finishAlertView.addSubview(doneButton)
-            self.finishAlertView.addSubview(placeName)
+            self.finishAlertView.addSubview(commentView)
             self.finishAlertView.addSubview(label)
             self.view.addSubview(self.finishAlertView)
             
@@ -775,6 +803,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     func finishButtonAction(sender: UIButton!){
         
         print(commentTextField?.text)
+        print(commentTextView?.text)
         //commentTextField?.resignFirstResponder()
         
         //self.utilView.userInteractionEnabled = true
@@ -1312,15 +1341,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     
     func taxiCalling(){
         
-    
+        let date = NSDate();
+        // "Apr 1, 2015, 8:53 AM" <-- local without seconds
+        
+        let formatter = NSDateFormatter();
+        formatter.dateFormat = "yyyy-MM-dd HH:mm";
+        let defaultTimeZoneStr = formatter.stringFromDate(date);
+        print(defaultTimeZoneStr)
         
         var params: Dictionary<String,String> = ["Action" : "10"]
         
-        params["OrderDateTime"] = "2015-09-01 09:10"
-        params["PickupDateTime"] = "2015-09-01 09:10"
-        params["BaselinePrice"] = "300"
+        params["OrderDateTime"] = defaultTimeZoneStr
+        if isSetPickupDateTime == true {
+            params["PickupDateTime"] = pickUpDateTime
+        } else {
+            params["PickupDateTime"] = defaultTimeZoneStr
+        }
+        params["BaselinePrice"] = self.tPrice
         params["Incentive"] = "10"
-        params["TotalPrice"] = "310"
+        params["TotalPrice"] = self.tPrice
         params["FromName"] = fromPlace.name
         params["FromAddress"] = fromPlace.address
         params["ToName"] = toPlace.name
@@ -1332,13 +1371,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         params["IsSelfRide"] = "false"
         params["SelfRideString"] = "1"
         params["TimePeriodCode"] = "0"
-        params["Member"] = userJson!["AuthenMember"]["Id"].string
-        params["PassengerName"] = userJson!["AuthenMember"]["LastName"].string!  + " " + userJson!["AuthenMember"]["FirstName"].string!
-        params["PassengerMobile"] = userJson!["AuthenMember"]["Mobile"].string!
+        params["Member"] = self.delegate.userJson!["AuthenMember"]["Id"].string
+        params["PassengerName"] = self.delegate.userJson!["AuthenMember"]["LastName"].string!  + " " + self.delegate.userJson!["AuthenMember"]["FirstName"].string!
+        params["PassengerMobile"] = self.delegate.userJson!["AuthenMember"]["Mobile"].string!
         params["OrderTimeType"] = "1"
         params["PassengerMg"] = "Damn"
         params["AdditionalLocationString"] = ""
-        params["CarTypeCode"] = "1"
+        params["CarTypeCode"] = selectedCarTypeCode
         
         
         
@@ -1510,7 +1549,68 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     }
     
     
-   
+    @IBAction func utilMiddleButtonAction(sender: AnyObject) {
+       // performSegueWithIdentifier("mainToHistory", sender: nil)
+        showPickerInActionSheet()
+    }
+    
+    func showPickerInActionSheet() {
+        let title = ""
+        let message = "\n\n\n\n\n\n\n\n\n\n\n\n";
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.ActionSheet);
+        alert.modalInPopover = true;
+        
+        let titleL: UILabel = UILabel(frame: CGRectMake(0,10,alert.view.frame.width, 20))
+        titleL.text = "Select pick up date and time"
+        titleL.font = UIFont(name: titleL.font.fontName, size: 20)
+        titleL.textColor = UIColor(hexString: "FF6699")
+        
+        titleL.textAlignment = .Center
+        alert.view.addSubview(titleL)
+        
+        //Create a frame (placeholder/wrapper) for the picker and then create the picker
+        let pickerFrame: CGRect = CGRectMake(10, 30, 270, 100); // CGRectMake(left), top, width, height) - left and top are like margins
+        let picker: UIDatePicker = UIDatePicker(frame: pickerFrame);
+        picker.addTarget(self, action: Selector("datePickerChanged:"), forControlEvents: UIControlEvents.ValueChanged)
+        picker.viewForBaselineLayout().tintColor = UIColor.darkGrayColor()
+        
+        //Add the picker to the alert controller
+        alert.view.addSubview(picker);
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+            // ...
+        }
+        cancelAction.setValue(UIColor.lightGrayColor(), forKey: "titleTextColor")
+        alert.addAction(cancelAction)
+        
+        let OKAction = UIAlertAction(title: "Select", style: .Default) { (action) in
+            // ...
+        }
+        OKAction.setValue(UIColor.blackColor(), forKey: "titleTextColor")
+        alert.addAction(OKAction)
+
+        self.presentViewController(alert, animated: true, completion: nil);
+    }
+
+  
+
+    func datePickerChanged(datePicker:UIDatePicker) {
+        
+        let formatter = NSDateFormatter();
+        formatter.dateFormat = "yyyy-MM-dd HH:mm";
+     
+        
+        let strDate = formatter.stringFromDate(datePicker.date) //dateFormatter.stringFromDate(datePicker.date)
+        pickUpDateTime = strDate
+        isSetPickupDateTime = true
+        print(strDate)
+    }
+    
+    @IBAction func historyAction(sender: AnyObject) {
+        performSegueWithIdentifier("mainToHistory", sender: nil)
+    }
+    
+    
     /*
     @IBAction func mapSearchAction(sender: AnyObject) {
        // let camera: GMSCameraPosition = GMSCameraPosition.cameraWithLatitude(myLocation.latitude, longitude: myLocation.longitude, zoom: 12 )
@@ -1950,6 +2050,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("carType",forIndexPath:indexPath) as! carTypeViewCell
         //cell.carType.text? = "aa"
         
+        if indexPath.row == 0 {
+            cell.carType.text = carType[indexPath.row]
+            cell.carImage.image = UIImage(named: carImageActive[indexPath.row])
+            cell.carImage.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin ,
+                UIViewAutoresizing.FlexibleWidth ,
+                UIViewAutoresizing.FlexibleRightMargin ,
+                UIViewAutoresizing.FlexibleTopMargin ,
+                UIViewAutoresizing.FlexibleHeight ,
+                UIViewAutoresizing.FlexibleBottomMargin]
+            cell.carImage.contentMode = UIViewContentMode.ScaleAspectFit
+            cell.carType.textColor = UIColor.lightGrayColor()
+        } else {
+        
         cell.carType.text = carType[indexPath.row]
         cell.carImage.image = UIImage(named: carImage[indexPath.row])
         cell.carImage.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin ,
@@ -1960,6 +2073,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             UIViewAutoresizing.FlexibleBottomMargin]
         cell.carImage.contentMode = UIViewContentMode.ScaleAspectFit
         cell.carType.textColor = UIColor.whiteColor()
+        }
         
         return cell
     }
@@ -1989,6 +2103,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         cell.carImage.image = UIImage(named: carImageActive[indexPath.row])
         
         print("selected + \(indexPath.row) \(carType[indexPath.row])")
+        
+        selectedCarTypeCode = carTypeCode[indexPath.row]
+        calPrice()
 
     }
     
@@ -2043,7 +2160,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     
     
     
-    func calPrice() -> String{
+    func calPrice(){
         var price:String = ""
         
         var params: Dictionary<String,AnyObject> = ["SelectedCarType":""]
@@ -2052,7 +2169,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         params["StartLng"] = "\(fromPlace.location.coordinate.longitude)"
         params["EndLat"] = "\(toPlace.location.coordinate.latitude)"
         params["EndLng"] = "\(toPlace.location.coordinate.longitude)"
-        params["SelectedCarType"] = "tax"
+        params["SelectedCarType"] = selectedCarTypeCode
         params["PickupDateTime"] = "2015-09-01 09:10"
         params["AdditionalLocationString"] = ""
         
@@ -2085,7 +2202,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
 
         
       
-        return price
+        
     }
     
     func SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(version: NSString) -> Bool {
@@ -2216,4 +2333,76 @@ extension UIColor {
         return NSString(format:"#%06x", rgb) as String
     }
 }
+
+
+extension UITextView: UITextViewDelegate {
+    
+    // Placeholder text
+    var placeholder: String? {
+        
+        get {
+            // Get the placeholder text from the label
+            var placeholderText: String?
+            
+            if let placeHolderLabel = self.viewWithTag(100) as? UILabel {
+                placeholderText = placeHolderLabel.text
+            }
+            return placeholderText
+        }
+        
+        set {
+            // Store the placeholder text in the label
+            let placeHolderLabel = self.viewWithTag(100) as! UILabel?
+            if placeHolderLabel == nil {
+                // Add placeholder label to text view
+                self.addPlaceholderLabel(newValue!)
+            }
+            else {
+                placeHolderLabel?.text = newValue
+                placeHolderLabel?.sizeToFit()
+            }
+        }
+    }
+    
+    // Hide the placeholder label if there is no text
+    // in the text viewotherwise, show the label
+    public func textViewDidChange(textView: UITextView) {
+        
+        let placeHolderLabel = self.viewWithTag(100)
+        
+        if !self.hasText() {
+            // Get the placeholder label
+            placeHolderLabel?.hidden = false
+        }
+        else {
+            placeHolderLabel?.hidden = true
+        }
+    }
+    
+    // Add a placeholder label to the text view
+    func addPlaceholderLabel(placeholderText: String) {
+        
+        // Create the label and set its properties
+        let placeholderLabel = UILabel()
+        placeholderLabel.text = placeholderText
+        placeholderLabel.sizeToFit()
+        placeholderLabel.frame.origin.x = 5.0
+        placeholderLabel.frame.origin.y = 5.0
+        placeholderLabel.font = self.font
+        placeholderLabel.textColor = UIColor.lightGrayColor()
+        placeholderLabel.tag = 100
+        
+        // Hide the label if there is text in the text view
+        if self.text.characters.count > 0 {
+           placeholderLabel.hidden = true
+        }
+        
+        //placeholderLabel.hidden = (count(self.text) > 0)
+        
+        self.addSubview(placeholderLabel)
+        self.delegate = self;
+    }
+    
+}
+
 

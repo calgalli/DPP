@@ -58,6 +58,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate,  G
     var registrationOptions = [String: AnyObject]()
     
     let subscriptionTopic = "/topics/global"
+    
+    var didLogin : Bool = false
+    var userJson : JSON?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
