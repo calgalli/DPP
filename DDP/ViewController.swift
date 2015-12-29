@@ -156,6 +156,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     
     var pickUpDateTime = ""
     var isSetPickupDateTime : Bool = false
+    
+    var firstRegistration : Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -292,7 +295,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         
         
         
-        if self.delegate.didLogin == false {
+        if self.delegate.didLogin == true {
             
             dispatch_async(dispatch_get_main_queue()){
                 
@@ -305,7 +308,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                 self.pending.view.addSubview(indicator)
                 indicator.userInteractionEnabled = false // required otherwise if there buttons in the UIAlertController you will not be able to press them
                 indicator.startAnimating()
-                
+                self.loginTimer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "login", userInfo: nil, repeats: true)
+                self.delegate.didLogin = true
                 self.presentViewController(self.pending, animated: true, completion: nil)
             }
         }
@@ -318,21 +322,73 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                 //  let email = prefs.objectForKey("username") as! String
                 //  let password1 = prefs.objectForKey("password") as! String
                 
-                loginTimer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "login", userInfo: nil, repeats: true)
+                
+                dispatch_async(dispatch_get_main_queue()){
+                    
+                    //create an activity indicator
+                    let indicator = UIActivityIndicatorView(frame: self.pending.view.bounds)
+                    indicator.autoresizingMask = [.FlexibleWidth , .FlexibleHeight]
+                    indicator.color = UIColor.lightGrayColor()
+                    
+                    //add the activity indicator as a subview of the alert controller's view
+                    self.pending.view.addSubview(indicator)
+                    indicator.userInteractionEnabled = false // required otherwise if there buttons in the UIAlertController you will not be able to press them
+                    indicator.startAnimating()
+                    self.loginTimer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "login", userInfo: nil, repeats: true)
+                    self.delegate.didLogin = true
+                    self.presentViewController(self.pending, animated: true, completion: nil)
+                }
+                
+               // loginTimer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "login", userInfo: nil, repeats: true)
                 self.delegate.didLogin = true
                 
             } else {
+                
+                firstRegistration = true
+                
                 dispatch_async(dispatch_get_main_queue()){
                     
-                    self.performSegueWithIdentifier("toLogin", sender: nil)
+                    //create an activity indicator
+                    let indicator = UIActivityIndicatorView(frame: self.pending.view.bounds)
+                    indicator.autoresizingMask = [.FlexibleWidth , .FlexibleHeight]
+                    indicator.color = UIColor.lightGrayColor()
+                    
+                    //add the activity indicator as a subview of the alert controller's view
+                    self.pending.view.addSubview(indicator)
+                    indicator.userInteractionEnabled = false // required otherwise if there buttons in the UIAlertController you will not be able to press them
+                    indicator.startAnimating()
+                    self.presentViewController(self.pending, animated: true, completion: nil)
                 }
+
+                
+              /*  dispatch_async(dispatch_get_main_queue()){
+                    
+                    self.performSegueWithIdentifier("toLogin", sender: nil)
+                }*/
             }
             
         } else {
+            firstRegistration = true
+            
             dispatch_async(dispatch_get_main_queue()){
                 
-                self.performSegueWithIdentifier("toLogin", sender: nil)
+                //create an activity indicator
+                let indicator = UIActivityIndicatorView(frame: self.pending.view.bounds)
+                indicator.autoresizingMask = [.FlexibleWidth , .FlexibleHeight]
+                indicator.color = UIColor.lightGrayColor()
+                
+                //add the activity indicator as a subview of the alert controller's view
+                self.pending.view.addSubview(indicator)
+                indicator.userInteractionEnabled = false // required otherwise if there buttons in the UIAlertController you will not be able to press them
+                indicator.startAnimating()
+                self.presentViewController(self.pending, animated: true, completion: nil)
             }
+
+            
+           /* dispatch_async(dispatch_get_main_queue()){
+                
+                self.performSegueWithIdentifier("toLogin", sender: nil)
+            }*/
         }
         }
         
@@ -399,6 +455,84 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         
     }
 
+    func fakeRegister(params: Dictionary<String,AnyObject>){
+        //let params: Dictionary<String,AnyObject> = ["FirstName":firstName,"LastName":lastName,"Email" : email,"Password" : password,"Mobile" : mobile,"GCMRegistrationID" : GCMRegistrationID]
+        print(params)
+        
+        
+        prefs.setObject(params["FirstName"], forKey: "firstName")
+        prefs.setObject(params["LastName"], forKey: "lastName")
+        prefs.setObject(params["Email"], forKey: "email")
+        prefs.setObject(params["Password"], forKey: "password")
+        prefs.setObject(params["Mobile"], forKey: "mobile")
+        
+
+        
+        do {
+            let opt = try HTTP.POST(mainhost + "/api/member", parameters: params)
+            opt.start { response in
+                //do things...
+                if let obj: AnyObject =  response.data {
+                    
+                    let json = JSON(data: obj as! NSData)
+                    print(json)
+                    if json["Status"].string ==  "SUCCESS" {
+                        print("************************* SUCCESS *****************************")
+                        prefs.setObject("yes", forKey: "haveLogin")
+                        self.login()
+                        dispatch_async(dispatch_get_main_queue()){
+                            
+                            self.pending.dismissViewControllerAnimated(true, completion: nil)
+                            
+                            let alertController = UIAlertController(title: "Registration complete", message: "Contratulation", preferredStyle: .Alert)
+                            
+                            let commentAction = UIAlertAction(title: "OK", style: .Default) { (_) in
+                               // self.performSegueWithIdentifier("toMainView", sender: nil)
+                            }
+                            
+                            
+                            alertController.addAction(commentAction)
+                            
+                            self.presentViewController(alertController, animated: true) {
+                                // ...
+                            }
+                            
+                            
+                        }
+                        
+                        
+                    } else {
+                        
+                        dispatch_async(dispatch_get_main_queue()){
+                            let alertController = UIAlertController(title: "Registration Fail", message: "Incomplete data. Please check you data and try again", preferredStyle: .Alert)
+                            
+                            let commentAction = UIAlertAction(title: "OK", style: .Default) { (_) in
+                                
+                            }
+                            
+                            
+                            alertController.addAction(commentAction)
+                            
+                            self.presentViewController(alertController, animated: true) {
+                                // ...
+                            }
+                        }
+                        
+                    }
+                    
+                    
+                    
+                    
+                    
+                }
+                
+            }
+        } catch let error {
+            print("got an error creating the request: \(error)")
+        }
+
+    }
+    
     
     func login(){
         print(prefs.objectForKey("email")!)
@@ -442,13 +576,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     //MARK: Messagging callbacks
     
     func RegistarionComplete(notification:NSNotification){
+        if firstRegistration == true {
+            let firstName = randomAlphaNumericString(6)
+            let lastName = randomAlphaNumericString(6)
+            let email = firstName + "@gmail.com"
+            let password = "123456789"
+            let mobile = "0891001001"
         
+            let params: Dictionary<String,AnyObject> = ["FirstName":firstName,"LastName":lastName,"Email" : email,"Password" : password,"Mobile" : mobile,"GCMRegistrationID" : GCMRegistrationID]
+            fakeRegister(params)
+        }
+
     }
     
     func onMessageReceived(notification:NSNotification){
         let userInfo = notification.userInfo as! Dictionary<String,String>
         print("__________________________")
-        
+        print(userInfo["MessageType"])
         if(userInfo["MessageType"] == "2"){
             print("Confirm")
             
@@ -581,7 +725,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             
             let button   = UIButton(type: UIButtonType.System) as UIButton
             button.frame = CGRectMake(0, 0, 100, 30)
-            button.center = CGPointMake(self.view.frame.width/2 , vheight[6]/2)
+            button.center = CGPointMake(100/2 + 10 , vheight[6]/2)
             button.backgroundColor = UIColor.clearColor()
             button.layer.cornerRadius = 15
             button.layer.borderColor = UIColor.whiteColor().CGColor
@@ -593,6 +737,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             button.addTarget(self, action: "cancelAction:", forControlEvents: UIControlEvents.TouchUpInside)
             
             buttomView.addSubview(button)
+            
+            
+            let confirmButton = UIButton(type: UIButtonType.System) as UIButton
+            confirmButton.frame = CGRectMake(0, 0, 100, 30)
+            confirmButton.center = CGPointMake(self.view.frame.width - 100/2 - 10 , vheight[6]/2)
+            confirmButton.backgroundColor = UIColor.clearColor()
+            confirmButton.layer.cornerRadius = 15
+            confirmButton.layer.borderColor = UIColor.whiteColor().CGColor
+            confirmButton.layer.borderWidth = 2
+            confirmButton.layer.backgroundColor = UIColor.clearColor().CGColor
+            confirmButton.layer.masksToBounds = true;
+            confirmButton.setTitle("Confirm", forState: UIControlState.Normal)
+            confirmButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+            confirmButton.addTarget(self, action: "confirmAction:", forControlEvents: UIControlEvents.TouchUpInside)
+            buttomView.addSubview(confirmButton)
             
             //Change color
             
@@ -857,6 +1016,83 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         
     }
     
+    
+    func confirmAction(sender:UIButton!)
+    {
+        self.map.clear()
+       // firstUpdateTaxiLocation = true
+       // locationTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "checkTaxiLocation", userInfo: nil, repeats: true)
+        
+        let mapH = self.view.frame.height - self.topTitleView.frame.height - self.fromToSelection.frame.height - self.utilView.frame.height - self.carSelectionView.frame.height - statusBarHeight()
+        mapHeight.constant = mapH
+        locationTimer.invalidate()
+        var params: Dictionary<String,String> = ["Action" : "14"]
+        
+        params["Id"] = self.orderID
+        params["IsPassengerConfirm"] = "true"
+        params["PassengerMobile"] = "2345566677"
+        params["PassengerMsg"] = "No message"
+        
+        
+        print(params)
+        
+        do {
+            let opt = try HTTP.PUT(mainhost + "/api/order", parameters: params)
+            opt.start { response in
+                //do things...
+                if let obj: AnyObject =  response.data {
+                    
+                    self.callTaxiResponseJson = JSON(data: obj as! NSData)
+                    let rStatus : String = self.callTaxiResponseJson!["Status"].string!
+                    print("Status = \(rStatus)");
+                    
+                    if(rStatus == "SUCCESS"){
+                        let alertController = UIAlertController(title: "Confirm complete", message: "", preferredStyle: .Alert)
+                        let finishlAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) { (_) in
+                            //self.utilView.hidden = false
+                            //self.utilView.userInteractionEnabled = true
+                            //self.carSelectionView.hidden = false
+                            //self.carSelectionView.userInteractionEnabled = true
+                            
+                            sender.removeFromSuperview()
+                            
+                        }
+                        alertController.addAction(finishlAction)
+                        self.presentViewController(alertController, animated: true) {
+                            // ...
+                        }
+                        
+                        
+                        
+                    } else if(rStatus == "FAIL") {
+                        
+                        let alertController = UIAlertController(title: "Cancel incomplete", message: "Please try again", preferredStyle: .Alert)
+                        let finishlAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) { (_) in
+                            
+                        }
+                        alertController.addAction(finishlAction)
+                        self.presentViewController(alertController, animated: true) {
+                            // ...
+                        }
+                        
+                        
+                    }
+                    
+                    print(self.callTaxiResponseJson)
+                    
+                    
+                }
+                
+                // self.startTimer()
+                
+            }
+        } catch let error {
+            print("got an error creating the request: \(error)")
+        }
+    }
+
+    
+    
     func cancelAction(sender:UIButton!)
     {
         self.map.clear()
@@ -933,7 +1169,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         
       //  var urlString = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=\(taxiLat),\(taxiLon)&destinations=\(fLat),\(fLon)&mode=driving&key=\(googleWebAPIkey)"
         
+        
         let params: Dictionary<String,AnyObject> = ["Action" : "2","OrderId" : self.orderID]
+        print(params)
         
         do {
             let opt = try HTTP.PUT(mainhost + "/api/track", parameters: params)
@@ -942,8 +1180,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                 if let obj: AnyObject =  response.data {
                     
                     let taxiLoc = JSON(data: obj as! NSData)
-                    //print("*************************************************************")
-                    //print(taxiLoc["CurLocation"])
+                    print("************************** Checking locaiton ***********************************")
+                    print(taxiLoc["CurLocation"])
                     
                     let fromLat = self.fromPlace.location.coordinate.latitude
                     let fromLon = self.fromPlace.location.coordinate.longitude
@@ -2120,6 +2358,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
 
     
     //MARK: Util functions
+    
+    
+    func randomAlphaNumericString(length: Int) -> String {
+        
+        let allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        let allowedCharsCount = UInt32(allowedChars.characters.count)
+        var randomString = ""
+        
+        for _ in (0..<length) {
+            let randomNum = Int(arc4random_uniform(allowedCharsCount))
+            let newCharacter = allowedChars[allowedChars.startIndex.advancedBy(randomNum)]
+            randomString += String(newCharacter)
+        }
+        
+        return randomString
+    }
     
     func extractWords(w:String, count:Int) -> String {
         var r = ""

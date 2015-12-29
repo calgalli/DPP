@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1509" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
@@ -302,8 +302,12 @@
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G3h-CK-OXY" userLabel="util">
                                 <rect key="frame" x="0.0" y="436" width="600" height="81"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uw2-vs-kcI">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uw2-vs-kcI">
                                         <rect key="frame" x="277" y="26" width="46" height="30"/>
+                                        <accessibility key="accessibilityConfiguration">
+                                            <accessibilityTraits key="traits" button="YES" notEnabled="YES"/>
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
                                         <state key="normal" title="History">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
@@ -343,6 +347,11 @@
                                     <constraint firstAttribute="trailing" secondItem="feJ-iB-Tpd" secondAttribute="trailing" constant="5" id="LRU-EO-oz1"/>
                                     <constraint firstItem="OtD-53-RX5" firstAttribute="centerY" secondItem="G3h-CK-OXY" secondAttribute="centerY" id="mHw-Op-NlV"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="Uw2-vs-kcI"/>
+                                    </mask>
+                                </variation>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0gX-zP-ygX" userLabel="cars">
                                 <rect key="frame" x="0.0" y="530" width="600" height="70"/>
@@ -593,10 +602,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YO4-5r-3fg">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YO4-5r-3fg">
                                 <rect key="frame" x="180" y="236" width="240" height="128"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Registration" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CMv-k7-AAW">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Registration" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CMv-k7-AAW">
                                         <rect key="frame" x="44" y="59" width="128" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -605,7 +614,8 @@
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="0.40000000000000002" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="CMv-k7-AAW" firstAttribute="centerY" secondItem="YO4-5r-3fg" secondAttribute="centerY" id="qEg-b5-FG6"/>
+                                    <constraint firstItem="CMv-k7-AAW" firstAttribute="centerY" secondItem="YO4-5r-3fg" secondAttribute="centerY" id="jGv-r8-Vlg"/>
+                                    <constraint firstAttribute="height" constant="40" id="mOe-jU-4pZ"/>
                                     <constraint firstItem="CMv-k7-AAW" firstAttribute="centerX" secondItem="YO4-5r-3fg" secondAttribute="centerX" id="sLY-84-zCa"/>
                                 </constraints>
                             </view>
@@ -613,7 +623,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="YO4-5r-3fg" firstAttribute="width" secondItem="O80-uv-3Zy" secondAttribute="width" id="CvQ-am-NaS"/>
-                            <constraint firstItem="YO4-5r-3fg" firstAttribute="top" secondItem="uj1-Ug-l3r" secondAttribute="bottom" constant="40" id="LdS-br-1FO"/>
+                            <constraint firstItem="YO4-5r-3fg" firstAttribute="top" secondItem="uj1-Ug-l3r" secondAttribute="bottom" id="LdS-br-1FO"/>
                             <constraint firstItem="YO4-5r-3fg" firstAttribute="centerX" secondItem="O80-uv-3Zy" secondAttribute="centerX" id="Wj3-68-OcV"/>
                         </constraints>
                     </view>
