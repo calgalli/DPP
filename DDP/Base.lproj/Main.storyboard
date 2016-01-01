@@ -118,6 +118,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="backButton" destination="kYM-4W-4sV" id="oGL-Zi-bIp"/>
                         <outlet property="historyTableView" destination="wSN-UC-swf" id="Rb4-i8-bSf"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="historyToMain" id="mZ3-ev-yzo"/>
                     </connections>
@@ -158,15 +159,27 @@
                                             <action selector="historyAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="EqX-04-P9t"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="92e-SP-j9O" userLabel="&lt;">
+                                        <rect key="frame" x="277" y="16" width="46" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <state key="normal" title="&lt;">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="backFromSearchAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kk3-lD-5X8"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="0.40000000000000002" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="rUm-pD-qME" firstAttribute="centerY" secondItem="cxb-D5-ecZ" secondAttribute="centerY" id="Jbo-wC-Ucn"/>
                                     <constraint firstItem="rUm-pD-qME" firstAttribute="centerX" secondItem="cxb-D5-ecZ" secondAttribute="centerX" id="KTw-43-Nw4"/>
                                     <constraint firstAttribute="trailing" secondItem="MQd-JI-Uql" secondAttribute="trailing" constant="10" id="LGC-0V-Kqy"/>
+                                    <constraint firstItem="92e-SP-j9O" firstAttribute="leading" secondItem="cxb-D5-ecZ" secondAttribute="leading" constant="10" id="Xdd-nT-5ND"/>
                                     <constraint firstItem="MQd-JI-Uql" firstAttribute="centerY" secondItem="cxb-D5-ecZ" secondAttribute="centerY" id="bI7-Ap-rZ0"/>
                                     <constraint firstAttribute="height" constant="40" id="yAQ-Z1-JE2"/>
                                     <constraint firstItem="rUm-pD-qME" firstAttribute="width" secondItem="cxb-D5-ecZ" secondAttribute="width" id="yEh-US-bUu"/>
+                                    <constraint firstItem="92e-SP-j9O" firstAttribute="centerY" secondItem="cxb-D5-ecZ" secondAttribute="centerY" id="ycF-Su-8Su"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CSb-WD-2up" userLabel="selection">
@@ -302,7 +315,7 @@
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G3h-CK-OXY" userLabel="util">
                                 <rect key="frame" x="0.0" y="436" width="600" height="81"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uw2-vs-kcI">
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uw2-vs-kcI">
                                         <rect key="frame" x="277" y="26" width="46" height="30"/>
                                         <accessibility key="accessibilityConfiguration">
                                             <accessibilityTraits key="traits" button="YES" notEnabled="YES"/>
@@ -325,12 +338,13 @@
                                         <rect key="frame" x="473" y="29" width="110" height="24"/>
                                         <color key="backgroundColor" red="1" green="0.20000000000000001" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="120" id="8iO-KW-NFv"/>
+                                            <constraint firstAttribute="width" constant="90" id="8iO-KW-NFv"/>
                                             <constraint firstAttribute="height" constant="30" id="JDu-Zu-RSR"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <inset key="titleEdgeInsets" minX="3" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="CALL TAXI" image="callicon.png">
+                                        <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <inset key="imageEdgeInsets" minX="-1" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" title="CALL" image="callicon.png">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
@@ -348,11 +362,6 @@
                                     <constraint firstAttribute="trailing" secondItem="feJ-iB-Tpd" secondAttribute="trailing" constant="5" id="LRU-EO-oz1"/>
                                     <constraint firstItem="OtD-53-RX5" firstAttribute="centerY" secondItem="G3h-CK-OXY" secondAttribute="centerY" id="mHw-Op-NlV"/>
                                 </constraints>
-                                <variation key="default">
-                                    <mask key="subviews">
-                                        <exclude reference="Uw2-vs-kcI"/>
-                                    </mask>
-                                </variation>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0gX-zP-ygX" userLabel="cars">
                                 <rect key="frame" x="0.0" y="530" width="600" height="70"/>
@@ -537,6 +546,7 @@
                         <outlet property="fromPlaceLabel" destination="hUV-X9-Udz" id="Kqw-FP-KP9"/>
                         <outlet property="fromToSelection" destination="CSb-WD-2up" id="kdr-Mq-GXg"/>
                         <outlet property="fromViewButton" destination="bC3-lS-CJt" id="TAc-OP-d4e"/>
+                        <outlet property="historyButton" destination="MQd-JI-Uql" id="Sft-Y9-xB3"/>
                         <outlet property="mainPrice" destination="OtD-53-RX5" id="IiH-T3-FvG"/>
                         <outlet property="map" destination="coi-HO-pC7" id="bcX-8t-Ky8"/>
                         <outlet property="mapHeight" destination="HmW-es-Jab" id="1wa-DF-Zbf"/>
@@ -548,6 +558,8 @@
                         <outlet property="toImage" destination="2Qk-7Z-QON" id="Yye-M6-Swd"/>
                         <outlet property="toPlaceLabel" destination="fQN-jw-2QU" id="3Pb-C1-2ZI"/>
                         <outlet property="toViewButton" destination="Q1H-94-ey8" id="bsX-Mc-mlu"/>
+                        <outlet property="topBackButton" destination="92e-SP-j9O" id="UwB-kw-AC4"/>
+                        <outlet property="topTitle" destination="rUm-pD-qME" id="D3A-uJ-SGK"/>
                         <outlet property="topTitleView" destination="cxb-D5-ecZ" id="XFG-az-mUu"/>
                         <outlet property="utilMiddleButton" destination="Uw2-vs-kcI" id="VXE-o0-Unh"/>
                         <outlet property="utilView" destination="G3h-CK-OXY" id="kQT-ow-NSL"/>

@@ -12,6 +12,7 @@ import SwiftHTTP
 
 class historyViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var historyTableView: UITableView!
     let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var historyJson : JSON?
@@ -31,6 +32,8 @@ class historyViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        backButton.setTitle("\u{276C}Back", forState: .Normal)
 
         print("Member ID = \(self.delegate.userJson!["AuthenMember"]["Id"].string)")
         historyTableView.rowHeight = 60

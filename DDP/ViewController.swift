@@ -17,6 +17,9 @@ import CoreData
 class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, FloatRatingViewDelegate {
     
  
+    @IBOutlet weak var topTitle: UILabel!
+    @IBOutlet weak var topBackButton: UIButton!
+    @IBOutlet weak var historyButton: UIButton!
     @IBOutlet weak var searchList: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var bookmarkButton: UIButton!
@@ -207,7 +210,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         
         //==================================
         
-        utilMiddleButton.setTitle("\u{1F558} SET TIME", forState: .Normal)
+        utilMiddleButton.setTitle("\u{1F558}", forState: .Normal)
         
         fromViewButton.backgroundColor = UIColor.whiteColor()
         toViewButton.backgroundColor = UIColor.whiteColor()
@@ -251,6 +254,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         print("Util hieght = \(self.utilView.frame.height), car selection height \(self.carSelectionView.frame.height),status bar height \(self.statusBarHeight())")*/
         
         dispatch_async(dispatch_get_main_queue()){
+            
+            self.topBackButton.hidden = true
+            self.topBackButton.userInteractionEnabled = false
+            self.topBackButton.setTitle("\u{276C}Back", forState: .Normal)
             
             self.mapHeight.constant = mapH
             
@@ -1398,6 +1405,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     
      //MARK: Button actions
     
+    @IBAction func backFromSearchAction(sender: AnyObject) {
+        dispatch_async(dispatch_get_main_queue()){
+            self.placeSelectionView.hidden = true
+            self.placeSelectionView.userInteractionEnabled = false
+            self.topTitle.text = "DEE DEE PHUKET"
+            self.historyButton.hidden = false
+            self.historyButton.userInteractionEnabled = true
+            self.topBackButton.hidden = true
+            self.topBackButton.userInteractionEnabled = false
+        }
+
+    }
     
     @IBAction func bookMarkAction(sender: AnyObject) {
         print("Adding bookmark !!")
@@ -1760,9 +1779,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     
     
     @IBAction func fromButtonAction(sender: AnyObject) {
+        
+        dispatch_async(dispatch_get_main_queue()){
+            self.topTitle.text = "SEARCHING"
+            self.historyButton.hidden = true
+            self.historyButton.userInteractionEnabled = false
+            self.topBackButton.hidden = false
+            self.topBackButton.userInteractionEnabled = true
+        }
+
+        
         locAll.removeAll(keepCapacity: false)
         searchActive = false
-        self.searchList.reloadData()
+        dispatch_async(dispatch_get_main_queue()){
+            self.searchBar.text = ""
+            self.searchList.reloadData()
+        }
         placeSelectionView.hidden = false
         placeSelectionView.userInteractionEnabled = true
         //fromViewButton.backgroundColor = UIColor.whiteColor()
@@ -1771,9 +1803,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     }
     
     @IBAction func toButtonAction(sender: AnyObject) {
+        
+        dispatch_async(dispatch_get_main_queue()){
+            self.topTitle.text = "SEARCHING"
+            self.historyButton.hidden = true
+            self.historyButton.userInteractionEnabled = false
+            self.topBackButton.hidden = false
+            self.topBackButton.userInteractionEnabled = true
+        }
+       
         locAll.removeAll(keepCapacity: false)
         searchActive = false
-        self.searchList.reloadData()
+        dispatch_async(dispatch_get_main_queue()){
+            self.searchBar.text = ""
+            self.searchList.reloadData()
+        }
+        
         placeSelectionView.hidden = false
         placeSelectionView.userInteractionEnabled = true
         //fromViewButton.backgroundColor = UIColor.grayColor()
@@ -1893,7 +1938,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             print(self.locAll.count)
             return self.locAll.count
         } else {
-            return self.filteredTableData.count
+            return 0
         }
         
         
@@ -1935,12 +1980,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                     
                     
                     if let nameLabel = cell!.viewWithTag(2) as? UILabel { //3
-                        nameLabel.text = "Searching"
+                        nameLabel.text = ""
                     }
-                    if let gameLabel = cell!.viewWithTag(3) as? UILabel {
-                        gameLabel.text = ""
+                    
+                    if let ratingImageView = cell!.viewWithTag(1) as? UIImageView {
+                        ratingImageView.image = nil
                     }
-
+                   
                     
                 }
                 return cell!
@@ -2025,6 +2071,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             dispatch_async(dispatch_get_main_queue()){
                 self.placeSelectionView.hidden = true
                 self.placeSelectionView.userInteractionEnabled = false
+                self.topTitle.text = "DEE DEE PHUKET"
+                self.historyButton.hidden = false
+                self.historyButton.userInteractionEnabled = true
+                self.topBackButton.hidden = true
+                self.topBackButton.userInteractionEnabled = false
             }
             
            /*
