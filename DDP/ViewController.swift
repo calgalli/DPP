@@ -33,7 +33,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     @IBOutlet weak var mapHeight: NSLayoutConstraint!
     @IBOutlet weak var fromToSelection: UIView!
     
+    
+    //All Uis in deiverInfoView
+  
+    var priceLabel : UILabel?
+    
+    var driverImageView : UIImageView?
+    var deiverNameLabek : UILabel?
+    var licensePlateNumber : UILabel?
+    
+    var mobileLabel : UILabel?
+    
+    var confirmButton : UIButton?
     var driverViewCancelButton : UIButton?
+    
     var driverViewConfirmButton : UIButton?
     var driverViewNoteToDriverLabel : UILabel?
     
@@ -54,6 +67,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     let arrivalTimeTextLabel = UILabel()
     let arrivalDistanceLabel = UILabel()
     
+    
+    //Confirm view
+    var confirmLabel:UILabel = UILabel()
+    var confirmPhoneNumberView : UITextField = UITextField()
+    var doneButton: UIButton = UIButton()
+    var messageToDriverView : UITextView = UITextView()
+    
+    //Finih and ratring view
+    var commentView : UITextView?
+    var finishDoneButton: UIButton?
    
     @IBOutlet weak var carSelectionView: UIView!
     @IBOutlet weak var utilView: UIView!
@@ -154,8 +177,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     
     
     let confirmAlertView = UIView()
-    var confirmPhoneNumber : UITextField?
-    var messageToDriver : UITextView?
+    //var confirmPhoneNumber : UITextField?
+    //var messageToDriver : UITextView?
     
     var ratingScore : Float = 4.0
     
@@ -606,6 +629,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     }
     
     func onMessageReceived(notification:NSNotification){
+        //var driverInfoView : UIView = UIView()
+        //driverInfoViewGlobal = driverInfoView
+        
+        driverViewConfirmButton?.removeFromSuperview()
+        
         let userInfo = notification.userInfo as! Dictionary<String,String>
         print("__________________________")
         print(userInfo["MessageType"])
@@ -660,37 +688,37 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             
             //Top View
             
-            let label = UILabel(frame: CGRectMake(0, 0, 100, 30))
-            label.center = CGPointMake(100/2 + leftEdge, vheight[0]/2)
-            label.textAlignment = NSTextAlignment.Left
-            label.text = "THB " + self.tPrice
-            label.textColor = UIColor.whiteColor()
-            topView.addSubview(label)
+            priceLabel = UILabel(frame: CGRectMake(0, 0, 100, 30))
+            priceLabel!.center = CGPointMake(100/2 + leftEdge, vheight[0]/2)
+            priceLabel!.textAlignment = NSTextAlignment.Left
+            priceLabel!.text = "THB " + self.tPrice
+            priceLabel!.textColor = UIColor.whiteColor()
+            topView.addSubview(priceLabel!)
             
             //Driver View
             
-            let imageView = UIImageView(frame:CGRectMake(0, 0, 60, 60));
-            imageView.center = CGPointMake(60/2 + 10, vheight[1]/2)
-            imageView.image = NSURL(string: userInfo["DriverPicture"]!)
+            driverImageView = UIImageView(frame:CGRectMake(0, 0, 60, 60));
+            driverImageView!.center = CGPointMake(60/2 + 10, vheight[1]/2)
+            driverImageView!.image = NSURL(string: userInfo["DriverPicture"]!)
                 .flatMap { NSData(contentsOfURL: $0) }
                 .flatMap { UIImage(data: $0) }
-            driverView.addSubview(imageView)
+            driverView.addSubview(driverImageView!)
             
-            let deiverNameLabek = UILabel(frame: CGRectMake(0, 0, 100, 30))
-            deiverNameLabek.center = CGPointMake(self.view.frame.width/2 - 100/2, vheight[1]/2)
-            deiverNameLabek.textAlignment = NSTextAlignment.Left
-            deiverNameLabek.text = userInfo["DriverName"]
-            deiverNameLabek.textColor = UIColor.whiteColor()
-            driverView.addSubview(deiverNameLabek)
+            deiverNameLabek = UILabel(frame: CGRectMake(0, 0, 100, 30))
+            deiverNameLabek!.center = CGPointMake(self.view.frame.width/2 - 100/2, vheight[1]/2)
+            deiverNameLabek!.textAlignment = NSTextAlignment.Left
+            deiverNameLabek!.text = userInfo["DriverName"]
+            deiverNameLabek!.textColor = UIColor.whiteColor()
+            driverView.addSubview(deiverNameLabek!)
             
-            let licensePlateNumber = UILabel(frame: CGRectMake(0, 0, 70, 30))
-            licensePlateNumber.center = CGPointMake(self.view.frame.width - 70/2 - leftEdge, vheight[1]/2)
-            licensePlateNumber.textAlignment = NSTextAlignment.Center
-            licensePlateNumber.text = userInfo["DriverLicensePlate"]
-            licensePlateNumber.textColor = UIColor.blackColor()
-            licensePlateNumber.layer.cornerRadius = 5
-            licensePlateNumber.layer.backgroundColor = UIColor.init(hexString: "FF8000").CGColor
-            driverView.addSubview(licensePlateNumber)
+            licensePlateNumber = UILabel(frame: CGRectMake(0, 0, 70, 30))
+            licensePlateNumber!.center = CGPointMake(self.view.frame.width - 70/2 - leftEdge, vheight[1]/2)
+            licensePlateNumber!.textAlignment = NSTextAlignment.Center
+            licensePlateNumber!.text = userInfo["DriverLicensePlate"]
+            licensePlateNumber!.textColor = UIColor.blackColor()
+            licensePlateNumber!.layer.cornerRadius = 5
+            licensePlateNumber!.layer.backgroundColor = UIColor.init(hexString: "FF8000").CGColor
+            driverView.addSubview(licensePlateNumber!)
             
             
             //Car View
@@ -698,12 +726,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             
             //Mobile View
     
-            let mobileLabel = UILabel(frame: CGRectMake(0, 0, 200, 30))
-            mobileLabel.center = CGPointMake(200/2 + leftEdge, vheight[3]/2)
-            mobileLabel.textAlignment = NSTextAlignment.Left
-            mobileLabel.text = "Mobile : " + userInfo["DriverMobile"]!
-            mobileLabel.textColor = UIColor.whiteColor()
-            mobileView.addSubview(mobileLabel)
+            mobileLabel = UILabel(frame: CGRectMake(0, 0, 200, 30))
+            mobileLabel!.center = CGPointMake(200/2 + leftEdge, vheight[3]/2)
+            mobileLabel!.textAlignment = NSTextAlignment.Left
+            mobileLabel!.text = "Mobile : " + userInfo["DriverMobile"]!
+            mobileLabel!.textColor = UIColor.whiteColor()
+            mobileView.addSubview(mobileLabel!)
 
             
             //ArriveView2
@@ -744,36 +772,36 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             
             //ButtomView
             
-            let button   = UIButton(type: UIButtonType.System) as UIButton
-            button.frame = CGRectMake(0, 0, 100, 30)
-            button.center = CGPointMake(100/2 + 10 , vheight[6]/2)
-            button.backgroundColor = UIColor.clearColor()
-            button.layer.cornerRadius = 15
-            button.layer.borderColor = UIColor.whiteColor().CGColor
-            button.layer.borderWidth = 2
-            button.layer.backgroundColor = UIColor.clearColor().CGColor
-            button.layer.masksToBounds = true;
-            button.setTitle("Cancel", forState: UIControlState.Normal)
-            button.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-            button.addTarget(self, action: "cancelAction:", forControlEvents: UIControlEvents.TouchUpInside)
-            driverViewCancelButton = button
-            buttomView.addSubview(button)
+            driverViewCancelButton   = UIButton(type: UIButtonType.System) as UIButton
+            driverViewCancelButton!.frame = CGRectMake(0, 0, 100, 30)
+            driverViewCancelButton!.center = CGPointMake(100/2 + 10 , vheight[6]/2)
+            driverViewCancelButton!.backgroundColor = UIColor.clearColor()
+            driverViewCancelButton!.layer.cornerRadius = 15
+            driverViewCancelButton!.layer.borderColor = UIColor.whiteColor().CGColor
+            driverViewCancelButton!.layer.borderWidth = 2
+            driverViewCancelButton!.layer.backgroundColor = UIColor.clearColor().CGColor
+            driverViewCancelButton!.layer.masksToBounds = true;
+            driverViewCancelButton!.setTitle("Cancel", forState: UIControlState.Normal)
+            driverViewCancelButton!.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+            driverViewCancelButton!.addTarget(self, action: "cancelAction:", forControlEvents: UIControlEvents.TouchUpInside)
+            //driverViewCancelButton = button
+            buttomView.addSubview(driverViewCancelButton!)
             
             
-            let confirmButton = UIButton(type: UIButtonType.System) as UIButton
-            confirmButton.frame = CGRectMake(0, 0, 100, 30)
-            confirmButton.center = CGPointMake(self.view.frame.width - 100/2 - 10 , vheight[6]/2)
-            confirmButton.backgroundColor = UIColor.clearColor()
-            confirmButton.layer.cornerRadius = 15
-            confirmButton.layer.borderColor = UIColor.whiteColor().CGColor
-            confirmButton.layer.borderWidth = 2
-            confirmButton.layer.backgroundColor = UIColor.clearColor().CGColor
-            confirmButton.layer.masksToBounds = true;
-            confirmButton.setTitle("Confirm", forState: UIControlState.Normal)
-            confirmButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-            confirmButton.addTarget(self, action: "confirmAction:", forControlEvents: UIControlEvents.TouchUpInside)
+            confirmButton = UIButton(type: UIButtonType.System) as UIButton
+            confirmButton!.frame = CGRectMake(0, 0, 100, 30)
+            confirmButton!.center = CGPointMake(self.view.frame.width - 100/2 - 10 , vheight[6]/2)
+            confirmButton!.backgroundColor = UIColor.clearColor()
+            confirmButton!.layer.cornerRadius = 15
+            confirmButton!.layer.borderColor = UIColor.whiteColor().CGColor
+            confirmButton!.layer.borderWidth = 2
+            confirmButton!.layer.backgroundColor = UIColor.clearColor().CGColor
+            confirmButton!.layer.masksToBounds = true;
+            confirmButton!.setTitle("Confirm", forState: UIControlState.Normal)
+            confirmButton!.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+            confirmButton!.addTarget(self, action: "confirmAction:", forControlEvents: UIControlEvents.TouchUpInside)
             driverViewConfirmButton = confirmButton
-            buttomView.addSubview(confirmButton)
+            buttomView.addSubview(confirmButton!)
             
             //Change color
             
@@ -785,13 +813,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             noteView.backgroundColor = UIColor.grayColor()
             buttomView.backgroundColor = UIColor.grayColor()
             
-            self.driverInfoView!.addSubview(topView)
-            self.driverInfoView!.addSubview(driverView)
-            self.driverInfoView!.addSubview(carView)
-            self.driverInfoView!.addSubview(mobileView)
-            self.driverInfoView!.addSubview(arriveView)
-            self.driverInfoView!.addSubview(noteView)
-            self.driverInfoView!.addSubview(buttomView)
+            driverInfoView!.addSubview(topView)
+            driverInfoView!.addSubview(driverView)
+            driverInfoView!.addSubview(carView)
+            driverInfoView!.addSubview(mobileView)
+            driverInfoView!.addSubview(arriveView)
+            driverInfoView!.addSubview(noteView)
+            driverInfoView!.addSubview(buttomView)
             
             dispatch_async(dispatch_get_main_queue()){
                 let mapH = self.view.frame.height - self.topTitleView.frame.height - self.fromToSelection.frame.height - height - self.statusBarHeight()
@@ -807,7 +835,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             destinationType = 2
             isPickedUp = true
             
+            arrivalTimeTextLabel.removeFromSuperview()
+            arrivalTimeLabel.removeFromSuperview()
+            arrivalDistanceLabel.removeFromSuperview()
+            arrivalDistance.removeFromSuperview()
             arriveView.removeFromSuperview()
+        
+            driverViewNoteToDriverLabel?.removeFromSuperview()
             noteView.removeFromSuperview()
             
             var yy : [CGFloat] = [0,0,0,0,0]
@@ -827,9 +861,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             mobileView.frame = CGRectMake(0, yy[3], self.view.frame.width, vheight[3])
             buttomView.frame = CGRectMake(0, yy[4], self.view.frame.width, vheight[6])
 
-            driverInfoView?.frame = CGRectMake(0, self.view.frame.height - 236, self.view.frame.width, 236)
+            driverInfoView!.frame = CGRectMake(0, self.view.frame.height - 236, self.view.frame.width, 236)
             
-            let mapH = self.view.frame.height - self.topTitleView.frame.height - self.fromToSelection.frame.height -             self.driverInfoView!.frame.height - statusBarHeight()
+            let mapH = self.view.frame.height - self.topTitleView.frame.height - self.fromToSelection.frame.height - driverInfoView!.frame.height - statusBarHeight()
             mapHeight.constant = mapH
 
             
@@ -841,9 +875,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             let mapH = self.view.frame.height - self.topTitleView.frame.height - self.fromToSelection.frame.height - self.utilView.frame.height - self.carSelectionView.frame.height - self.statusBarHeight()
             self.mapHeight.constant = mapH
 
-            
+            mobileLabel!.removeFromSuperview()
             mobileView.removeFromSuperview()
+            
             carView.removeFromSuperview()
+            
+            self.driverViewCancelButton!.removeFromSuperview()
+            self.confirmButton!.removeFromSuperview()
             buttomView.removeFromSuperview()
             
             
@@ -862,7 +900,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             topView.frame = CGRectMake(0, yy[0], self.view.frame.width, vheight[0])
             driverView.frame = CGRectMake(0, yy[1], self.view.frame.width, vheight[1])
             
-            driverInfoView?.frame = CGRectMake(0, self.view.frame.height - 111, self.view.frame.width, 111)
+            driverInfoView!.frame = CGRectMake(0, self.view.frame.height - 111, self.view.frame.width, 111)
             
             showFinishAlertView()
             
@@ -942,10 +980,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         commentTextField = placeName*/
         
         
-        let commentView : UITextView = UITextView(frame: CGRectMake(gap,85,finishAlertView.frame.width - 2*gap,80))
-        commentView.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.5)
-        commentView.placeholder = " Comment"
-        commentView.layer.cornerRadius = 5
+        commentView  = UITextView(frame: CGRectMake(gap,85,finishAlertView.frame.width - 2*gap,80))
+        commentView!.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.5)
+        commentView!.placeholder = " Comment"
+        commentView!.layer.cornerRadius = 5
         commentTextView = commentView
 
         
@@ -953,13 +991,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         
         let bHight : CGFloat = 30
         let bWidth : CGFloat = 100
-        let doneButton: UIButton = UIButton(frame: CGRectMake(finishAlertView.frame.width/2 - bWidth/2,finishAlertView.frame.height  - bHight-10, bWidth ,bHight))
-        doneButton.setTitle("Finish", forState: UIControlState.Normal)
+        finishDoneButton = UIButton(frame: CGRectMake(finishAlertView.frame.width/2 - bWidth/2,finishAlertView.frame.height  - bHight-10, bWidth ,bHight))
+        finishDoneButton!.setTitle("Finish", forState: UIControlState.Normal)
         
-        doneButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        doneButton.layer.cornerRadius = bHight/2
-        doneButton.backgroundColor = UIColor(hexString: "339933")
-        doneButton.addTarget(self, action: "finishButtonAction:", forControlEvents: .TouchUpInside)
+        finishDoneButton!.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        finishDoneButton!.layer.cornerRadius = bHight/2
+        finishDoneButton!.backgroundColor = UIColor(hexString: "339933")
+        finishDoneButton!.addTarget(self, action: "finishButtonAction:", forControlEvents: .TouchUpInside)
         
         dispatch_async(dispatch_get_main_queue()){
             self.greyOutView.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height)
@@ -968,8 +1006,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             self.greyOutView.backgroundColor = semi
             self.view.addSubview(self.greyOutView)
             self.finishAlertView.addSubview(self.ratingView)
-            self.finishAlertView.addSubview(doneButton)
-            self.finishAlertView.addSubview(commentView)
+            self.finishAlertView.addSubview(self.finishDoneButton!)
+            self.finishAlertView.addSubview(self.commentView!)
             self.finishAlertView.addSubview(label)
             self.view.addSubview(self.finishAlertView)
             
@@ -1007,7 +1045,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                     print(json)
                         if json["Status"].string ==  "SUCCESS" {
                         
-                            
+                           // self.performSegueWithIdentifier("toBlank", sender: nil)
                         }
  
                 } else {
@@ -1023,10 +1061,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         enableBackgroudView()
        
         dispatch_async(dispatch_get_main_queue()){
+            
+            self.ratingView.removeFromSuperview()
+            self.finishDoneButton!.removeFromSuperview()
+            self.commentView!.removeFromSuperview()
             self.finishAlertView.removeFromSuperview()
+            
             self.carSelectionView.hidden = false
             self.utilView.hidden = false
-            self.driverInfoView?.removeFromSuperview()
+            
+            self.priceLabel!.removeFromSuperview()
+            self.topView.removeFromSuperview()
+            
+            self.driverImageView!.removeFromSuperview()
+            self.deiverNameLabek!.removeFromSuperview()
+            self.licensePlateNumber!.removeFromSuperview()
+            self.driverView.removeFromSuperview()
+            
+            self.driverInfoView!.removeFromSuperview()
+            //self.driverInfoView = nil
             let mapH = self.view.frame.height - self.topTitleView.frame.height - self.fromToSelection.frame.height - self.utilView.frame.height - self.carSelectionView.frame.height - self.statusBarHeight()
             self.mapHeight.constant = mapH
             
@@ -1047,7 +1100,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         
         let mapH = self.view.frame.height - self.topTitleView.frame.height - self.fromToSelection.frame.height - self.utilView.frame.height - self.carSelectionView.frame.height - statusBarHeight()
         mapHeight.constant = mapH
-        locationTimer.invalidate()
+        //locationTimer.invalidate()
         
         showConfirmAlertView()
         
@@ -1060,60 +1113,64 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         
         disableBackgroudView()
         let gap : CGFloat = 20
-        
-        confirmAlertView.frame = CGRectMake(gap, self.view.bounds.height*0.5 - 160 - 20 , self.view.bounds.width - gap*2, 180)
-        confirmAlertView.layer.cornerRadius = 8
-        confirmAlertView.backgroundColor = UIColor.whiteColor()
-        let label = UILabel()
-        
+        dispatch_async(dispatch_get_main_queue()){
+        self.confirmAlertView.frame = CGRectMake(gap, self.view.bounds.height*0.5 - 160 - 20 , self.view.bounds.width - gap*2, 180)
+        self.confirmAlertView.layer.cornerRadius = 8
+        self.confirmAlertView.backgroundColor = UIColor.whiteColor()
         
         
         let labelW:CGFloat = 200
-        label.frame = CGRectMake(confirmAlertView.frame.width/2 - labelW/2, 10, labelW, 20)
-        label.text = "Confirm order"
-        label.textAlignment = NSTextAlignment.Center
-        label.textColor = UIColor(hexString: "FF6699")
         
+        self.confirmLabel.frame = CGRectMake(self.confirmAlertView.frame.width/2 - labelW/2, 10, labelW, 20)
+        self.confirmLabel.text = "Confirm order"
+        self.confirmLabel.textAlignment = NSTextAlignment.Center
+        self.confirmLabel.textColor = UIColor(hexString: "FF6699")
         
+        self.confirmPhoneNumberView.frame = CGRectMake(gap,40,self.confirmAlertView.frame.width - 2*gap,30)
         
-        let confirmPhoneNumberView : UITextField = UITextField(frame: CGRectMake(gap,40,confirmAlertView.frame.width - 2*gap,30))
-        confirmPhoneNumberView.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.5)
-        confirmPhoneNumberView.placeholder = " Phone number"
-        confirmPhoneNumberView.layer.cornerRadius = 5
-        confirmPhoneNumberView.keyboardType = UIKeyboardType.PhonePad
-        confirmPhoneNumber = confirmPhoneNumberView
+        self.confirmPhoneNumberView.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.5)
+        if self.delegate.phoneNumberDidEnter == false {
+            self.confirmPhoneNumberView.placeholder = " Phone number"
+            self.confirmPhoneNumberView.text = ""
+        } else {
+            self.confirmPhoneNumberView.text = self.delegate.phonrNumber
+        }
+        self.confirmPhoneNumberView.layer.cornerRadius = 5
+        self.confirmPhoneNumberView.keyboardType = UIKeyboardType.PhonePad
+       // self.confirmPhoneNumber = self.confirmPhoneNumberView
+        
+        self.messageToDriverView.frame = CGRectMake(gap,80,self.confirmAlertView.frame.width - 2*gap,40)
+        self.messageToDriverView.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.5)
+        //self.messageToDriverView.text = " Message to driver"
+        self.messageToDriverView.placeholder = " Message to driver"
+        self.messageToDriverView.text = ""
+        self.messageToDriverView.layer.cornerRadius = 5
+        //messageToDriver = messageToDriverView
+            
+            
+  
 
-        
-        let messageToDriverView : UITextView = UITextView(frame: CGRectMake(gap,80,confirmAlertView.frame.width - 2*gap,40))
-        messageToDriverView.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.5)
-        messageToDriverView.placeholder = " Message to driver"
-        messageToDriverView.layer.cornerRadius = 5
-        messageToDriver = messageToDriverView
-        
-        
-        
         
         let bHight : CGFloat = 30
         let bWidth : CGFloat = 100
-        let doneButton: UIButton = UIButton(frame: CGRectMake(confirmAlertView.frame.width/2 - bWidth/2,confirmAlertView.frame.height  - bHight-10, bWidth ,bHight))
-        doneButton.setTitle("Done", forState: UIControlState.Normal)
+        self.doneButton.frame  = CGRectMake(self.confirmAlertView.frame.width/2 - bWidth/2,self.confirmAlertView.frame.height  - bHight-10, bWidth ,bHight)
+        self.doneButton.setTitle("Done", forState: UIControlState.Normal)
         
-        doneButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        doneButton.layer.cornerRadius = bHight/2
-        doneButton.backgroundColor = UIColor(hexString: "339933")
-        doneButton.addTarget(self, action: "confirmDoneButtonAction:", forControlEvents: .TouchUpInside)
+        self.doneButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        self.doneButton.layer.cornerRadius = bHight/2
+        self.doneButton.backgroundColor = UIColor(hexString: "339933")
+        self.doneButton.addTarget(self, action: "confirmDoneButtonAction:", forControlEvents: .TouchUpInside)
         
-        dispatch_async(dispatch_get_main_queue()){
+       
             self.greyOutView.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height)
             let bc = UIColor.blackColor()
             let semi = bc.colorWithAlphaComponent(0.5)
             self.greyOutView.backgroundColor = semi
             self.view.addSubview(self.greyOutView)
-            self.confirmAlertView.addSubview(self.ratingView)
-            self.confirmAlertView.addSubview(doneButton)
-            self.confirmAlertView.addSubview(confirmPhoneNumberView)
-            self.confirmAlertView.addSubview(messageToDriverView)
-            self.confirmAlertView.addSubview(label)
+            self.confirmAlertView.addSubview(self.doneButton)
+            self.confirmAlertView.addSubview(self.confirmPhoneNumberView)
+            self.confirmAlertView.addSubview(self.messageToDriverView)
+            self.confirmAlertView.addSubview(self.confirmLabel)
             self.view.addSubview(self.confirmAlertView)
             
             
@@ -1134,83 +1191,165 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         
         //self.carSelectionView.userInteractionEnabled = true
         
-        if confirmPhoneNumber?.text!.isEmpty == false {
-   
+        if self.delegate.phoneNumberDidEnter == false {
+            if confirmPhoneNumberView.text!.isEmpty == false {
+                
+                var params: Dictionary<String,String> = ["Action" : "14"]
+                
+                params["Id"] = self.orderID
+                params["IsPassengerConfirm"] = "true"
+                params["PassengerMobile"] = confirmPhoneNumberView.text
+                self.delegate.phoneNumberDidEnter = true
+                self.delegate.phonrNumber = (confirmPhoneNumberView.text)!
+                if let a = messageToDriverView.text {
+                    params["PassengerMsg"] = a
+                } else {
+                    params["PassengerMsg"] = ""
+                }
+                
+                
+                print(params)
+                
+                do {
+                    let opt = try HTTP.PUT(mainhost + "/api/order", parameters: params)
+                    opt.start { response in
+                        //do things...
+                        if let obj: AnyObject =  response.data {
+                            
+                            self.callTaxiResponseJson = JSON(data: obj as! NSData)
+                            let rStatus : String = self.callTaxiResponseJson!["Status"].string!
+                            print("Status = \(rStatus)");
+                            
+                            if(rStatus == "SUCCESS"){
+                                self.enableBackgroudView()
+                                
+                                dispatch_async(dispatch_get_main_queue()){
+                                    
+                                    
+                                    
+                                    
+                                    self.confirmAlertView.removeFromSuperview()
+                                    self.confirmLabel.removeFromSuperview()
+                                    self.messageToDriverView.removeFromSuperview()
+                                    self.confirmPhoneNumberView.removeFromSuperview()
+                                    self.doneButton.removeFromSuperview()
+                                    
+                                    self.view.endEditing(true)
+                                    self.driverViewConfirmButton?.hidden = true
+                                    self.driverViewConfirmButton?.userInteractionEnabled = false
+                                    self.driverViewCancelButton?.center =  CGPointMake((self.driverViewCancelButton?.superview?.frame.width)!/2 , self.vheight[6]/2)
+                                    self.driverViewNoteToDriverLabel!.text = "Note to driver : " + (self.messageToDriverView.text)!
+                                    
+                                    
+                                }
+                                
+                                
+                                
+                            } else if(rStatus == "FAIL") {
+                                
+                                let alertController = UIAlertController(title: "Confirm incomplete", message: "Please try again", preferredStyle: .Alert)
+                                let finishlAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) { (_) in
+                                    
+                                }
+                                alertController.addAction(finishlAction)
+                                self.presentViewController(alertController, animated: true) {
+                                    // ...
+                                }
+                                
+                                
+                            }
+                            
+                            print(self.callTaxiResponseJson)
+                            
+                            
+                        }
+                        
+                        // self.startTimer()
+                        
+                    }
+                } catch let error {
+                    print("got an error creating the request: \(error)")
+                }
+            } else {
+                let alertController = UIAlertController(title: "Error", message: "Please enter the phone number", preferredStyle: .Alert)
+                let finishlAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) { (_) in
+                    
+                }
+                alertController.addAction(finishlAction)
+                self.presentViewController(alertController, animated: true) {
+                    // ...
+                }
+            }
+
+        } else {
             var params: Dictionary<String,String> = ["Action" : "14"]
-        
+            //self.delegate.phoneNumberDidEnter = true
             params["Id"] = self.orderID
             params["IsPassengerConfirm"] = "true"
-            params["PassengerMobile"] = confirmPhoneNumber?.text
-            if let a = messageToDriver?.text {
+            params["PassengerMobile"] = self.delegate.phonrNumber
+            
+            if let a = messageToDriverView.text {
                 params["PassengerMsg"] = a
             } else {
                 params["PassengerMsg"] = ""
             }
-        
-        
-        print(params)
-        
-        do {
-            let opt = try HTTP.PUT(mainhost + "/api/order", parameters: params)
-            opt.start { response in
-                //do things...
-                if let obj: AnyObject =  response.data {
-                    
-                    self.callTaxiResponseJson = JSON(data: obj as! NSData)
-                    let rStatus : String = self.callTaxiResponseJson!["Status"].string!
-                    print("Status = \(rStatus)");
-                    
-                    if(rStatus == "SUCCESS"){
-                        self.enableBackgroudView()
+            
+            
+            print(params)
+            
+            do {
+                let opt = try HTTP.PUT(mainhost + "/api/order", parameters: params)
+                opt.start { response in
+                    //do things...
+                    if let obj: AnyObject =  response.data {
                         
-                        dispatch_async(dispatch_get_main_queue()){
-                            self.confirmAlertView.removeFromSuperview()
-                            self.view.endEditing(true)
-                            self.driverViewConfirmButton?.hidden = true
-                            self.driverViewConfirmButton?.userInteractionEnabled = false
-                            self.driverViewCancelButton?.center =  CGPointMake((self.driverViewCancelButton?.superview?.frame.width)!/2 , self.vheight[6]/2)
-                            self.driverViewNoteToDriverLabel!.text = "Note to driver : " + (self.messageToDriver?.text)!
+                        self.callTaxiResponseJson = JSON(data: obj as! NSData)
+                        let rStatus : String = self.callTaxiResponseJson!["Status"].string!
+                        print("Status = \(rStatus)");
+                        
+                        if(rStatus == "SUCCESS"){
+                            self.enableBackgroudView()
+                            
+                            dispatch_async(dispatch_get_main_queue()){
+                                self.confirmAlertView.removeFromSuperview()
+                                self.view.endEditing(true)
+                                self.driverViewConfirmButton?.hidden = true
+                                self.driverViewConfirmButton?.userInteractionEnabled = false
+                                self.driverViewCancelButton?.center =  CGPointMake((self.driverViewCancelButton?.superview?.frame.width)!/2 , self.vheight[6]/2)
+                                self.driverViewNoteToDriverLabel!.text = "Note to driver : " + (self.messageToDriverView.text)!
+                                
+                                
+                            }
+                            
+                            
+                            
+                        } else if(rStatus == "FAIL") {
+                            
+                            let alertController = UIAlertController(title: "Confirm incomplete", message: "Please try again", preferredStyle: .Alert)
+                            let finishlAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) { (_) in
+                                
+                            }
+                            alertController.addAction(finishlAction)
+                            self.presentViewController(alertController, animated: true) {
+                                // ...
+                            }
                             
                             
                         }
-
                         
-                        
-                    } else if(rStatus == "FAIL") {
-                        
-                        let alertController = UIAlertController(title: "Confirm incomplete", message: "Please try again", preferredStyle: .Alert)
-                        let finishlAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) { (_) in
-                            
-                        }
-                        alertController.addAction(finishlAction)
-                        self.presentViewController(alertController, animated: true) {
-                            // ...
-                        }
+                        print(self.callTaxiResponseJson)
                         
                         
                     }
                     
-                    print(self.callTaxiResponseJson)
-                    
+                    // self.startTimer()
                     
                 }
-                
-                // self.startTimer()
-                
-            }
-        } catch let error {
-            print("got an error creating the request: \(error)")
-        }
-        } else {
-            let alertController = UIAlertController(title: "Error", message: "Please enter the phone number", preferredStyle: .Alert)
-            let finishlAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) { (_) in
-                
-            }
-            alertController.addAction(finishlAction)
-            self.presentViewController(alertController, animated: true) {
-                // ...
+            } catch let error {
+                print("got an error creating the request: \(error)")
             }
         }
+        
         
     }
     
@@ -1249,7 +1388,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                             self.carSelectionView.hidden = false
                             self.carSelectionView.userInteractionEnabled = true
                             
-                            self.driverInfoView?.removeFromSuperview()
+                            self.driverInfoView!.removeFromSuperview()
 
                         }
                         alertController.addAction(finishlAction)

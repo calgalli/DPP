@@ -41,6 +41,7 @@
 		28A73B2E1BD28E6800E1A8A5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28A73B2C1BD28E6800E1A8A5 /* LaunchScreen.storyboard */; };
 		28A73B391BD28E6800E1A8A5 /* DDPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A73B381BD28E6800E1A8A5 /* DDPTests.swift */; };
 		28A73B441BD28E6800E1A8A5 /* DDPUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A73B431BD28E6800E1A8A5 /* DDPUITests.swift */; };
+		28AC13961C40C0B400E7B2EA /* blankViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AC13951C40C0B400E7B2EA /* blankViewController.swift */; };
 		28B861621C083ADF004A5B37 /* destination.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B8615E1C083ADF004A5B37 /* destination.png */; };
 		28B861631C083ADF004A5B37 /* destinationActive.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B8615F1C083ADF004A5B37 /* destinationActive.png */; };
 		28B861641C083ADF004A5B37 /* pickup.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B861601C083ADF004A5B37 /* pickup.png */; };
@@ -120,6 +121,7 @@
 		28A73B3F1BD28E6800E1A8A5 /* DDPUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DDPUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		28A73B431BD28E6800E1A8A5 /* DDPUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDPUITests.swift; sourceTree = "<group>"; };
 		28A73B451BD28E6800E1A8A5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		28AC13951C40C0B400E7B2EA /* blankViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = blankViewController.swift; sourceTree = "<group>"; };
 		28B8615E1C083ADF004A5B37 /* destination.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destination.png; sourceTree = "<group>"; };
 		28B8615F1C083ADF004A5B37 /* destinationActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destinationActive.png; sourceTree = "<group>"; };
 		28B861601C083ADF004A5B37 /* pickup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pickup.png; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 				28094CD11BF2EE0E003E027F /* DDP-Bridging-Header.h */,
 				28FA9CF81C0C4C6800CC9E65 /* MapManager.swift */,
 				28BDC3C71C1B0DCF00E5CB33 /* FloatRatingView.swift */,
+				28AC13951C40C0B400E7B2EA /* blankViewController.swift */,
 			);
 			path = DDP;
 			sourceTree = "<group>";
@@ -536,6 +539,7 @@
 				2815325F1BE5ED36001E8283 /* placeSearchViewController.swift in Sources */,
 				284F83FA1BD290D500AEC237 /* SwiftyJSON.swift in Sources */,
 				288975DF1C1C7B4B00F12898 /* historyViewController.swift in Sources */,
+				28AC13961C40C0B400E7B2EA /* blankViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

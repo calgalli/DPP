@@ -130,7 +130,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="BYZ-38-t0r" customClass="ViewController" customModule="DDP" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ViewController" automaticallyAdjustsScrollViewInsets="NO" id="BYZ-38-t0r" customClass="ViewController" customModule="DDP" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -566,6 +566,7 @@
                         <segue destination="Ijt-Zq-7M3" kind="show" identifier="toPlaceSearch" id="CQt-pM-C7X"/>
                         <segue destination="Tsq-bo-buz" kind="show" identifier="toLogin" id="cHS-oL-3v9"/>
                         <segue destination="Wnb-cO-mih" kind="show" identifier="mainToHistory" id="Rdl-ag-jZT"/>
+                        <segue destination="KNb-60-HPv" kind="show" identifier="toBlank" id="WEa-Yj-FiP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -648,6 +649,26 @@
             </objects>
             <point key="canvasLocation" x="94" y="951"/>
         </scene>
+        <!--Blank View Controller-->
+        <scene sceneID="BY7-93-nuj">
+            <objects>
+                <viewController id="KNb-60-HPv" customClass="blankViewController" customModule="DDP" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="q2l-iW-Aaz"/>
+                        <viewControllerLayoutGuide type="bottom" id="J2g-db-tYp"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="DnR-QM-hpf">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="backFromBlank" id="lNV-GG-qE2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fh5-9V-AoK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
     </scenes>
     <resources>
         <image name="accountCircle.png" width="144" height="144"/>
@@ -655,6 +676,6 @@
         <image name="grey.png" width="100" height="3"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="mZ3-ev-yzo"/>
+        <segue reference="lNV-GG-qE2"/>
     </inferredMetricsTieBreakers>
 </document>
