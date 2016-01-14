@@ -87,7 +87,8 @@ class historyViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     @IBAction func backAction(sender: AnyObject) {
-        performSegueWithIdentifier("historyToMain", sender: nil)
+        self.dismissViewControllerAnimated(true, completion: nil)
+        //performSegueWithIdentifier("historyToMain", sender: nil)
     }
 
     

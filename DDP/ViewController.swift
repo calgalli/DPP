@@ -42,6 +42,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     var deiverNameLabek : UILabel?
     var licensePlateNumber : UILabel?
     
+    var carTypeLabel : UILabel?
+    
     var mobileLabel : UILabel?
     
     var confirmButton : UIButton?
@@ -131,7 +133,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
     var locationManager: CLLocationManager?
     
     var selectedCarTypeCode : String = "1"
-    var carTypeCode : [String] = ["1","2","3","4","5"]
+    var selectedCarType : String = "Sedan"
+    var carTypeCode : [String] = ["1","2","2","3","7"]
     var carType : [String] =  ["Sedan", "SUV", "Lux car","Van", "Tuk Tuk"]
     var carImage : [String] = ["sedan.png","suv.png" ,"luxSedan.png","van.png", "tuktuk.png"]
     var carImageActive : [String] = ["sedanActive.png","suvActive.png" ,"luxSedanActive.png","vanActive.png", "tuktukActive.png"]
@@ -722,6 +725,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             
             
             //Car View
+            carTypeLabel = UILabel(frame: CGRectMake(0, 0, 200, 30))
+            carTypeLabel!.center = CGPointMake(200/2 + leftEdge, vheight[3]/2)
+            carTypeLabel!.textAlignment = NSTextAlignment.Left
+            carTypeLabel!.text = "Car type : " + selectedCarType
+            carTypeLabel!.textColor = UIColor.whiteColor()
+            carView.addSubview(carTypeLabel!)
             
             
             //Mobile View
@@ -2324,6 +2333,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                 
             }
             
+            self.view.endEditing(true)
+            
             dispatch_async(dispatch_get_main_queue()){
                 self.placeSelectionView.hidden = true
                 self.placeSelectionView.userInteractionEnabled = false
@@ -2650,6 +2661,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
         print("selected + \(indexPath.row) \(carType[indexPath.row])")
         
         selectedCarTypeCode = carTypeCode[indexPath.row]
+        selectedCarType = carType[indexPath.row]
         calPrice()
 
     }
