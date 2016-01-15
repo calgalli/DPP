@@ -139,7 +139,7 @@ class historyViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         //self.selectedCell = cell
         
-        let indexP = indexPath.row
+       // let indexP = indexPath.row
         
         
     }

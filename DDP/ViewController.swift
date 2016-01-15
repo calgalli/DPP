@@ -708,7 +708,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             driverView.addSubview(driverImageView!)
             
             deiverNameLabek = UILabel(frame: CGRectMake(0, 0, 100, 30))
-            deiverNameLabek!.center = CGPointMake(self.view.frame.width/2 - 100/2, vheight[1]/2)
+            deiverNameLabek!.center = CGPointMake(60 + 20 + 100/2, vheight[1]/2)
             deiverNameLabek!.textAlignment = NSTextAlignment.Left
             deiverNameLabek!.text = userInfo["DriverName"]
             deiverNameLabek!.textColor = UIColor.whiteColor()
@@ -757,14 +757,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
             arrivalTimeLabel.textColor = UIColor.greenColor()
             arriveView.addSubview(arrivalTimeLabel)
             
-            arrivalDistanceLabel.frame = CGRectMake(0, 0, 100, 30)
-            arrivalDistanceLabel.center = CGPointMake(self.view.frame.width/2 + 100/2 + leftEdge, vheight[4]/2)
+            arrivalDistanceLabel.frame = CGRectMake(0, 0, 80, 30)
+            arrivalDistanceLabel.center = CGPointMake(self.view.frame.width/2 + 80/2 + leftEdge, vheight[4]/2)
             arrivalDistanceLabel.text = "Distance : "
             arrivalDistanceLabel.textColor = UIColor.whiteColor()
             arriveView.addSubview(arrivalDistanceLabel)
             
-            arrivalDistance.frame = CGRectMake(0, 0, 100, 30)
-            arrivalDistance.center = CGPointMake(self.view.frame.width/2 + 100 + 100/2 + leftEdge, vheight[4]/2)
+            arrivalDistance.frame = CGRectMake(0, 0, 80, 30)
+            arrivalDistance.center = CGPointMake(self.view.frame.width/2 + 80 + 80/2 + leftEdge, vheight[4]/2)
             arrivalDistance.text = " 00 Km"
             arrivalDistance.textColor = UIColor.greenColor()
             arriveView.addSubview(arrivalDistance)
@@ -1661,6 +1661,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UICollectionV
                     UIView.animateWithDuration(0.25) {
                     self.view.layoutIfNeeded()
                     }
+                } else {
+                    dispatch_async(dispatch_get_main_queue()){
+                        self.fromPlaceLabel.text = "Current location"
+                        self.fromAddress.text = ""
+                        
+                        
+                    }
+                    self.fromPlace.name = "Current location"
+                    self.fromPlace.address = ""
+                    self.fromPlace.distance = 0
+                    self.fromPlace.location = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+                    
                 }
             }
             checkGeocode = false
